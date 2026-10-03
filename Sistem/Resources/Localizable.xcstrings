@@ -1,0 +1,942 @@
+{
+  "sourceLanguage": "tr",
+  "strings": {
+    "%": {
+      "shouldTranslate": false
+    },
+    "%lld sn": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld s"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sn"
+          }
+        }
+      }
+    },
+    "/sn": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/s"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/sn"
+          }
+        }
+      }
+    },
+    "Ayarlar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar"
+          }
+        }
+      }
+    },
+    "Açık": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açık"
+          }
+        }
+      }
+    },
+    "Ağ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ağ"
+          }
+        }
+      }
+    },
+    "Batarya": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Battery"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batarya"
+          }
+        }
+      }
+    },
+    "Bağlı cihazlar ve pil seviyeleri.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected devices and their battery levels."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlı cihazlar ve pil seviyeleri."
+          }
+        }
+      }
+    },
+    "Bellek": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memory"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bellek"
+          }
+        }
+      }
+    },
+    "Birden çok saat dilimi ve takvim.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Multiple time zones and a calendar."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birden çok saat dilimi ve takvim."
+          }
+        }
+      }
+    },
+    "Birimler, doluluk, okuma ve yazma hızı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volumes, capacity, read and write speed."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birimler, doluluk, okuma ve yazma hızı."
+          }
+        }
+      }
+    },
+    "Bluetooth": {
+      "shouldTranslate": false
+    },
+    "Boşta hedef: saniyede 2'nin altı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idle target: under 2 per second"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boşta hedef: saniyede 2'nin altı"
+          }
+        }
+      }
+    },
+    "Bu Mac'in donanımı, çalışma süresi ve tüm modüllerin özeti.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Mac's hardware, uptime and a summary of every module."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Mac'in donanımı, çalışma süresi ve tüm modüllerin özeti."
+          }
+        }
+      }
+    },
+    "Bu modül Faz %lld ile geliyor.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This module arrives in phase %lld."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu modül Faz %lld ile geliyor."
+          }
+        }
+      }
+    },
+    "Bu sayfa açıkken ölçüm saniyede bir yapılır ve değerler sayfanın kendi maliyetini de içerir. Gerçek boşta tüketim için `scripts/perf-check.sh` kullanılır.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "While this page is open it samples once a second, so the values include the page's own cost. Use `scripts/perf-check.sh` for true idle usage."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu sayfa açıkken ölçüm saniyede bir yapılır ve değerler sayfanın kendi maliyetini de içerir. Gerçek boşta tüketim için `scripts/perf-check.sh` kullanılır."
+          }
+        }
+      }
+    },
+    "Bütçe < %@ %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget < %@ %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bütçe < %@ %@"
+          }
+        }
+      }
+    },
+    "CPU": {
+      "shouldTranslate": false
+    },
+    "CPU, RAM ve GPU yüzde, sıcaklık derece olarak burada görünecek. Canlı veriler Faz 2'de geliyor.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU, RAM and GPU as percentages and temperature in degrees will show here. Live data arrives in phase 2."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU, RAM ve GPU yüzde, sıcaklık derece olarak burada görünecek. Canlı veriler Faz 2'de geliyor."
+          }
+        }
+      }
+    },
+    "CPU, RAM ve GPU yüzde, sıcaklık derece olarak gösterilir. Sıralama ve seçim Faz 2'de düzenlenebilir olacak.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU, RAM and GPU show as percentages, temperature in degrees. Order and selection become editable in phase 2."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU, RAM ve GPU yüzde, sıcaklık derece olarak gösterilir. Sıralama ve seçim Faz 2'de düzenlenebilir olacak."
+          }
+        }
+      }
+    },
+    "Daha uzun aralık, daha az pil tüketimi.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A longer interval uses less battery."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daha uzun aralık, daha az pil tüketimi."
+          }
+        }
+      }
+    },
+    "Disk": {
+      "shouldTranslate": false
+    },
+    "Dock'ta göster": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show in Dock"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dock'ta göster"
+          }
+        }
+      }
+    },
+    "Durum": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Status"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Durum"
+          }
+        }
+      }
+    },
+    "Enerji": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Energy"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enerji"
+          }
+        }
+      }
+    },
+    "Faz %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phase %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faz %lld"
+          }
+        }
+      }
+    },
+    "GPU": {
+      "shouldTranslate": false
+    },
+    "GPU, render ve tiler kullanımı, Neural Engine ve grafik gücü.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU, renderer and tiler utilization, Neural Engine and graphics power."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU, render ve tiler kullanımı, Neural Engine ve grafik gücü."
+          }
+        }
+      }
+    },
+    "Görünüm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Görünüm"
+          }
+        }
+      }
+    },
+    "Görünüm, güncelleme sıklığı ve menü çubuğu.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance, update frequency and menu bar."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Görünüm, güncelleme sıklığı ve menü çubuğu."
+          }
+        }
+      }
+    },
+    "Gösterge paneli": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dashboard"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gösterge paneli"
+          }
+        }
+      }
+    },
+    "Güncelleme aralığı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Update interval"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güncelleme aralığı"
+          }
+        }
+      }
+    },
+    "Güç": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Power"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güç"
+          }
+        }
+      }
+    },
+    "Kapalıyken uygulama yalnızca menü çubuğunda yaşar.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When off, the app lives only in the menu bar."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapalıyken uygulama yalnızca menü çubuğunda yaşar."
+          }
+        }
+      }
+    },
+    "Koyu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dark"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Koyu"
+          }
+        }
+      }
+    },
+    "MB": {
+      "shouldTranslate": false
+    },
+    "Menü çubuğu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menu bar"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menü çubuğu"
+          }
+        }
+      }
+    },
+    "Menü çubuğunda · %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In menu bar · %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menü çubuğunda · %@"
+          }
+        }
+      }
+    },
+    "Model tanımlayıcı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Model identifier"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Model tanımlayıcı"
+          }
+        }
+      }
+    },
+    "Not": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not"
+          }
+        }
+      }
+    },
+    "Pencereyi Aç": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Window"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pencereyi Aç"
+          }
+        }
+      }
+    },
+    "Pilde yavaşla": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slow down on battery"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pilde yavaşla"
+          }
+        }
+      }
+    },
+    "Pildeyken ve Düşük Güç Modu'nda aralık iki katına çıkar.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On battery and in Low Power Mode the interval doubles."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pildeyken ve Düşük Güç Modu'nda aralık iki katına çıkar."
+          }
+        }
+      }
+    },
+    "RAM": {
+      "shouldTranslate": false
+    },
+    "Saat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clock"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saat"
+          }
+        }
+      }
+    },
+    "Sensörler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensors"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensörler"
+          }
+        }
+      }
+    },
+    "Sistem": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem"
+          }
+        }
+      }
+    },
+    "Sistem'in kendi kaynak tüketimi, bu sayfa açıkken canlı ölçülür.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem's own resource use, measured live while this page is open."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem'in kendi kaynak tüketimi, bu sayfa açıkken canlı ölçülür."
+          }
+        }
+      }
+    },
+    "Süreç enerji sayacından": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From the process energy counter"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süreç enerji sayacından"
+          }
+        }
+      }
+    },
+    "Sıcaklık": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperature"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıcaklık"
+          }
+        }
+      }
+    },
+    "Sıcaklık birimi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temperature unit"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıcaklık birimi"
+          }
+        }
+      }
+    },
+    "Tanılama": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diagnostics"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tanılama"
+          }
+        }
+      }
+    },
+    "Tema": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theme"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tema"
+          }
+        }
+      }
+    },
+    "Toplam ve çekirdek başına yük, frekans, ortalama yük ve en çok CPU kullanan süreçler.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total and per-core load, frequency, load average and the processes using the most CPU."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toplam ve çekirdek başına yük, frekans, ortalama yük ve en çok CPU kullanan süreçler."
+          }
+        }
+      }
+    },
+    "Uyanma": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wakeups"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uyanma"
+          }
+        }
+      }
+    },
+    "Uygulama, bağlı, sıkıştırılmış bellek, takas, bellek baskısı ve en çok bellek kullanan süreçler.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App, wired and compressed memory, swap, memory pressure and the processes using the most memory."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama, bağlı, sıkıştırılmış bellek, takas, bellek baskısı ve en çok bellek kullanan süreçler."
+          }
+        }
+      }
+    },
+    "derece": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "degrees"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "derece"
+          }
+        }
+      }
+    },
+    "mW": {
+      "shouldTranslate": false
+    },
+    "yüzde": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "percent"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "yüzde"
+          }
+        }
+      }
+    },
+    "Çekirdek sıcaklıkları, fan hızları ve güç tüketimi.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Core temperatures, fan speeds and power draw."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çekirdek sıcaklıkları, fan hızları ve güç tüketimi."
+          }
+        }
+      }
+    },
+    "Çekirdekler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cores"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çekirdekler"
+          }
+        }
+      }
+    },
+    "Çık": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quit"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çık"
+          }
+        }
+      }
+    },
+    "İndirme ve yükleme hızı, bağlantı durumu ve Wi-Fi bilgileri.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download and upload speed, connection status and Wi-Fi details."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İndirme ve yükleme hızı, bağlantı durumu ve Wi-Fi bilgileri."
+          }
+        }
+      }
+    },
+    "İşlemci": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Processor"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İşlemci"
+          }
+        }
+      }
+    },
+    "Şarj, kalan süre, pil sağlığı, döngü sayısı ve adaptör.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Charge, time remaining, battery health, cycle count and adapter."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şarj, kalan süre, pil sağlığı, döngü sayısı ve adaptör."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

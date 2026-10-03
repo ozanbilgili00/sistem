@@ -1,0 +1,294 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 70;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		SS0000000000000000000024 /* SystemKit in Frameworks */ = {isa = PBXBuildFile; productRef = SS0000000000000000000022 /* SystemKit */; };
+		SS0000000000000000000025 /* SistemUI in Frameworks */ = {isa = PBXBuildFile; productRef = SS0000000000000000000023 /* SistemUI */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		SS0000000000000000000009 /* Sistem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sistem.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		SS0000000000000000000026 /* SystemKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SystemKit; path = Packages/SystemKit; sourceTree = "<group>"; };
+		SS0000000000000000000027 /* SistemUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SistemUI; path = Packages/SistemUI; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		SS0000000000000000000010 /* Sistem */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Sistem; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		SS0000000000000000000004 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				SS0000000000000000000024 /* SystemKit in Frameworks */,
+				SS0000000000000000000025 /* SistemUI in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		SS0000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				SS0000000000000000000010 /* Sistem */,
+				SS0000000000000000000011 /* Packages */,
+				SS0000000000000000000002 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		SS0000000000000000000002 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				SS0000000000000000000009 /* Sistem.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		SS0000000000000000000011 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				SS0000000000000000000026 /* SystemKit */,
+				SS0000000000000000000027 /* SistemUI */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		SS0000000000000000000008 /* Sistem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = SS000000000000000000000C /* Build configuration list for PBXNativeTarget "Sistem" */;
+			buildPhases = (
+				SS0000000000000000000005 /* Sources */,
+				SS0000000000000000000004 /* Frameworks */,
+				SS0000000000000000000006 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				SS0000000000000000000010 /* Sistem */,
+			);
+			name = Sistem;
+			packageProductDependencies = (
+				SS0000000000000000000022 /* SystemKit */,
+				SS0000000000000000000023 /* SistemUI */,
+			);
+			productName = Sistem;
+			productReference = SS0000000000000000000009 /* Sistem.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		SS0000000000000000000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					SS0000000000000000000008 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = SS0000000000000000000003 /* Build configuration list for PBXProject "Sistem" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = tr;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				tr,
+				en,
+				Base,
+			);
+			mainGroup = SS0000000000000000000001;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				SS0000000000000000000020 /* XCLocalSwiftPackageReference "Packages/SystemKit" */,
+				SS0000000000000000000021 /* XCLocalSwiftPackageReference "Packages/SistemUI" */,
+			);
+			productRefGroup = SS0000000000000000000002 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				SS0000000000000000000008 /* Sistem */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		SS0000000000000000000006 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		SS0000000000000000000005 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		SS000000000000000000000A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		SS000000000000000000000B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		SS000000000000000000000D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Sistem;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ozan.sistem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		SS000000000000000000000E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Sistem;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ozan.sistem;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = macosx;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		SS0000000000000000000003 /* Build configuration list for PBXProject "Sistem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				SS000000000000000000000A /* Debug */,
+				SS000000000000000000000B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		SS000000000000000000000C /* Build configuration list for PBXNativeTarget "Sistem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				SS000000000000000000000D /* Debug */,
+				SS000000000000000000000E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		SS0000000000000000000020 /* XCLocalSwiftPackageReference "Packages/SystemKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/SystemKit;
+		};
+		SS0000000000000000000021 /* XCLocalSwiftPackageReference "Packages/SistemUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/SistemUI;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		SS0000000000000000000022 /* SystemKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = SS0000000000000000000020 /* XCLocalSwiftPackageReference "Packages/SystemKit" */;
+			productName = SystemKit;
+		};
+		SS0000000000000000000023 /* SistemUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = SS0000000000000000000021 /* XCLocalSwiftPackageReference "Packages/SistemUI" */;
+			productName = SistemUI;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = SS0000000000000000000000 /* Project object */;
+}
