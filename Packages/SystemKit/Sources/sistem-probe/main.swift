@@ -94,6 +94,50 @@ func log(_ message: String) { FileHandle.standardError.write(Data("\(message)\n"
 // MARK: Run
 
 let args = CommandLine.arguments
+
+// `sistem-probe --cpu <seconds> <count>`: CPULoadReader totals, one line per window,
+// for side-by-side comparison with `top -l <count+1> -s <seconds> -n 0`.
+if args.count == 4, args[1] == "--cpu", let seconds = UInt32(args[2]), let count = Int(args[3]) {
+    var reader = CPULoadReader()
+    _ = reader.sample()
+    for _ in 0..<count {
+        sleep(seconds)
+        if let sample = reader.sample() {
+            print(String(format: "%.1f %.1f %.1f", sample.user * 100, sample.system * 100, sample.total * 100))
+        }
+    }
+    exit(0)
+}
+
+// `sistem-probe --processes`: cost of one ProcessLister / MemoryReader read.
+// `sistem-probe --top <seconds>`: one ProcessLister window, top 8 by CPU, for
+// comparison with `top -l 2 -s <seconds> -o cpu -stats pid,command,cpu`.
+if args.count == 3, args[1] == "--top", let seconds = UInt32(args[2]) {
+    var lister = ProcessLister()
+    lister.psEvery = 1
+    _ = lister.sample()
+    sleep(seconds)
+    for entry in lister.sample()?.topCPU.prefix(8) ?? [] {
+        print(String(format: "%6d %6.1f%% %@ %@", entry.pid, entry.cpu * 100, entry.memoryIsApproximate ? "ps " : "lib", entry.name))
+    }
+    exit(0)
+}
+
+if args.count == 2, args[1] == "--processes" {
+    var lister = ProcessLister()
+    _ = lister.sample()
+    let clock = ContinuousClock()
+    for round in 0..<6 {
+        usleep(500_000)
+        var sample: ProcessSample?
+        let took = clock.measure { sample = lister.sample() }
+        print("tur \(round) \(round % 2 == 0 ? "ps  " : "    ") \(took)  süreç \(sample?.processCount ?? 0)  ilk: \(sample?.topCPU.first?.name ?? "-")")
+    }
+    let reader = MemoryReader()
+    print("bellek okuma", clock.measure { for _ in 0..<1000 { _ = reader.sample() } } / 1000)
+    exit(0)
+}
+
 guard args.count > 1 else { log("kullanım: sistem-probe <çıktı.json> [--load]"); exit(2) }
 let outputURL = URL(filePath: args[1])
 let runLoad = args.contains("--load")

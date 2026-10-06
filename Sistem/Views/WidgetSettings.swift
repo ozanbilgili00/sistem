@@ -1,0 +1,88 @@
+import SistemUI
+import SwiftUI
+import SystemKit
+
+/// The "Widget'lar" tab of a module: which widgets it draws in the menu bar, with
+/// a live preview drawn by the same AppKit view the menu bar uses.
+struct WidgetSettings: View {
+    let module: ModuleID
+    @Bindable var settings: SettingsStore
+
+    var body: some View {
+        let config = settings.widget(for: module)
+        VStack(alignment: .leading, spacing: 14) {
+            Card {
+                VStack(alignment: .leading, spacing: 12) {
+                    SectionLabel("Önizleme")
+                    WidgetPreview(module: module, config: config)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(Palette.surface2, in: .rect(cornerRadius: Metrics.controlRadius))
+                }
+            }
+            Card(padding: 0) {
+                VStack(spacing: 0) {
+                    ForEach(WidgetKind.allCases) { kind in
+                        if kind != WidgetKind.allCases.first { RowDivider() }
+                        SettingRow(Text(kind.title), detail: Text(kind.detail)) {
+                            Toggle(String(localized: kind.title), isOn: binding(kind, config))
+                                .labelsHidden().toggleStyle(.switch)
+                                // Keep at least one widget, or the item would be empty.
+                                .disabled(config.kinds == [kind])
+                        }
+                    }
+                    RowDivider()
+                    SettingRow("Etiketi göster", detail: "Değerin üstünde küçük modül adı.") {
+                        Toggle("Etiketi göster", isOn: Binding(
+                            get: { config.showLabel },
+                            set: { var new = config; new.showLabel = $0; settings.setWidget(new, for: module) }
+                        )).labelsHidden().toggleStyle(.switch)
+                    }
+                }
+            }
+        }
+    }
+
+    private func binding(_ kind: WidgetKind, _ config: WidgetConfig) -> Binding<Bool> {
+        Binding(
+            get: { config.kinds.contains(kind) },
+            set: { on in
+                var new = config
+                if on { new.kinds.insert(kind) } else { new.kinds.remove(kind) }
+                settings.setWidget(new, for: module)
+            }
+        )
+    }
+}
+
+/// Hosts a real ``WidgetView`` at menu bar height.
+private struct WidgetPreview: View {
+    let module: ModuleID
+    let config: WidgetConfig
+    @Environment(LiveFeed.self) private var feed
+
+    var body: some View {
+        let _ = feed.frame
+        let model = WidgetModel.make(module, store: feed.store)
+        WidgetRepresentable(model: model, config: config)
+            .frame(width: WidgetRepresentable.width(model: model, config: config), height: NSStatusBar.system.thickness)
+            .liveMetric(module.metric ?? .cpu)
+    }
+}
+
+private struct WidgetRepresentable: NSViewRepresentable {
+    let model: WidgetModel
+    let config: WidgetConfig
+
+    static func width(model: WidgetModel, config: WidgetConfig) -> CGFloat {
+        let view = WidgetView(frame: NSRect(x: 0, y: 0, width: 0, height: NSStatusBar.system.thickness))
+        view.update(model, config: config)
+        return view.intrinsicWidth
+    }
+
+    func makeNSView(context: Context) -> WidgetView { WidgetView() }
+
+    func updateNSView(_ view: WidgetView, context: Context) {
+        view.update(model, config: config)
+    }
+}

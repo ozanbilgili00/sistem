@@ -250,38 +250,6 @@
     "CPU": {
       "shouldTranslate": false
     },
-    "CPU, RAM ve GPU yüzde, sıcaklık derece olarak burada görünecek. Canlı veriler Faz 2'de geliyor.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "CPU, RAM and GPU as percentages and temperature in degrees will show here. Live data arrives in phase 2."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "CPU, RAM ve GPU yüzde, sıcaklık derece olarak burada görünecek. Canlı veriler Faz 2'de geliyor."
-          }
-        }
-      }
-    },
-    "CPU, RAM ve GPU yüzde, sıcaklık derece olarak gösterilir. Sıralama ve seçim Faz 2'de düzenlenebilir olacak.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "CPU, RAM and GPU show as percentages, temperature in degrees. Order and selection become editable in phase 2."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "CPU, RAM ve GPU yüzde, sıcaklık derece olarak gösterilir. Sıralama ve seçim Faz 2'de düzenlenebilir olacak."
-          }
-        }
-      }
-    },
     "Daha uzun aralık, daha az pil tüketimi.": {
       "localizations": {
         "en": {
@@ -933,6 +901,1062 @@
           "stringUnit": {
             "state": "translated",
             "value": "Şarj, kalan süre, pil sağlığı, döngü sayısı ve adaptör."
+          }
+        }
+      }
+    },
+    "%lld çekirdek": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld cores"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld çekirdek"
+          }
+        }
+      }
+    },
+    "1 dk": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 min"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 dk"
+          }
+        }
+      }
+    },
+    "15 dk": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 min"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "15 dk"
+          }
+        }
+      }
+    },
+    "5 dk": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 min"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "5 dk"
+          }
+        }
+      }
+    },
+    "Adaptör": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adapter"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adaptör"
+          }
+        }
+      }
+    },
+    "Ayardaki aralık × güç politikası çarpanı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interval setting × power policy multiplier."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayardaki aralık × güç politikası çarpanı."
+          }
+        }
+      }
+    },
+    "Ayrıntılar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayrıntılar"
+          }
+        }
+      }
+    },
+    "Açılır pencerede 1, 5 ve 15 dakikalık ortalama.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1, 5 and 15 minute averages in the popover."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açılır pencerede 1, 5 ve 15 dakikalık ortalama."
+          }
+        }
+      }
+    },
+    "Açılır pencerede çekirdek başına çubuklar.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per-core bars in the popover."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açılır pencerede çekirdek başına çubuklar."
+          }
+        }
+      }
+    },
+    "Boşta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idle"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boşta"
+          }
+        }
+      }
+    },
+    "Bölüm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Section"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bölüm"
+          }
+        }
+      }
+    },
+    "Değer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Value"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Değer"
+          }
+        }
+      }
+    },
+    "Değerin üstünde küçük modül adı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Small module name above the value."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Değerin üstünde küçük modül adı."
+          }
+        }
+      }
+    },
+    "Doluluk halkası.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A fill ring."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doluluk halkası."
+          }
+        }
+      }
+    },
+    "Duraklatıldı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paused"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duraklatıldı"
+          }
+        }
+      }
+    },
+    "Düşük Güç": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low Power"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düşük Güç"
+          }
+        }
+      }
+    },
+    "Etiketi göster": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show label"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etiketi göster"
+          }
+        }
+      }
+    },
+    "Etkin aralık": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effective interval"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etkin aralık"
+          }
+        }
+      }
+    },
+    "Genel bakış": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Overview"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genel bakış"
+          }
+        }
+      }
+    },
+    "Geçmiş": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geçmiş"
+          }
+        }
+      }
+    },
+    "Güç durumu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Power state"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güç durumu"
+          }
+        }
+      }
+    },
+    "Halka": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ring"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halka"
+          }
+        }
+      }
+    },
+    "Henüz gelmemiş modüller seçili kalır ve kendi fazlarında görünür. Widget türleri her modülün kendi sayfasındaki Widget'lar sekmesinden seçilir.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modules that haven't arrived yet stay selected and appear in their own phase. Widget types are chosen on each module's Widgets tab."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz gelmemiş modüller seçili kalır ve kendi fazlarında görünür. Widget türleri her modülün kendi sayfasındaki Widget'lar sekmesinden seçilir."
+          }
+        }
+      }
+    },
+    "Isıl baskı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thermal pressure"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isıl baskı"
+          }
+        }
+      }
+    },
+    "Kullanıcı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "User"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanıcı"
+          }
+        }
+      }
+    },
+    "Kullanım": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usage"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanım"
+          }
+        }
+      }
+    },
+    "Menü çubuğunda göster": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show in menu bar"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menü çubuğunda göster"
+          }
+        }
+      }
+    },
+    "Menü çubuğunda gösterilecek modül seçili değil. Ayarlar'dan CPU, RAM, GPU ya da sıcaklığı açabilirsin.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No module is selected for the menu bar. Turn on CPU, RAM, GPU or temperature in Settings."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menü çubuğunda gösterilecek modül seçili değil. Ayarlar'dan CPU, RAM, GPU ya da sıcaklığı açabilirsin."
+          }
+        }
+      }
+    },
+    "Mini grafik": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mini chart"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mini grafik"
+          }
+        }
+      }
+    },
+    "Modül": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Module"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modül"
+          }
+        }
+      }
+    },
+    "Okunan metrikler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metrics read"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Okunan metrikler"
+          }
+        }
+      }
+    },
+    "Ortalama yük": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Load average"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ortalama yük"
+          }
+        }
+      }
+    },
+    "Ortalama yükü göster": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show load average"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ortalama yükü göster"
+          }
+        }
+      }
+    },
+    "Pil": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Battery"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pil"
+          }
+        }
+      }
+    },
+    "Son %lld dakika": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last %lld minutes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son %lld dakika"
+          }
+        }
+      }
+    },
+    "Son bir dakikanın çizgisi.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A line of the last minute."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son bir dakikanın çizgisi."
+          }
+        }
+      }
+    },
+    "Tüketicisi olmayan metrik okunmaz.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metrics nobody shows are never read."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüketicisi olmayan metrik okunmaz."
+          }
+        }
+      }
+    },
+    "Uyuyor": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sleeping"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uyuyor"
+          }
+        }
+      }
+    },
+    "Widget'lar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widgets"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widget'lar"
+          }
+        }
+      }
+    },
+    "Yüzde ya da derece olarak sayı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A number, as percent or degrees."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yüzde ya da derece olarak sayı."
+          }
+        }
+      }
+    },
+    "Çalışıyor": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çalışıyor"
+          }
+        }
+      }
+    },
+    "Çekirdek başına": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per core"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çekirdek başına"
+          }
+        }
+      }
+    },
+    "Çekirdekleri göster": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show cores"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çekirdekleri göster"
+          }
+        }
+      }
+    },
+    "Önizleme": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preview"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önizleme"
+          }
+        }
+      }
+    },
+    "Örnekleyici": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sampler"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Örnekleyici"
+          }
+        }
+      }
+    },
+    "Açılır pencerede en çok CPU kullanan 5 süreç.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The 5 processes using the most CPU, in the popover."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açılır pencerede en çok CPU kullanan 5 süreç."
+          }
+        }
+      }
+    },
+    "Açılır pencerede en çok bellek kullanan 5 süreç.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The 5 processes using the most memory, in the popover."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açılır pencerede en çok bellek kullanan 5 süreç."
+          }
+        }
+      }
+    },
+    "Bağlı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wired"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlı"
+          }
+        }
+      }
+    },
+    "Bellek baskısı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memory pressure"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bellek baskısı"
+          }
+        }
+      }
+    },
+    "Boş": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş"
+          }
+        }
+      }
+    },
+    "En çok CPU kullananlar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Top CPU"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En çok CPU kullananlar"
+          }
+        }
+      }
+    },
+    "En çok bellek kullananlar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Top memory"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En çok bellek kullananlar"
+          }
+        }
+      }
+    },
+    "Kritik": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Critical"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kritik"
+          }
+        }
+      }
+    },
+    "Kullanılan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Used"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanılan"
+          }
+        }
+      }
+    },
+    "Normal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Normal"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Normal"
+          }
+        }
+      }
+    },
+    "Sistem süreci: bellek yerleşik boyuttur (yaklaşık), güç okunamaz.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System process: memory is resident size (approximate), power is unavailable."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem süreci: bellek yerleşik boyuttur (yaklaşık), güç okunamaz."
+          }
+        }
+      }
+    },
+    "Süreç": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Process"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süreç"
+          }
+        }
+      }
+    },
+    "Süreçler okunuyor…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading processes…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süreçler okunuyor…"
+          }
+        }
+      }
+    },
+    "Süreçleri göster": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show processes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süreçleri göster"
+          }
+        }
+      }
+    },
+    "Sıkıştırılmış": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compressed"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıkıştırılmış"
+          }
+        }
+      }
+    },
+    "Takas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swap"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Takas"
+          }
+        }
+      }
+    },
+    "Uyarı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warning"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uyarı"
+          }
+        }
+      }
+    },
+    "Uygulama": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uygulama"
+          }
+        }
+      }
+    },
+    "Önbellek": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cached"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önbellek"
+          }
+        }
+      }
+    },
+    "Menü çubuğu çizimi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menu bar redraws"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menü çubuğu çizimi"
+          }
+        }
+      }
+    },
+    "Her çizim her ekranın menü çubuğu için ayrı yapılır; boştaki maliyetin çoğu buradan gelir.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each redraw happens once per display's menu bar; most idle cost comes from here."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her çizim her ekranın menü çubuğu için ayrı yapılır; boştaki maliyetin çoğu buradan gelir."
           }
         }
       }

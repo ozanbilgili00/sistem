@@ -2,27 +2,108 @@
 import AppKit
 import SistemUI
 import SwiftUI
+import SystemKit
 
 /// `Sistem --snapshot <dir>` renders key screens offscreen to PNGs, in both themes,
 /// then exits. Lets the UI be checked without opening a window or taking focus.
+/// Live views get a store filled with synthetic history; nothing is sampled.
 enum SnapshotRenderer {
     static func run(into directory: URL) {
         NSApplication.shared.setActivationPolicy(.prohibited)
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        let settings = SettingsStore(defaults: UserDefaults(suiteName: "SistemSnapshot")!)
+        let defaults = UserDefaults(suiteName: "SistemSnapshot")!
+        defaults.removePersistentDomain(forName: "SistemSnapshot")
+        let settings = SettingsStore(defaults: defaults)
+        let feed = LiveFeed(store: syntheticStore(), engine: nil)
+        feed.isActive = true
+
         let pages: [(String, Page)] = [
-            ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)),
+            ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)), ("ram", .module(.ram)),
             ("settings", .settings), ("diagnostics", .diagnostics),
         ]
         for (theme, name) in [("dark", NSAppearance.Name.darkAqua), ("light", .aqua)] {
             let appearance = NSAppearance(named: name)!
-            for (label, page) in pages {
-                render(MainView(settings: settings, pinnedPage: page), size: CGSize(width: 1000, height: 660),
-                       appearance: appearance, to: directory.appending(path: "\(label)-\(theme).png"))
+            func save<V: View>(_ view: V, _ label: String, _ size: CGSize) {
+                render(view.environment(feed), size: size, appearance: appearance,
+                       to: directory.appending(path: "\(label)-\(theme).png"))
             }
-            render(PopoverView(openWindow: {}), size: CGSize(width: 300, height: 220),
-                   appearance: appearance, to: directory.appending(path: "popover-\(theme).png"))
+            for (label, page) in pages {
+                save(MainView(settings: settings, pinnedPage: page), label, CGSize(width: 1000, height: 900))
+            }
+            for (label, tab) in [("cpu-module", ModuleTab.module), ("cpu-widgets", .widgets)] {
+                save(CPUPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
+                        .background(Palette.background), label, CGSize(width: 760, height: 520))
+            }
+            save(CPUPopover(settings: settings, openWindow: {}, close: {}), "popover-cpu", CGSize(width: 300, height: 640))
+            save(RAMPopover(settings: settings, openWindow: {}), "popover-ram", CGSize(width: 300, height: 640))
+            save(RAMPage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
+                    .background(Palette.background), "ram-module", CGSize(width: 760, height: 360))
+            save(PopoverView(openWindow: {}), "popover", CGSize(width: 300, height: 200))
+            renderWidgets(feed.store, appearance: appearance, to: directory.appending(path: "menubar-\(theme).png"))
         }
+    }
+
+    /// Ten minutes of plausible-looking load: a slow wave with bursts.
+    private static func syntheticStore() -> MetricStore {
+        let store = MetricStore()
+        let cores = Int(Sysctl.integer("hw.logicalcpu") ?? 8)
+        for i in 0..<MetricStore.historyLength {
+            let t = Float(i) / 18
+            let user = 0.12 + 0.08 * sin(t) + (i % 47 < 5 ? 0.35 : 0)
+            let system = 0.05 + 0.02 * cos(t * 1.7)
+            let perCore = (0..<cores).map { c in min(1, max(0, user + system + 0.25 * sin(t + Float(c)))) }
+            store.ingest(Snapshot(cpu: CPUSample(
+                user: user, system: system, cores: perCore,
+                loadAverage: LoadAverage(one: 3.42, five: 2.87, fifteen: 2.51))))
+        }
+        let gb: UInt64 = 1 << 30
+        for i in 0..<MetricStore.historyLength {
+            let t = Double(i) / 25
+            let app = UInt64((13.5 + 1.5 * sin(t)) * Double(gb))
+            store.ingest(Snapshot(memory: MemorySample(
+                total: 48 * gb, app: app, wired: 4 * gb, compressed: UInt64((4 + 0.5 * cos(t)) * Double(gb)),
+                cached: 13 * gb, swapUsed: 0, swapTotal: gb, pressure: .normal)))
+        }
+        let names = ["Safari", "WindowServer", "Xcode", "Google Chrome Helper (Renderer)", "kernel_task", "Finder", "mds_stores", "Music"]
+        let entries = names.enumerated().map { i, name in
+            ProcessEntry(pid: pid_t(900 + i), name: name, cpu: Float(names.count - i) * 0.07,
+                         memory: UInt64(names.count - i) * 380 * 1_048_576, memoryIsApproximate: i == 1 || i == 4,
+                         milliwatts: i == 1 || i == 4 ? nil : Float(names.count - i) * 95)
+        }
+        store.ingest(Snapshot(processes: ProcessSample(topCPU: entries, topMemory: entries, processCount: 1004)))
+        return store
+    }
+
+    /// The menu bar widget configurations side by side on a menu-bar-coloured strip.
+    private static func renderWidgets(_ store: MetricStore, appearance: NSAppearance, to url: URL) {
+        let configs: [WidgetConfig] = [
+            .default,
+            WidgetConfig(kinds: [.text], showLabel: false),
+            WidgetConfig(kinds: [.chart], showLabel: false),
+            WidgetConfig(kinds: [.ring], showLabel: false),
+            WidgetConfig(kinds: [.text, .chart, .ring], showLabel: true),
+        ]
+        let height = NSStatusBar.system.thickness
+        let strip = NSView(frame: .zero)
+        strip.wantsLayer = true
+        strip.appearance = appearance
+        var x: CGFloat = 8
+        for config in configs {
+            let view = WidgetView(frame: NSRect(x: x, y: 0, width: 200, height: height))
+            view.update(.make(.cpu, store: store), config: config)
+            view.setFrameSize(NSSize(width: view.intrinsicWidth, height: height))
+            strip.addSubview(view)
+            x += view.intrinsicWidth + 14
+        }
+        strip.frame = NSRect(x: 0, y: 0, width: x, height: height)
+        strip.layer?.backgroundColor = (appearance.name == .darkAqua ? NSColor(white: 0.16, alpha: 1) : NSColor(white: 0.93, alpha: 1)).cgColor
+        let window = NSWindow(contentRect: strip.frame, styleMask: [.borderless], backing: .buffered, defer: false)
+        window.appearance = appearance
+        window.contentView = strip
+        strip.layoutSubtreeIfNeeded()
+        guard let rep = strip.bitmapImageRepForCachingDisplay(in: strip.bounds) else { return }
+        strip.cacheDisplay(in: strip.bounds, to: rep)
+        try? rep.representation(using: .png, properties: [:])?.write(to: url)
     }
 
     private static func render<V: View>(_ view: V, size: CGSize, appearance: NSAppearance, to url: URL) {

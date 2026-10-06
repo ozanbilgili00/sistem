@@ -32,6 +32,15 @@ extension ModuleID {
         }
     }
 
+    /// The metric that drives this module's live views; nil until its phase lands.
+    var metric: Metric? {
+        switch self {
+        case .cpu: .cpu
+        case .ram: .memory
+        default: nil
+        }
+    }
+
     /// The PLAN.md phase that brings this module to life.
     var phase: Int {
         switch self {

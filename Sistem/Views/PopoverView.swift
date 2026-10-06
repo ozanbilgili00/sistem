@@ -10,12 +10,11 @@ struct PopoverView: View {
             HStack {
                 Text(verbatim: "Sistem").font(.sistemHeading).foregroundStyle(Palette.ink)
                 Spacer()
-                Pill(Text("Faz \(0)"), tone: .neutral)
             }
             Card {
                 VStack(alignment: .leading, spacing: 8) {
                     SectionLabel("Menü çubuğu")
-                    Text("CPU, RAM ve GPU yüzde, sıcaklık derece olarak burada görünecek. Canlı veriler Faz 2'de geliyor.")
+                    Text("Menü çubuğunda gösterilecek modül seçili değil. Ayarlar'dan CPU, RAM, GPU ya da sıcaklığı açabilirsin.")
                         .font(.sistemCaption)
                         .foregroundStyle(Palette.inkSecondary)
                         .fixedSize(horizontal: false, vertical: true)

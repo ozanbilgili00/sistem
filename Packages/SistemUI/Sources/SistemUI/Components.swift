@@ -54,22 +54,26 @@ public struct PageHeader: View {
 
 /// One settings row: title (+ optional detail) on the left, control on the right.
 public struct SettingRow<Control: View>: View {
-    private let title: LocalizedStringKey
-    private let detail: LocalizedStringKey?
+    private let title: Text
+    private let detail: Text?
     private let control: Control
 
-    public init(_ title: LocalizedStringKey, detail: LocalizedStringKey? = nil, @ViewBuilder control: () -> Control) {
+    public init(_ title: Text, detail: Text? = nil, @ViewBuilder control: () -> Control) {
         self.title = title
         self.detail = detail
         self.control = control()
     }
 
+    public init(_ title: LocalizedStringKey, detail: LocalizedStringKey? = nil, @ViewBuilder control: () -> Control) {
+        self.init(Text(title), detail: detail.map { Text($0) }, control: control)
+    }
+
     public var body: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(title).font(.system(size: 13, weight: .medium)).foregroundStyle(Palette.ink)
+                title.font(.system(size: 13, weight: .medium)).foregroundStyle(Palette.ink)
                 if let detail {
-                    Text(detail).font(.sistemCaption).foregroundStyle(Palette.inkSecondary)
+                    detail.font(.sistemCaption).foregroundStyle(Palette.inkSecondary)
                 }
             }
             Spacer(minLength: 0)

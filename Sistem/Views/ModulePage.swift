@@ -6,9 +6,17 @@ import SystemKit
 /// static hardware facts — read once, no timers.
 struct ModulePage: View {
     let module: ModuleID
-    let settings: SettingsStore
+    @Bindable var settings: SettingsStore
 
     var body: some View {
+        switch module {
+        case .cpu: CPUPage(settings: settings)
+        case .ram: RAMPage(settings: settings)
+        default: placeholder
+        }
+    }
+
+    private var placeholder: some View {
         VStack(alignment: .leading, spacing: 18) {
             PageHeader(Text(module.title), subtitle: Text(module.summary))
 

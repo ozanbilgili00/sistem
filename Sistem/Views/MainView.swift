@@ -5,7 +5,8 @@ struct MainView: View {
     @Bindable var settings: SettingsStore
     /// Fixes the page instead of restoring the last one (snapshots, previews).
     var pinnedPage: Page?
-    @AppStorage("selectedPage") private var pageID = Page.module(.dashboard).rawValue
+    static let pageKey = "selectedPage"
+    @AppStorage(MainView.pageKey) private var pageID = Page.module(.dashboard).rawValue
 
     private var page: Binding<Page> {
         Binding(get: { pinnedPage ?? Page(rawValue: pageID) }, set: { pageID = $0.rawValue })

@@ -1,8 +1,9 @@
-# Sistem Monitörü — Yapı Planı v2
+# Sistem Monitörü — Yapı Planı v3
 
 Stats eşdeğeri, **pil ve bellek dostu** macOS sistem izleyicisi.
 v2: 2026-10-03 · v1'in yerine geçer (`PLAN-v1.md` arşiv).
 v2.1: 2026-10-03 · Faz 1 keşif sonuçlarıyla düzeltildi (§1-b, `Tools/discovery/BULGULAR.md`).
+v3: 2026-10-06 · Kapsam genişledi: **Ekran** (BetterDisplay'den), **Uyanık Tut** (LidRun'dan), **Sunucular** (mXterm'den) modülleri; fazlar 8–14 yeniden düzenlendi (§7, §10). Araştırma: vault `Projeler/Sistem Monitörü/Araştırma/`.
 
 Ortam (doğrulandı): macOS 27.0 (26A428) · Xcode 27.0 · Swift 6.4 · Mac17,8 Apple M5 Pro
 (6 Super + 12 Performance çekirdek, **verimlilik çekirdeği yok**) · 48 GB · 2 fan
@@ -56,7 +57,11 @@ Referans: Ozan'ın ekran görüntüsünde Stats **298.5 MB RAM** ve **%2.9 CPU**
 
 | Konu | Karar |
 |---|---|
-| Kapsam | 10 modül: Gösterge paneli, CPU, GPU, RAM, Disk, Sensörler, Ağ, Batarya, Bluetooth, Saat. Remote yok |
+| Kapsam | 13 modül: Gösterge paneli, CPU, GPU, RAM, Disk, Sensörler, Ağ, Batarya, Bluetooth, Saat + **Ekran, Uyanık Tut, Sunucular** (v3). Stats'in Remote bulut modülü yok; uzak izleme yalnız kullanıcının kendi SSH sunucularına |
+| Kitle | Önce Ozan'ın Mac'i; sonra GitHub'da herkese (yayın öncesi uyumluluk + ilk kurulum, Faz 14) |
+| Sıra | Temel izleme (Faz 4–7) önce, yeni modüller veriye dayandığı için sonra |
+| Ayrıcalık | Root gerektiren her şey (fan, kapak kapalı modu) tek imzalı yardımcıda, Developer hesabından sonra (Faz 13). TCC izni isteyen özellikler (parlaklık tuşları) de orada |
+| Kimlik | SSH yalnız anahtar / ssh-agent; uygulama parola saklamaz |
 | Arayüz | Modül başına NSStatusItem + popover + sol kenar çubuklu pencere |
 | Dağıtım | Sandbox kapalı, GitHub. App Store hedef değil |
 | Render | Menü çubuğu AppKit (CALayer/CoreGraphics), pencere ve popover SwiftUI (Canvas, Swift Charts yok) |
@@ -268,7 +273,7 @@ Kapı: JSON üretildi; ANE, fan yazma ve FPS için "var / yok" kararı verildi; 
 
 Sonuç: `Tools/discovery/BULGULAR.md`. SMC sıcaklıkları eşlendi, fan yazma anahtarları bulundu (`F0md`/`F0Tg`), ANE kullanımı yok (güç var), FPS doğrulanmadı.
 
-### Faz 2 — Örnekleme motoru ve CPU · ~3 gün
+### Faz 2 — Örnekleme motoru ve CPU · ~3 gün · ✅ 2026-10-04
 - `TickClock` (tek zamanlayıcı, tolerans, çarpanlar), `DemandRegistry`, `PowerPolicy`, uyku/kilit/oturum duraklatma
 - `SamplerActor`, `RingBuffer<Float>`, `Snapshot`, MainActor `MetricStore`
 - CPU okuyucu (çekirdek sınıflarını dinamik okur), ortalama yük
@@ -277,12 +282,23 @@ Sonuç: `Tools/discovery/BULGULAR.md`. SMC sıcaklıkları eşlendi, fan yazma a
 
 Kapı: CPU % Activity Monitor ile ±2 puan; boşta < %0.3 CPU, < 2 uyanma/sn; ekran kilitlenince uyanma ≈ 0.
 
-### Faz 3 — RAM ve süreç listesi · ~2 gün
+Sonuç (Mac17,8, 3 ekran, adaptörde): `top` ile ortalama mutlak fark boşta 0.26, yükte 0.22 puan. Boşta 120 sn: **%0.069 CPU, 0.70 uyanma/sn, 15.7 MB, 0.32 mW.** Pencere açık (CPU sayfası, ekran dışı): %0.47 CPU, 42 MB, 4 uyanma/sn. Duraklatma birim testle doğrulandı (süreç içi bildirimler).
+- **Tuzak — menübar yeniden çizimi pahalı:** macOS 26+'da her durum öğesi değişikliği AppKit tarafından ana iş parçacığında, **her ekranın menü çubuğu için ayrı ayrı** CPU'da bitmap'e çiziliyor (`NSStatusItem _updateReplicants` → `cacheDisplay`). Çizim başına ~7 ms (3 ekranda). Örnekleme %0.012 CPU iken çizim %0.34 CPU'ydu. `button.image` yolu daha kötü (3.8 uyanma/sn).
+- Çözüm: menübar değeri **2 puan histerezisle** güncellenir (1 puanlık kalıcı fark 5 tick sonra gösterilir); halka %2 adımlı; metin öznitelikleri değişimde bir kez kurulur. Boşta değişim oranı %72 → %14.
+- Mini grafik widget'ı doğası gereği her tick çizer; varsayılan widget yalnız değer + etiket.
+- Mantıksal CPU sırası perflevel'in **tersi**: M5 Pro'da cpu0–11 Performance (`cluster-type` M), cpu12–17 Super (P). `HardwareInfo.CoreCluster.logicalCPUs`.
+
+### Faz 3 — RAM ve süreç listesi · ~2 gün · ✅ 2026-10-06 (kapı notlarıyla)
 - VM okuyucu (§1-9 formülü), takas, bellek baskısı olay kaynağı
 - `ProcessLister`: libproc + `ps` hibriti, CPU zamanı deltası, footprint, enerji sütunu; yalnız görünürken
 - RAM detayı ve popover
 
 Kapı: Uygulama/Bağlı/Sıkıştırılmış Activity Monitor ile ±100 MB; süreç %CPU'su Activity Monitor ile tutarlı; popover açıkken < %1.5.
+
+Sonuç: Bağlı/Sıkıştırılmış `vm_stat`/`top` ile birebir (test `memoryMatchesVMStat`); Uygulama Activity Monitor ile gözle doğrulanacak. Süreç %CPU `top` ile 0.1–0.3 puan fark. Pencere RAM sayfası + süreç listesi (ekran dışı): %0.99 CPU, 41.6 MB, 4.6 uyanma/sn. Süreç okuma 5–7 ms; `ps` turu ~125 ms duvar saati (iki tickte bir, yalnız liste görünürken).
+- **Boşta maliyet kullanıcı etkinliğine bağlı:** menübar çizimi ≈ 6 ms + 4 uyanma (3 ekran). Sakin makinede %0.05; Ozan çalışırken CPU+RAM ile %0.25–0.29 CPU, 2.1–2.2 uyanma/sn (uyanma bütçesi sınırda). Önlem: `DisplayHysteresis` en fazla 2 tickte bir günceller (5 puan sıçrama hariç); CPU değeri son 2 örneğin ortalaması. Tanılama'da "Menü çubuğu çizimi /dk".
+- `kernel_task` (pid 0) listede yok: ne libproc ne `ps` görüyor.
+- Ad kuralı: yalnız `X.app/Contents/MacOS/x` paket adını alır; paket içindeki yardımcılar kendi adıyla (SWBBuildService).
 
 ### Faz 4 — GPU ve IOReport köprüsü · ~2.5 gün
 - `IOReportBridge`: `dlopen` + `dlsym`, abonelik bir kez, örnek deltası, sembol yoksa zarif düşüş
@@ -313,32 +329,75 @@ Kapı: geçerli sensörlerin tamamı listeleniyor, −9200 °C gibi çöp değer
 Kapı: pil yüzdesi/süresi sistemle birebir; Bluetooth popover kapalıyken `system_profiler` çağrısı 0.
 
 ### Faz 8 — Bildirimler, gösterge paneli, genel ayarlar · ~2 gün
-- Eşik motoru: histerezis + soğuma süresi; eşik metrikleri DemandRegistry'ye düşük frekanslı tüketici olarak kaydolur
-- Gösterge paneli (cihaz görseli, donanım satırları)
+- Eşik motoru: histerezis + soğuma süresi; eşik metrikleri DemandRegistry'ye düşük frekanslı tüketici olarak kaydolur. Sonraki fazlar (Uyanık Tut, Sunucular) bu motoru kullanır
+- Gösterge paneli (cihaz görseli, donanım satırları, 13 modülün özeti)
 - Genel ayarlar: başlangıçta çalıştır (`SMAppService.mainApp`), Dock'ta göster, sıcaklık birimi, **güç profili** (Otomatik / Pil tasarrufu / Hassas), ayar dışa/içe aktar/sıfırla
 
 Kapı: eşik aşımında tek bildirim; sınır etrafında salınırken tekrar yok.
 
-### Faz 9 — Widget seti ve kombine modüller · ~2 gün
+### Faz 9 — Uyanık Tut modülü (LidRun'dan) · ~3 gün
+Kaynak: `Araştırma/lidrun.md`. Ayrıcalıksız, ad-hoc imzayla.
+- **Neden uyanık paneli:** `IOPMCopyAssertionsByProcess` + `pmset -g assertions` eşdeğeri; hangi süreç hangi engeli tutuyor (ör. Claude Code'un `caffeinate`'leri). Olay tabanlı değil → yalnız görünürken 5 sn'de bir
+- **Uyanık tut:** `IOPMAssertionCreateWithName` (`PreventUserIdleSystemSleep`, istenirse `PreventUserIdleDisplaySleep`); süre 30 dk / 1 sa / 3 sa / 8 sa / süresiz; "ekran kapalı, sistem açık" modu
+- **Koruma (her zaman açık):** pil ≤ %15 (pildeyken) veya `thermalState ≥ .serious` ya da SMC en sıcak ≥ 90 °C 60 sn → engeli bırak + bildirim; 75 °C altına inince tekrar izin (histerezis)
+- **Akıllı tetikleyiciler — hepsi hazır gelir, hepsi varsayılan KAPALI, kullanıcı açar:** AI araçları (claude, codex, cursor-agent, ollama), derleme/Docker (xcodebuild, swift-build, docker), ağ trafiği eşiği (büyük indirme), şarjdayken. Süreç tetikleyicisi `ps`/rusage taraması DEĞİL: `NSWorkspace` uygulama başlatma bildirimleri + 30 sn'de bir `proc_listallpids` + `proc_name` (≈1 ms, fork yok). Bitince bekleme süresi (ör. 2 dk) sonra bırak
+- **Menü çubuğu:** ayrı ikon (fincan), tıkla aç/kapa, sağ tık süre menüsü; aktifken dolu ikon. Popover: durum, kalan süre, neden uyanık listesi, tetikleyiciler
+- Kapak kapalı modu bu fazda YOK → Faz 13
+- Uyku/kilit duraklatması (Faz 2) Uyanık Tut aktifken de geçerli; koruma döngüsü ekran kapalıyken 30–60 sn'lik düşük frekansla çalışır (sıcaklık + pil)
+
+Kapı: uygulama çökerse engel kalmıyor (IOPM assertion süreçle ölür — doğrula); koruma eşikleri birim testli; tetikleyici açıkken boşta < %0.3 CPU.
+**Kontrol kapısı:** J-06 N-09 K-08 + Özellik Bitti Tanımı
+
+### Faz 10 — Ekran modülü (BetterDisplay'den) · ~4 gün
+Kaynak: `Araştırma/betterdisplay.md`. Referans yalnız MIT projeler (m1ddc, MonitorControl); BetterDisplay kapalı kaynak, kodu alınmaz.
+- **E1 izleme (olay tabanlı, tick yok):** ekran listesi, çözünürlük / ölçek / yenileme hızı, HDR/EDR durumu, iç ekran parlaklığı (`DisplayServices`, özel), bağlantı/kopma günlüğü (`CGDisplayRegisterReconfigurationCallback`)
+- **E2 DDC/CI:** harici monitör parlaklık, kontrast, ses, giriş seçimi; Apple Silicon `IOAVService` (özel, root gerekmez — bu Mac'te Samsung LS27FG53x VCP 0x10 okuması doğrulandı). DDC yazmaları birleştirilir (kaydırıcı sürüklerken ≤ 10/sn), okuma yalnız popover açıkken
+- **E3:** yazılımsal karartma + gece tonu (gamma tablosu, DDC'siz ekranlar için), çözünürlük/Hz değiştirme (**15 sn geri alma onayı**), Kestirmeler / URL şeması otomasyonu
+- Menü çubuğu widget'ı isteğe bağlı (varsayılan kapalı); popover'da ekran başına kaydırıcılar
+- Parlaklık tuşlarıyla harici monitör → Faz 13 (Erişilebilirlik izni ad-hoc'ta her derlemede sıfırlanır)
+- Kapsam dışı: sanal ekran, esnek HiDPI, XDR ekstra parlaklık, PIP/akış, 3D LUT, EDID override
+
+Kapı: DDC desteklemeyen ekranda temiz geri düşme; mod değişikliği onaysız 15 sn'de geri dönüyor; Ekran modülü açıkken boşta ek maliyet ≈ 0 (olay tabanlı).
+**Kontrol kapısı:** N-09 J-06 N-03 + Özellik Bitti Tanımı
+
+### Faz 11 — Sunucular modülü + ağ araçları (mXterm'den) · ~4 gün
+Kaynak: `Araştırma/mxterm.md`.
+- **Uzak izleme:** Linux (`/proc`), macOS (`vm_stat`, `top -l`, `sysctl`), Docker (`docker stats --no-stream`, yerel veya uzak). Sistem `/usr/bin/ssh` + ControlMaster (tek kalıcı bağlantı), tek betik çağrısı → JSON benzeri çıktı → sayaç farkı. Ayrı `RemoteActor` (ağ I/O `SamplerActor`'u bloklamaz). Yalnız popover/sayfa görünürken 3–5 sn; arka planda yalnız "erişilebilir mi" kontrolü 60 sn (isteğe bağlı) + Faz 8 bildirimi
+- **SSH tünel yöneticisi:** `-L/-R/-D` tünelleri menüden aç/kapa, düşerse geri çekilmeli yeniden bağlanma
+- **Hızlı bağlan:** `~/.ssh/config` hostları; tıkla → Terminal.app'te `ssh` (yerleşik terminal yok)
+- **Ağ tanılama (Ağ modülü içinde):** ping, DNS sorgusu, port kontrolü, traceroute — yalnız kullanıcı başlatınca
+- Kimlik: yalnız anahtar / ssh-agent; host adları ve argümanlar doğrulanır, kabuk yok (argüman dizisi)
+- Test: Ozan'ın sunucusu yok → yerel hedef (localhost sshd ya da Docker'da Linux konteyner)
+
+Kapı: bağlantı koptuğunda UI donmuyor, zaman aşımı ≤ 10 sn; sunucu ekli ama popover kapalıyken ek maliyet ≈ 0 (erişilebilirlik kontrolü kapalıyken).
+**Kontrol kapısı:** K-01 F-03 L-02 G-03 (yerel ağ izni) + Özellik Bitti Tanımı
+
+### Faz 12 — Widget seti ve kombine modüller · ~2 gün
 - Bar grafik, batarya, ağ okları, hız grafiği widget'ları; hizalama, sabit genişlik, eşit aralıklı font
-- Kombine modüller (tek NSStatusItem'da birden fazla modül — daha az status item = daha az çizim)
+- Kombine modüller (tek NSStatusItem'da birden fazla modül — daha az status item = daha az çizim; Faz 3 bulgusu: her çizim ≈ 6 ms + 4 uyanma / 3 ekran)
 - Öğe konumunun korunması
 
 Kapı: yeniden başlatmada sıra korunuyor; 6 widget açıkken boşta < %0.5.
+**Kontrol kapısı:** N-05 N-06 + Özellik Bitti Tanımı
 
-### Faz 10 — Fan kontrolü (opsiyonel) · ~3 gün
-Faz 1'de yazma anahtarları bulundu (`F0md`, `F0Tg`). Root yardımcı imzalı uygulama ister → Developer hesabı geldikten sonra.
-- `SMAppService.daemon` + XPC; donanım min/max kelepçeleme; çıkışta ve çökmede otomatik moda dönüş (watchdog)
+### Faz 13 — Ayrıcalıklı yardımcı (Developer hesabından sonra) · ~4 gün
+Tek imzalı `SMAppService.daemon` + XPC, en az yetki; üç özellik paylaşır:
+- **Fan kontrolü:** `F0md` + `F0Tg`; donanım min/max kelepçeleme; çıkış/çökmede otomatiğe dönüş (watchdog)
+- **Kapak kapalı modu:** `pmset disablesleep`; çökme/çıkışta geri yükleme (watchdog), Faz 9 korumaları zorunlu
+- **Parlaklık tuşları → harici monitör** (Erişilebilirlik izni; Developer ID ile kalıcı)
 
-Kapı: zorla sonlandırmada fan 30 sn içinde otomatiğe dönüyor.
+Kapı: zorla sonlandırmada fan 30 sn içinde otomatiğe, `SleepDisabled` 30 sn içinde 0'a dönüyor.
+**Kontrol kapısı:** F-15 N-09 O-07 + Özellik Bitti Tanımı
 
-### Faz 11 — Cila ve dağıtım · ~2 gün
+### Faz 14 — Cila ve dağıtım · ~3 gün
 - Instruments (Energy Log, Allocations, Leaks); 24 saat boşta koşu
 - Uyku/uyanma, harici ekran, Space değişimi, hızlı kullanıcı değişimi senaryoları
-- İkon, hakkında ekranı, isim; imza + DMG (+ notarization hesap varsa)
+- Herkese açık yayın hazırlığı: farklı Mac/monitör uyumluluğu (DDC uyarıları), ilk kurulum akışı, izin açıklamaları
+- İkon, hakkında ekranı, isim; imza + DMG + notarization
 - GitHub deposu, README (tr+en)
 
 Kapı: §3 bütçesinin tamamı tutuyor; 24 saatte bellek büyümesi < 5 MB.
+**Kontrol kapısı:** A-04 B-05 C-01 C-03 C-06 D-07 F-11 G-07 J-07 L-03 O-01 O-07 U-11 N-08
 
 ---
 
@@ -353,12 +412,19 @@ Kapı: §3 bütçesinin tamamı tutuyor; 24 saatte bellek büyümesi < 5 MB.
 | FPS kaynağı yok | Keşifte yoksa özellik çıkarılır |
 | Çentikli ekranda menübar yeri | Varsayılan 3 widget; kombine modüller |
 | Yeni özellik bütçeyi deler | Her faz kapısında `perf-check.sh`; aşan özellik varsayılan kapalı |
+| Özel ekran API'leri (`DisplayServices`, `IOAVService`) macOS güncellemesinde bozulur | `dlopen`/çalışma anı kontrolü, desteklenmezse özellik gizlenir |
+| DDC monitörü kilitleyebilir / desteklemeyebilir | Yazma birleştirme, okuma doğrulaması, monitör başına kapatma; yayında uyumluluk uyarısı |
+| Uyanık Tut Mac'i çantada ısıtır | Koruma her zaman açık (pil, sıcaklık); kapak kapalı modu yalnız Faz 13 watchdog'uyla |
+| SSH/ağ G/Ç'si örnekleyiciyi kilitler | Ayrı `RemoteActor`, zaman aşımı, ControlMaster |
+| Ad-hoc imzada TCC izinleri (Erişilebilirlik, yerel ağ) her derlemede sıfırlanır | İzin isteyen özellikler Faz 13'e; yerel ağ izni Faz 11'de açıklamalı |
 
 ---
 
 ## 9. Açık sorular
 
-1. **Ücretli Apple Developer hesabı var mı?** Yoksa: ad-hoc imza ile kişisel kullanım sorunsuz, ama notarization ve fan daemon'u olmaz.
+1. ~~Developer hesabı~~ → yok, gelecek; ad-hoc imza. Hesap gelince Faz 13.
 2. **İsim** — geçici bundle id `com.ozan.sistem`, sonra değişebilir.
-3. **Varsayılan menübar widget'ları** — öneri: CPU, RAM, en sıcak CPU sıcaklığı.
-4. **Varsayılan güncelleme aralığı** — öneri: 2 sn (Stats'te 1 sn); pilde otomatik 4 sn.
+3. ~~Varsayılan menübar widget'ları~~ → CPU %, RAM %, GPU %, sıcaklık °C (+ Uyanık Tut ikonu Faz 9'da).
+4. ~~Güncelleme aralığı~~ → 2 sn, pilde ×2.
+5. Ekran modülü menü çubuğu widget'ı varsayılan kapalı — Faz 10'da Ozan'a göster, karar ver.
+6. Sunucular testi için yerel hedef: localhost sshd mi Docker konteyner mi — Faz 11 başında.

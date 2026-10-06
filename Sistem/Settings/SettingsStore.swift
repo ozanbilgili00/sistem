@@ -25,6 +25,11 @@ final class SettingsStore {
         static let slowDownOnBattery = "slowDownOnBattery"
         static let temperatureUnit = "temperatureUnit"
         static let menuBarModules = "menuBarModules"
+        static let widgets = "menuBarWidgets"
+        static let cpuShowCores = "cpu.showCores"
+        static let cpuShowLoadAverage = "cpu.showLoadAverage"
+        static let cpuShowProcesses = "cpu.showProcesses"
+        static let ramShowProcesses = "ram.showProcesses"
     }
 
     /// Choices offered for the update interval, in seconds.
@@ -51,6 +56,43 @@ final class SettingsStore {
         didSet { defaults.set(menuBarModules.map(\.rawValue), forKey: Key.menuBarModules) }
     }
 
+    /// Which widgets each module draws in the menu bar. Modules not in the map use
+    /// ``WidgetConfig/default``.
+    var widgets: [ModuleID: WidgetConfig] {
+        didSet {
+            let encoded = Dictionary(uniqueKeysWithValues: widgets.map { ($0.key.rawValue, $0.value) })
+            defaults.set(try? JSONEncoder().encode(encoded), forKey: Key.widgets)
+        }
+    }
+    var cpuShowCores: Bool {
+        didSet { defaults.set(cpuShowCores, forKey: Key.cpuShowCores) }
+    }
+    var cpuShowLoadAverage: Bool {
+        didSet { defaults.set(cpuShowLoadAverage, forKey: Key.cpuShowLoadAverage) }
+    }
+
+    /// Top-process lists in popovers. Each costs a `ps` call every other tick
+    /// while the popover is open.
+    var cpuShowProcesses: Bool {
+        didSet { defaults.set(cpuShowProcesses, forKey: Key.cpuShowProcesses) }
+    }
+    var ramShowProcesses: Bool {
+        didSet { defaults.set(ramShowProcesses, forKey: Key.ramShowProcesses) }
+    }
+
+    func widget(for module: ModuleID) -> WidgetConfig { widgets[module] ?? .default }
+
+    func setWidget(_ config: WidgetConfig, for module: ModuleID) { widgets[module] = config }
+
+    func isInMenuBar(_ module: ModuleID) -> Bool { menuBarModules.contains(module) }
+
+    /// Adds or removes a module, keeping the default left-to-right order.
+    func setInMenuBar(_ module: ModuleID, _ shown: Bool) {
+        var set = Set(menuBarModules)
+        if shown { set.insert(module) } else { set.remove(module) }
+        menuBarModules = ModuleID.allCases.filter(set.contains)
+    }
+
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         appearance = defaults.string(forKey: Key.appearance).flatMap(Appearance.init) ?? .system
@@ -60,6 +102,15 @@ final class SettingsStore {
         temperatureUnit = defaults.string(forKey: Key.temperatureUnit).flatMap(TemperatureUnit.init) ?? .celsius
         menuBarModules = (defaults.stringArray(forKey: Key.menuBarModules)?.compactMap(ModuleID.init))
             ?? ModuleID.defaultMenuBar
+        let stored = defaults.data(forKey: Key.widgets)
+            .flatMap { try? JSONDecoder().decode([String: WidgetConfig].self, from: $0) } ?? [:]
+        widgets = Dictionary(uniqueKeysWithValues: stored.compactMap { key, value in
+            ModuleID(rawValue: key).map { ($0, value) }
+        })
+        cpuShowCores = defaults.object(forKey: Key.cpuShowCores) as? Bool ?? true
+        cpuShowLoadAverage = defaults.object(forKey: Key.cpuShowLoadAverage) as? Bool ?? true
+        cpuShowProcesses = defaults.object(forKey: Key.cpuShowProcesses) as? Bool ?? true
+        ramShowProcesses = defaults.object(forKey: Key.ramShowProcesses) as? Bool ?? true
     }
 
     func applyAppearance() {

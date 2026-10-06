@@ -58,18 +58,27 @@ struct SettingsView: View {
             }
 
             SectionLabel("Menü çubuğu")
-            Card {
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack(spacing: 6) {
-                        ForEach(settings.menuBarModules) { module in
-                            Pill(Text(module.menuBarTitle), tone: .accent)
+            Card(padding: 0) {
+                VStack(spacing: 0) {
+                    ForEach(Array(ModuleID.defaultMenuBar.enumerated()), id: \.element) { index, module in
+                        if index > 0 { RowDivider() }
+                        SettingRow(Text(module.menuBarTitle), detail: module.menuBarUnit.map { Text($0) }) {
+                            HStack(spacing: 10) {
+                                if module.metric == nil {
+                                    Pill(Text("Faz \(module.phase)"), tone: .neutral)
+                                }
+                                Toggle(String(localized: module.menuBarTitle), isOn: Binding(
+                                    get: { settings.isInMenuBar(module) },
+                                    set: { settings.setInMenuBar(module, $0) }
+                                )).labelsHidden().toggleStyle(.switch)
+                            }
                         }
                     }
-                    Text("CPU, RAM ve GPU yüzde, sıcaklık derece olarak gösterilir. Sıralama ve seçim Faz 2'de düzenlenebilir olacak.")
-                        .font(.sistemCaption)
-                        .foregroundStyle(Palette.inkSecondary)
                 }
             }
+            Text("Henüz gelmemiş modüller seçili kalır ve kendi fazlarında görünür. Widget türleri her modülün kendi sayfasındaki Widget'lar sekmesinden seçilir.")
+                .font(.sistemCaption)
+                .foregroundStyle(Palette.inkTertiary)
         }
     }
 }
