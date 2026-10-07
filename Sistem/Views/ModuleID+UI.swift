@@ -36,6 +36,7 @@ extension ModuleID {
     var metric: Metric? {
         switch self {
         case .cpu: .cpu
+        case .gpu: .gpu
         case .ram: .memory
         default: nil
         }

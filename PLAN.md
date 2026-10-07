@@ -300,12 +300,17 @@ Sonuç: Bağlı/Sıkıştırılmış `vm_stat`/`top` ile birebir (test `memoryMa
 - `kernel_task` (pid 0) listede yok: ne libproc ne `ps` görüyor.
 - Ad kuralı: yalnız `X.app/Contents/MacOS/x` paket adını alır; paket içindeki yardımcılar kendi adıyla (SWBBuildService).
 
-### Faz 4 — GPU ve IOReport köprüsü · ~2.5 gün
+### Faz 4 — GPU ve IOReport köprüsü · ~2.5 gün · ✅ 2026-10-08 (kapı notlarıyla)
 - `IOReportBridge`: `dlopen` + `dlsym`, abonelik bir kez, örnek deltası, sembol yoksa zarif düşüş
 - GPU kullanım/render/tiler/bellek, ANE (keşif sonucuna göre), GPU/ANE gücü
 - CPU frekansı geriye dönük tamamlanır
 
 Kapı: Metal yükünde değerler hareket ediyor; IOReport yokken çökme yok; 1 saat koşuda footprint büyümesi < 1 MB.
+
+Sonuç: `GPUReader` (`IOAccelerator/PerformanceStatistics`, 11 µs), `PowerReader` (SMC CPU/sistem + IOReport GPU/ANE enerjisi), `CPUFrequencyReader` (IOReport DVFS × `pmgr voltage-states*-sram` merdiveni); güç ve frekans tek IOReport aboneliğini paylaşır (~4.3 ms/örnek, yalnız görünürken). Metal yükünde GPU %5→%85–91, 0.04→29 W (`sistem-probe --gpu-check`). IOReport/SMC yokken düşüş testleri yeşil; 42 test. Pencere GPU sayfası %0.87 CPU, 42 MB, 5.1 uyanma/sn; CPU sayfası (frekans kartıyla) %1.25, 52 MB. Ayrıntı: `Tools/discovery/BULGULAR.md` Faz 4.
+- **FPS eklenmedi:** DCP `swap/scanout` sayaçları panel yenilemesini sayıyor, uygulama kare hızı değil.
+- **ANE gücü doğrulanmadı:** Vision yükü CPU'da koştu; `ANE0` 0 W. Core ML ile ANE'ye giden bir yükle denenecek.
+- **GPU menübar öğesi varsayılan kapalı:** boşta +0.06 puan CPU, +0.5 uyanma/sn (art arda A/B ölçümü); üç öğeyle uyanma bütçesi sınırda. GPU öğesi kendi histerezisiyle (eşik 3, sıçrama 15 puan, en az 3 tik, 3 örnek ortalama): boşta 2 dk tekrarında 21 → 12 çizim/60 tik.
 
 ### Faz 5 — Disk ve Ağ · ~3 gün
 - Disk: birimler, kapasite, okuma/yazma hızı, tak/çıkar bildirimi, SMART denemesi

@@ -30,6 +30,7 @@ final class SettingsStore {
         static let cpuShowLoadAverage = "cpu.showLoadAverage"
         static let cpuShowProcesses = "cpu.showProcesses"
         static let ramShowProcesses = "ram.showProcesses"
+        static let gpuShowPower = "gpu.showPower"
     }
 
     /// Choices offered for the update interval, in seconds.
@@ -80,6 +81,12 @@ final class SettingsStore {
         didSet { defaults.set(ramShowProcesses, forKey: Key.ramShowProcesses) }
     }
 
+    /// GPU and Neural Engine watts in the GPU popover. Reading them means sampling
+    /// IOReport (~4 ms of CPU a tick) while the popover is open, so it can be turned off.
+    var gpuShowPower: Bool {
+        didSet { defaults.set(gpuShowPower, forKey: Key.gpuShowPower) }
+    }
+
     func widget(for module: ModuleID) -> WidgetConfig { widgets[module] ?? .default }
 
     func setWidget(_ config: WidgetConfig, for module: ModuleID) { widgets[module] = config }
@@ -111,6 +118,7 @@ final class SettingsStore {
         cpuShowLoadAverage = defaults.object(forKey: Key.cpuShowLoadAverage) as? Bool ?? true
         cpuShowProcesses = defaults.object(forKey: Key.cpuShowProcesses) as? Bool ?? true
         ramShowProcesses = defaults.object(forKey: Key.ramShowProcesses) as? Bool ?? true
+        gpuShowPower = defaults.object(forKey: Key.gpuShowPower) as? Bool ?? true
     }
 
     func applyAppearance() {

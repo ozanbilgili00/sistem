@@ -18,7 +18,7 @@ enum SnapshotRenderer {
         feed.isActive = true
 
         let pages: [(String, Page)] = [
-            ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)), ("ram", .module(.ram)),
+            ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)), ("gpu", .module(.gpu)), ("ram", .module(.ram)),
             ("settings", .settings), ("diagnostics", .diagnostics),
         ]
         for (theme, name) in [("dark", NSAppearance.Name.darkAqua), ("light", .aqua)] {
@@ -36,10 +36,16 @@ enum SnapshotRenderer {
             }
             save(CPUPopover(settings: settings, openWindow: {}, close: {}), "popover-cpu", CGSize(width: 300, height: 640))
             save(RAMPopover(settings: settings, openWindow: {}), "popover-ram", CGSize(width: 300, height: 640))
+            save(GPUPopover(settings: settings, openWindow: {}), "popover-gpu", CGSize(width: 300, height: 640))
+            for (label, tab) in [("gpu-module", ModuleTab.module), ("gpu-widgets", .widgets)] {
+                save(GPUPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
+                        .background(Palette.background), label, CGSize(width: 760, height: 520))
+            }
             save(RAMPage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
                     .background(Palette.background), "ram-module", CGSize(width: 760, height: 360))
             save(PopoverView(openWindow: {}), "popover", CGSize(width: 300, height: 200))
-            renderWidgets(feed.store, appearance: appearance, to: directory.appending(path: "menubar-\(theme).png"))
+            renderWidgets(feed.store, module: .cpu, appearance: appearance, to: directory.appending(path: "menubar-\(theme).png"))
+            renderWidgets(feed.store, module: .gpu, appearance: appearance, to: directory.appending(path: "menubar-gpu-\(theme).png"))
         }
     }
 
@@ -64,6 +70,20 @@ enum SnapshotRenderer {
                 total: 48 * gb, app: app, wired: 4 * gb, compressed: UInt64((4 + 0.5 * cos(t)) * Double(gb)),
                 cached: 13 * gb, swapUsed: 0, swapTotal: gb, pressure: .normal)))
         }
+        let mb: UInt64 = 1 << 20
+        for i in 0..<MetricStore.historyLength {
+            let t = Float(i) / 20
+            let device = min(1, max(0, 0.18 + 0.12 * sin(t) + (i % 61 < 9 ? 0.55 : 0)))
+            store.ingest(Snapshot(gpu: GPUSample(
+                device: device, renderer: device * 0.92, tiler: device * 0.35,
+                memoryInUse: 1_240 * mb, memoryAllocated: 3_980 * mb)))
+            store.ingest(Snapshot(power: PowerSample(
+                cpu: 5.4 + 3 * sin(t), gpu: 0.4 + device * 28, ane: 0, system: 17.2 + device * 30)))
+        }
+        store.ingest(Snapshot(cpuFrequency: CPUFrequencySample(clusters: [
+            .init(name: "Super", coreCount: 6, activeFraction: 0.31, performanceLevel: 0.78, averageMHz: 3_650, maxMHz: 4_608),
+            .init(name: "Performance", coreCount: 12, activeFraction: 0.12, performanceLevel: 0.34, averageMHz: 2_010, maxMHz: 4_380),
+        ])))
         let names = ["Safari", "WindowServer", "Xcode", "Google Chrome Helper (Renderer)", "kernel_task", "Finder", "mds_stores", "Music"]
         let entries = names.enumerated().map { i, name in
             ProcessEntry(pid: pid_t(900 + i), name: name, cpu: Float(names.count - i) * 0.07,
@@ -75,7 +95,7 @@ enum SnapshotRenderer {
     }
 
     /// The menu bar widget configurations side by side on a menu-bar-coloured strip.
-    private static func renderWidgets(_ store: MetricStore, appearance: NSAppearance, to url: URL) {
+    private static func renderWidgets(_ store: MetricStore, module: ModuleID, appearance: NSAppearance, to url: URL) {
         let configs: [WidgetConfig] = [
             .default,
             WidgetConfig(kinds: [.text], showLabel: false),
@@ -90,7 +110,7 @@ enum SnapshotRenderer {
         var x: CGFloat = 8
         for config in configs {
             let view = WidgetView(frame: NSRect(x: x, y: 0, width: 200, height: height))
-            view.update(.make(.cpu, store: store), config: config)
+            view.update(.make(module, store: store), config: config)
             view.setFrameSize(NSSize(width: view.intrinsicWidth, height: height))
             strip.addSubview(view)
             x += view.intrinsicWidth + 14

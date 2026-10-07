@@ -36,6 +36,18 @@ public actor SamplerActor {
     private var cpu = CPULoadReader()
     private let memory = MemoryReader()
     private var processes = ProcessLister()
+    // Opened on first demand and then kept: the IOKit service, SMC connection and
+    // IOReport subscriptions are made once (PLAN.md §3-B). nil = unavailable here.
+    private lazy var gpu = GPUReader()
+    // The two IOReport readers share one subscription, and with it one sample per
+    // tick: the CPU and energy groups cost ~4 ms of CPU to sample, however few
+    // channels are wanted.
+    private lazy var performance = IOReport.library?.performanceSubscription()
+    private lazy var power: PowerReader? = {
+        let reader = PowerReader(subscription: performance)
+        return reader.isAvailable ? reader : nil
+    }()
+    private lazy var cpuFrequency = CPUFrequencyReader(subscription: performance)
 
     /// `deliver` is called on the sampler queue after every tick that read anything.
     public init(deliver: @escaping @Sendable (Snapshot) -> Void) {
@@ -88,6 +100,14 @@ public actor SamplerActor {
         case .processes:
             processes.reset()
             _ = processes.sample()
+        case .gpu:
+            break  // stateless
+        case .power:
+            power?.reset()
+            _ = power?.sample()
+        case .cpuFrequency:
+            cpuFrequency?.reset()
+            _ = cpuFrequency?.sample()
         }
     }
 
@@ -103,6 +123,12 @@ public actor SamplerActor {
                 snapshot.memory = memory.sample()
             case .processes:
                 snapshot.processes = processes.sample()
+            case .gpu:
+                snapshot.gpu = gpu?.sample()
+            case .power:
+                snapshot.power = power?.sample()
+            case .cpuFrequency:
+                snapshot.cpuFrequency = cpuFrequency?.sample()
             }
             read = true
         }

@@ -163,3 +163,29 @@ public struct LegendRow: View {
         }
     }
 }
+
+/// A horizontal gauge: `fraction` (0...1) of the width filled on a track. Flat, no
+/// animation; the number it repeats is shown beside it as text.
+public struct MeterBar: View {
+    private let fraction: Double
+    private let color: Color
+
+    public init(_ fraction: Double, color: Color = Palette.accent) {
+        self.fraction = fraction
+        self.color = color
+    }
+
+    public var body: some View {
+        Canvas { context, size in
+            let track = Path(roundedRect: CGRect(origin: .zero, size: size), cornerRadius: size.height / 2)
+            context.fill(track, with: .color(UsageColors.track))
+            let width = max(0, min(1, fraction)) * size.width
+            guard width > 0.5 else { return }
+            let fill = Path(roundedRect: CGRect(x: 0, y: 0, width: max(width, size.height), height: size.height),
+                            cornerRadius: size.height / 2)
+            context.fill(fill, with: .color(color))
+        }
+        .frame(height: 6)
+        .accessibilityHidden(true)
+    }
+}

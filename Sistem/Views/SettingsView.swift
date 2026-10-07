@@ -60,7 +60,7 @@ struct SettingsView: View {
             SectionLabel("Menü çubuğu")
             Card(padding: 0) {
                 VStack(spacing: 0) {
-                    ForEach(Array(ModuleID.defaultMenuBar.enumerated()), id: \.element) { index, module in
+                    ForEach(Array(ModuleID.menuBarCandidates.enumerated()), id: \.element) { index, module in
                         if index > 0 { RowDivider() }
                         SettingRow(Text(module.menuBarTitle), detail: module.menuBarUnit.map { Text($0) }) {
                             HStack(spacing: 10) {

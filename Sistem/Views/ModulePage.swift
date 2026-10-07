@@ -11,6 +11,7 @@ struct ModulePage: View {
     var body: some View {
         switch module {
         case .cpu: CPUPage(settings: settings)
+        case .gpu: GPUPage(settings: settings)
         case .ram: RAMPage(settings: settings)
         default: placeholder
         }

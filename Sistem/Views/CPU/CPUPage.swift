@@ -57,6 +57,15 @@ private struct CPUOverview: View {
             .fixedSize(horizontal: false, vertical: true)
 
             Card {
+                VStack(alignment: .leading, spacing: 14) {
+                    SectionLabel("Frekans ve güç")
+                    CPUFrequencyRows(frequency: feed.store.cpuFrequency, clusters: hardware.clusters)
+                    RowDivider().padding(.leading, -16)
+                    PowerRows(power: feed.store.power, rows: [.cpu, .system])
+                }
+            }
+
+            Card {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
                         SectionLabel("Geçmiş")
@@ -82,6 +91,8 @@ private struct CPUOverview: View {
             }
         }
         .liveMetric(.cpu)
+        .liveMetric(.cpuFrequency)
+        .liveMetric(.power)
     }
 }
 

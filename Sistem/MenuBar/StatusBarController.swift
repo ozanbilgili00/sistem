@@ -93,6 +93,7 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
         }
         let content: AnyView = switch module {
         case .cpu: AnyView(CPUPopover(settings: settings, openWindow: { open(.module(.cpu)) }, close: close))
+        case .gpu: AnyView(GPUPopover(settings: settings, openWindow: { open(.module(.gpu)) }))
         case .ram: AnyView(RAMPopover(settings: settings, openWindow: { open(.module(.ram)) }))
         default: AnyView(PopoverView(openWindow: { open(nil) }))
         }
@@ -121,7 +122,7 @@ private final class ModuleItem {
     private let view = WidgetView()
     private let engine: SamplingEngine
     private var token: ObservationToken?
-    private var shown = DisplayHysteresis()
+    private var shown: DisplayHysteresis
 
     var config: WidgetConfig {
         didSet { if config != oldValue { refresh() } }
@@ -131,6 +132,7 @@ private final class ModuleItem {
         self.module = module
         self.config = config
         self.engine = engine
+        shown = DisplayHysteresis.for(module)
         item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         item.autosaveName = "Sistem.\(module.rawValue)"
         if let button = item.button {

@@ -1960,6 +1960,198 @@
           }
         }
       }
+    },
+    "Tiler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiler"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiler"
+          }
+        }
+      }
+    },
+    "Render": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Render"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Render"
+          }
+        }
+      }
+    },
+    "Ayrılan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allocated"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayrılan"
+          }
+        }
+      }
+    },
+    "Sistem belleğindeki payı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share of system memory"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem belleğindeki payı"
+          }
+        }
+      }
+    },
+    "Sistem toplamı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System total"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem toplamı"
+          }
+        }
+      }
+    },
+    "Neural Engine": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neural Engine"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neural Engine"
+          }
+        }
+      }
+    },
+    "Neural Engine için kullanım yüzdesi sistemde yayımlanmıyor; yalnızca harcadığı güç okunabiliyor.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The system publishes no utilization for the Neural Engine; only the power it draws can be read."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neural Engine için kullanım yüzdesi sistemde yayımlanmıyor; yalnızca harcadığı güç okunabiliyor."
+          }
+        }
+      }
+    },
+    "Gücü göster": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show power"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gücü göster"
+          }
+        }
+      }
+    },
+    "Açılır pencerede GPU ve Neural Engine gücü.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU and Neural Engine power in the popover."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açılır pencerede GPU ve Neural Engine gücü."
+          }
+        }
+      }
+    },
+    "Frekans ve güç": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frequency and power"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frekans ve güç"
+          }
+        }
+      }
+    },
+    "Tavan %@ · aktif %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peak %@ · active %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tavan %@ · aktif %@"
+          }
+        }
+      }
+    },
+    "Frekans tablosu bulunamadı: performans düzeyi · aktif %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No frequency table found: performance level · active %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Frekans tablosu bulunamadı: performans düzeyi · aktif %@"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -93,3 +93,47 @@ struct LoadAverageRow: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
+
+/// Average clock per core class, as GHz against the class's top clock. When no
+/// trustworthy frequency table exists for a class, its performance level (how high
+/// up its DVFS ladder it ran, 0–100 %) is shown instead — never an invented clock.
+struct CPUFrequencyRows: View {
+    let frequency: CPUFrequencySample?
+    let clusters: [HardwareInfo.CoreCluster]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            ForEach(clusters, id: \.name) { cluster in
+                row(cluster, sample: frequency?.clusters.first { $0.name == cluster.name })
+            }
+        }
+    }
+
+    private func row(_ cluster: HardwareInfo.CoreCluster, sample: CPUFrequencySample.Cluster?) -> some View {
+        let hasTable = sample?.maxMHz != nil
+        let fraction: Float = {
+            guard let sample else { return 0 }
+            if let average = sample.averageMHz, let top = sample.maxMHz, top > 0 { return average / top }
+            return hasTable ? 0 : sample.performanceLevel ?? 0
+        }()
+        return VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(verbatim: cluster.name).font(.system(size: 12, weight: .semibold)).foregroundStyle(Palette.ink)
+                Text("\(cluster.count) çekirdek").font(.sistemCaption).foregroundStyle(Palette.inkTertiary)
+                Spacer()
+                Text(verbatim: hasTable ? Format.gigahertz(sample?.averageMHz) : Format.percent(sample?.performanceLevel))
+                    .font(.sistemValue).foregroundStyle(Palette.ink)
+            }
+            MeterBar(Double(fraction))
+            if let sample {
+                if let top = sample.maxMHz {
+                    Text("Tavan \(Format.gigahertz(top)) · aktif \(Format.percent(sample.activeFraction))")
+                        .font(.sistemCaption).foregroundStyle(Palette.inkTertiary)
+                } else {
+                    Text("Frekans tablosu bulunamadı: performans düzeyi · aktif \(Format.percent(sample.activeFraction))")
+                        .font(.sistemCaption).foregroundStyle(Palette.inkTertiary)
+                }
+            }
+        }
+    }
+}

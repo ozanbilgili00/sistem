@@ -19,6 +19,17 @@ public final class MetricStore {
 
     public private(set) var processes: ProcessSample?
 
+    public private(set) var gpu: GPUSample?
+    /// Device utilisation, 0...1.
+    public private(set) var gpuDevice = RingBuffer(capacity: historyLength)
+
+    public private(set) var power: PowerSample?
+    /// Watts, not fractions: callers scale them for drawing.
+    public private(set) var gpuPower = RingBuffer(capacity: historyLength)
+    public private(set) var cpuPower = RingBuffer(capacity: historyLength)
+
+    public private(set) var cpuFrequency: CPUFrequencySample?
+
     /// Bumped once per delivered snapshot.
     public private(set) var generation = 0
 
@@ -41,6 +52,18 @@ public final class MetricStore {
         }
         if let sample = snapshot.processes {
             processes = sample
+        }
+        if let sample = snapshot.gpu {
+            gpu = sample
+            gpuDevice.append(sample.device)
+        }
+        if let sample = snapshot.power {
+            power = sample
+            if let watts = sample.gpu { gpuPower.append(watts) }
+            if let watts = sample.cpu { cpuPower.append(watts) }
+        }
+        if let sample = snapshot.cpuFrequency {
+            cpuFrequency = sample
         }
         generation &+= 1
         for observer in observers.values { observer() }

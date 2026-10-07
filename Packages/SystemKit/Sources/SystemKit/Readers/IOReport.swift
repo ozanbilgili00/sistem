@@ -107,11 +107,17 @@ public final class IOReport: @unchecked Sendable {
         private let subscription: AnyObject
         private let subscribed: CFMutableDictionary
 
-        init?(library: IOReport, groups: [(group: String, subgroup: String?)]) {
+        init?(library: IOReport, groups: [(group: String, subgroup: String?)], keeping keep: ((Channel) -> Bool)?) {
             var merged: CFMutableDictionary?
             for entry in groups {
-                guard let channels = library.copyGroup(entry.group as CFString, entry.subgroup as CFString?, 0, 0, 0)?
+                guard var channels = library.copyGroup(entry.group as CFString, entry.subgroup as CFString?, 0, 0, 0)?
                     .takeRetainedValue() else { continue }
+                if let keep {
+                    // Subscribing to a handful of channels, not the whole group, keeps
+                    // every later delta (and its string decoding) proportionally small.
+                    guard let filtered = library.filter(channels, keeping: keep) else { continue }
+                    channels = filtered
+                }
                 if let merged {
                     library.merge(merged, channels, nil)
                 } else {
@@ -127,8 +133,23 @@ public final class IOReport: @unchecked Sendable {
             self.subscribed = subscribed
         }
 
+        /// Last sample taken, so several readers sharing one subscription in the same
+        /// tick pay for one `IOReportCreateSamples` (about 4 ms of CPU for the CPU and
+        /// energy groups, whatever the channel count).
+        private var latest: Sample?
+
+        /// Seconds a sample stays "this tick's" for further callers. 0 (the default)
+        /// means every call takes a fresh one.
+        public var reuseWindow = 0.0
+
+        /// A fresh sample, or the previous one if it is younger than ``reuseWindow``.
         public func sample() -> Sample? {
-            library.samples(subscription, subscribed, nil).map { Sample(raw: $0.takeRetainedValue()) }
+            let now = clock_gettime_nsec_np(CLOCK_UPTIME_RAW)
+            if reuseWindow > 0, let latest, Double(now &- latest.time) < reuseWindow * 1e9 { return latest }
+            guard let raw = library.samples(subscription, subscribed, nil)?.takeRetainedValue() else { return nil }
+            let sample = Sample(raw: raw, time: now)
+            latest = sample
+            return sample
         }
 
         /// What happened between two samples.
@@ -154,11 +175,28 @@ public final class IOReport: @unchecked Sendable {
         }
     }
 
-    public func subscribe(to groups: [(group: String, subgroup: String?)]) -> Subscription? {
-        Subscription(library: self, groups: groups)
+    /// Subscribes to `groups`; with `keeping`, only to the channels it accepts.
+    public func subscribe(to groups: [(group: String, subgroup: String?)],
+                          keeping keep: ((Channel) -> Bool)? = nil) -> Subscription? {
+        Subscription(library: self, groups: groups, keeping: keep)
     }
 
-    public struct Sample { let raw: CFDictionary }
+    /// A copy of `report` whose channel list holds only the accepted channels; nil if none.
+    func filter(_ report: CFDictionary, keeping keep: (Channel) -> Bool) -> CFDictionary? {
+        guard let items = (report as NSDictionary)["IOReportChannels"] as? [NSDictionary] else { return nil }
+        let kept = items.filter { keep(describe($0 as CFDictionary)) }
+        guard !kept.isEmpty,
+              let copy = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, report) else { return nil }
+        // A mutable array: IOReportMergeChannels appends to the first group's list.
+        (copy as NSMutableDictionary)["IOReportChannels"] = NSMutableArray(array: kept)
+        return copy
+    }
+
+    public struct Sample {
+        let raw: CFDictionary
+        /// `CLOCK_UPTIME_RAW` nanoseconds when it was taken.
+        public let time: UInt64
+    }
 
     public struct State: Sendable, Hashable {
         public let name: String

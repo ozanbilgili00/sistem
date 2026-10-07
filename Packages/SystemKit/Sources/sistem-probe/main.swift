@@ -8,6 +8,7 @@
 
 import Foundation
 import Metal
+import Vision
 import SystemKit
 
 // MARK: Report model
@@ -91,6 +92,58 @@ func time<T>(_ label: String, into report: inout Report, _ body: () -> T) -> T {
 
 func log(_ message: String) { FileHandle.standardError.write(Data("\(message)\n".utf8)) }
 
+// MARK: Load helpers
+
+nonisolated(unsafe) var sink = 0.0
+
+@Sendable func cpuLoad(threads: Int, seconds: Double) {
+    let deadline = Date().addingTimeInterval(seconds)
+    let group = DispatchGroup()
+    for _ in 0..<threads {
+        group.enter()
+        let thread = Thread {
+            var x = 1.0
+            while Date() < deadline {
+                for _ in 0..<200_000 { x = x * 1.000_000_1 + 0.000_000_1 }
+            }
+            sink += x
+            group.leave()
+        }
+        thread.qualityOfService = .userInteractive
+        thread.start()
+    }
+    group.wait()
+}
+
+@Sendable func gpuLoad(seconds: Double) {
+    guard let device = MTLCreateSystemDefaultDevice(), let queue = device.makeCommandQueue() else { return }
+    let source = """
+    #include <metal_stdlib>
+    using namespace metal;
+    kernel void burn(device float *data [[buffer(0)]], uint id [[thread_position_in_grid]]) {
+        float x = data[id];
+        for (int i = 0; i < 2048; i++) { x = fma(x, 1.000001f, 0.000001f); x = sin(x) * 0.5f + x * 0.5f; }
+        data[id] = x;
+    }
+    """
+    guard let library = try? device.makeLibrary(source: source, options: nil),
+          let function = library.makeFunction(name: "burn"),
+          let pipeline = try? device.makeComputePipelineState(function: function) else { return }
+    let count = 1 << 22
+    guard let buffer = device.makeBuffer(length: count * 4, options: .storageModePrivate) else { return }
+    let deadline = Date().addingTimeInterval(seconds)
+    while Date() < deadline {
+        guard let commands = queue.makeCommandBuffer(), let encoder = commands.makeComputeCommandEncoder() else { return }
+        encoder.setComputePipelineState(pipeline)
+        encoder.setBuffer(buffer, offset: 0, index: 0)
+        encoder.dispatchThreads(MTLSize(width: count, height: 1, depth: 1),
+                                threadsPerThreadgroup: MTLSize(width: pipeline.maxTotalThreadsPerThreadgroup, height: 1, depth: 1))
+        encoder.endEncoding()
+        commands.commit()
+        commands.waitUntilCompleted()
+    }
+}
+
 // MARK: Run
 
 let args = CommandLine.arguments
@@ -135,6 +188,214 @@ if args.count == 2, args[1] == "--processes" {
     }
     let reader = MemoryReader()
     print("bellek okuma", clock.measure { for _ in 0..<1000 { _ = reader.sample() } } / 1000)
+    exit(0)
+}
+
+// `sistem-probe --gpu-check [seconds]`: GPUReader, PowerReader and CPUFrequencyReader
+// once a second through idle → Metal load → idle, to see the numbers move.
+if args.count >= 2, args[1] == "--gpu-check" {
+    let loadSeconds = args.count > 2 ? Double(args[2]) ?? 12 : 12
+    guard let gpu = GPUReader() else { print("GPUReader: yok"); exit(1) }
+    let power = PowerReader()
+    let frequency = CPUFrequencyReader()
+    print("IOReport: \(IOReport.library != nil ? "var" : "yok")  güç okuyucu: \(power.isAvailable ? "var" : "yok")  frekans okuyucu: \(frequency != nil ? "var" : "yok")")
+    print("saniye evre   cihaz% render% tiler%  bellek(MB)  tahsis(MB)  GPU(W)  ANE(W)  CPU(W)  Sistem(W)  frekans")
+    _ = power.sample()
+    _ = frequency?.sample()
+    let plan: [(String, Int)] = [("boşta", 4), ("yük", Int(loadSeconds)), ("boşta", 4)]
+    var second = 0
+    for (phase, length) in plan {
+        if phase == "yük" { Thread { gpuLoad(seconds: loadSeconds) }.start() }
+        for _ in 0..<length {
+            Thread.sleep(forTimeInterval: 1)
+            second += 1
+            let g = gpu.sample()
+            let p = power.sample()
+            let f = frequency?.sample()
+            func w(_ value: Float?) -> String { value.map { String(format: "%6.2f", $0) } ?? "     —" }
+            let clusters = f?.clusters.map { c in
+                "\(c.name) \(c.averageMHz.map { String(format: "%.0f MHz", $0) } ?? "—") %\(Int(c.activeFraction * 100))"
+            }.joined(separator: " · ") ?? "—"
+            print(String(format: "%5d  %-6@ %6.0f %7.0f %6.0f  %10.0f  %10.0f", second, phase as NSString,
+                         (g?.device ?? 0) * 100, (g?.renderer ?? 0) * 100, (g?.tiler ?? 0) * 100,
+                         Double(g?.memoryInUse ?? 0) / 1_048_576, Double(g?.memoryAllocated ?? 0) / 1_048_576)
+                  + "  \(w(p.gpu))  \(w(p.ane))  \(w(p.cpu))  \(w(p.system))   \(clusters)")
+        }
+    }
+    exit(0)
+}
+
+// `sistem-probe --freq-check`: cluster frequency while one Super-class thread, then all cores, run.
+if args.count >= 2, args[1] == "--freq-check" {
+    guard let frequency = CPUFrequencyReader() else { print("CPUFrequencyReader: yok"); exit(1) }
+    for (name, ladder) in CPUFrequencyReader.discoveredLadders().sorted(by: { $0.key < $1.key }) {
+        print("\(name): \(ladder.count) durum, \(ladder.first.map { String(format: "%.0f", $0) } ?? "—")–\(ladder.last.map { String(format: "%.0f", $0) } ?? "—") MHz")
+    }
+    let cores = HardwareInfo.current().totalCores
+    let plan: [(String, Int, @Sendable () -> Void)] = [
+        ("boşta", 4, {}),
+        ("1 iş parçacığı", 6, { cpuLoad(threads: 1, seconds: 6) }),
+        ("\(cores) iş parçacığı", 6, { cpuLoad(threads: cores, seconds: 6) }),
+    ]
+    _ = frequency.sample()
+    for (phase, length, load) in plan {
+        Thread { load() }.start()
+        for _ in 0..<length {
+            Thread.sleep(forTimeInterval: 1)
+            let line = frequency.sample()?.clusters.map { c in
+                "\(c.name): \(c.averageMHz.map { String(format: "%.0f MHz", $0) } ?? "—") (düzey \(c.performanceLevel.map { String(format: "%.2f", $0) } ?? "—"), aktif %\(Int(c.activeFraction * 100)), tavan \(c.maxMHz.map { String(format: "%.0f", $0) } ?? "—"))"
+            }.joined(separator: " | ") ?? "—"
+            print("\(phase): \(line)")
+        }
+    }
+    exit(0)
+}
+
+// `sistem-probe --freq-verify <seconds>`: the busiest core's average clock per second, from
+// raw IOReport residencies and the device-tree ladder, to compare with an independent
+// cycle count (a dependent-add chain run alongside).
+if args.count == 3, args[1] == "--freq-verify", let seconds = Int(args[2]), let io = IOReport.library,
+   let sub = io.subscribe(to: [("CPU Stats", "CPU Core Performance States")]) {
+    let ladders = CPUFrequencyReader.discoveredLadders()
+    var before = sub.sample()
+    for _ in 0..<seconds {
+        Thread.sleep(forTimeInterval: 1)
+        guard let after = sub.sample(), let earlier = before else { continue }
+        before = after
+        var best: (name: String, mhz: Double, active: Double)?
+        for r in sub.readings(from: earlier, to: after) where !r.states.isEmpty {
+            if ["PCPU0", "MCPU00"].contains(r.channel.name) { print("durumlar \(r.channel.name): \(r.states.map(\.name).joined(separator: " "))") }
+            let indices = r.states.map { st -> Int? in
+                guard st.name.hasPrefix("V"), let p = st.name.firstIndex(of: "P") else { return nil }
+                return Int(st.name[st.name.index(after: st.name.startIndex)..<p])
+            }
+            let count = (indices.compactMap { $0 }.max() ?? -1) + 1
+            guard let ladder = ladders.values.first(where: { $0.count == count }) else { continue }
+            var total = 0.0, active = 0.0, mhz = 0.0
+            for (st, index) in zip(r.states, indices) {
+                total += Double(st.residency)
+                if let index { active += Double(st.residency); mhz += Double(ladder[index]) * Double(st.residency) }
+            }
+            guard active > 0, active / total > (best?.active ?? 0) else { continue }
+            best = (r.channel.name, mhz / active, active / total)
+        }
+        print(best.map { String(format: "IOReport: en meşgul çekirdek %@ aktif %%%.0f  ortalama %.0f MHz", $0.name, $0.active * 100, $0.mhz) } ?? "—")
+    }
+    exit(0)
+}
+
+// `sistem-probe --fps <seconds>`: the DCP counters that could stand in for a frame rate,
+// summed per second per display controller, next to GPU load. Which of them follow what
+// is drawn, and which just follow the panel's refresh?
+if args.count == 3, args[1] == "--fps", let seconds = Int(args[2]), let io = IOReport.library {
+    let groups = ["DCP", "DCPEXT0", "DCPEXT1", "DCPEXT2", "DCPEXT3"].flatMap { g in
+        ["swap", "scanout", "display stats"].map { (group: g, subgroup: Optional($0)) }
+    }
+    guard let sub = io.subscribe(to: groups) else { print("abonelik yok"); exit(1) }
+    let gpu = GPUReader()
+    var before = sub.sample()
+    print("saniye  gpu%  | DCP swap  scanout  frame_count | EXT0 swap  scanout  frame_count | EXT1 swap  scanout  frame_count")
+    for second in 1...seconds {
+        Thread.sleep(forTimeInterval: 1)
+        guard let after = sub.sample(), let earlier = before else { continue }
+        before = after
+        var sums: [String: Double] = [:]
+        for r in sub.readings(from: earlier, to: after) {
+            let value = Double(r.value ?? 0)
+            if r.channel.subgroup == "swap", r.channel.name.hasPrefix("subframes") { sums["\(r.channel.group)/swap", default: 0] += value }
+            if r.channel.subgroup == "scanout", r.channel.name.hasPrefix("subframes") { sums["\(r.channel.group)/scanout", default: 0] += value }
+            if r.channel.subgroup == "display stats", r.channel.name == "frame_count" { sums["\(r.channel.group)/frame", default: 0] += value }
+        }
+        func triple(_ g: String) -> String {
+            String(format: "%8.0f %8.0f %11.0f", sums["\(g)/swap"] ?? 0, sums["\(g)/scanout"] ?? 0, sums["\(g)/frame"] ?? 0)
+        }
+        print(String(format: "%5d  %4.0f  | ", second, (gpu?.sample()?.device ?? 0) * 100) + triple("DCP") + " | " + triple("DCPEXT0") + " | " + triple("DCPEXT1"))
+    }
+    exit(0)
+}
+
+// `sistem-probe --bench`: cost of one read of each Phase 4 reader.
+if args.count == 2, args[1] == "--bench" {
+    let clock = ContinuousClock()
+    func cpuSeconds() -> Double {
+        var usage = rusage()
+        getrusage(RUSAGE_SELF, &usage)
+        return Double(usage.ru_utime.tv_sec + usage.ru_stime.tv_sec) + Double(usage.ru_utime.tv_usec + usage.ru_stime.tv_usec) / 1e6
+    }
+    func micros(_ label: String, _ count: Int, _ body: () -> Void) {
+        body()
+        let cpuBefore = cpuSeconds()
+        let took = clock.measure { for _ in 0..<count { body() } }
+        let cpu = (cpuSeconds() - cpuBefore) * 1e6 / Double(count)
+        print(String(format: "%@: %.1f µs duvar saati, %.1f µs CPU / okuma", label, Double(took.components.attoseconds) / 1e12 / Double(count) + Double(took.components.seconds) * 1e6 / Double(count), cpu))
+    }
+    if let gpu = GPUReader() { micros("GPUReader", 2000) { _ = gpu.sample() } }
+    let power = PowerReader()
+    micros("PowerReader", 500) { _ = power.sample() }
+    if let frequency = CPUFrequencyReader() { micros("CPUFrequencyReader", 500) { _ = frequency.sample() } }
+    if let io = IOReport.library {
+        let energy = io.subscribe(to: [("Energy Model", nil)]) { $0.name == "GPU Energy" || $0.name.hasPrefix("ANE") }
+        let whole = io.subscribe(to: [("Energy Model", nil)])
+        let cores = io.subscribe(to: [("CPU Stats", "CPU Core Performance States")])
+        if let energy { micros("  Energy(2 kanal) sample()", 500) { _ = energy.sample() } }
+        if let whole { micros("  Energy(tüm grup) sample()", 200) { _ = whole.sample() } }
+        if let cores { micros("  CPU states sample()", 500) { _ = cores.sample() } }
+        let both = io.subscribe(to: [("Energy Model", nil), ("CPU Stats", "CPU Core Performance States")]) { $0.group == "CPU Stats" || $0.name == "GPU Energy" || $0.name.hasPrefix("ANE") }
+        if let both { micros("  Energy+CPU states (tek abonelik) sample()", 500) { _ = both.sample() } }
+        let gpuOnly = io.subscribe(to: [("GPU Stats", "GPU Performance States")])
+        if let gpuOnly { micros("  GPU Performance States sample()", 500) { _ = gpuOnly.sample() } }
+        let dcp = io.subscribe(to: [("DCP", "swap")])
+        if let dcp { micros("  DCP swap sample()", 500) { _ = dcp.sample() } }
+        if let energy, let a = energy.sample(), let b = energy.sample() { micros("  Energy readings()", 500) { _ = energy.readings(from: a, to: b) } }
+        if let cores, let a = cores.sample(), let b = cores.sample() { micros("  CPU states readings()", 500) { _ = cores.readings(from: a, to: b) } }
+    }
+    if let smc = SMC() { micros("SMC PPMC", 2000) { _ = smc.read("PPMC") } }
+    exit(0)
+}
+
+// `sistem-probe --series <seconds> <interval>`: CPU total and GPU device utilisation, one line per
+// tick, to replay through the menu bar's smoothing offline.
+if args.count == 4, args[1] == "--series", let seconds = Int(args[2]), let interval = Double(args[3]) {
+    var cpu = CPULoadReader()
+    let gpu = GPUReader()
+    _ = cpu.sample()
+    for _ in 0..<Int(Double(seconds) / interval) {
+        Thread.sleep(forTimeInterval: interval)
+        print(String(format: "%.4f %.4f", cpu.sample()?.total ?? 0, gpu?.sample()?.device ?? 0))
+        fflush(stdout)
+    }
+    exit(0)
+}
+
+// `sistem-probe --ane-check`: does the ANE0 energy channel move under a Vision workload
+// (image classification, which Core ML schedules on the Neural Engine)?
+if args.count == 2, args[1] == "--ane-check" {
+    let side = 1024
+    var pixels = Data(count: side * side * 4)
+    for i in 0..<pixels.count { pixels[i] = UInt8.random(in: 0...255) }
+    guard let provider = CGDataProvider(data: pixels as CFData),
+          let image = CGImage(width: side, height: side, bitsPerComponent: 8, bitsPerPixel: 32, bytesPerRow: side * 4,
+                              space: CGColorSpaceCreateDeviceRGB(),
+                              bitmapInfo: CGBitmapInfo(rawValue: CGImageAlphaInfo.noneSkipLast.rawValue),
+                              provider: provider, decode: nil, shouldInterpolate: false, intent: .defaultIntent)
+    else { print("görüntü kurulamadı"); exit(1) }
+    let power = PowerReader()
+    _ = power.sample()
+    let deadline = Date().addingTimeInterval(10)
+    let worker = Thread {
+        while Date() < deadline {
+            let request = VNClassifyImageRequest()
+            try? VNImageRequestHandler(cgImage: image).perform([request])
+        }
+    }
+    print("saniye  ANE(W)  GPU(W)  CPU(W)")
+    for second in 1...12 {
+        if second == 3 { worker.start() }
+        Thread.sleep(forTimeInterval: 1)
+        let p = power.sample()
+        print(String(format: "%5d  %6.2f  %6.2f  %6.2f", second, p.ane ?? -1, p.gpu ?? -1, p.cpu ?? -1))
+        fflush(stdout)
+    }
     exit(0)
 }
 
@@ -246,56 +507,6 @@ report.registryHits = registry.split(separator: "\n").filter {
 report.findings.fpsCandidates += report.registryHits.prefix(10).map { "IORegistry: \($0)" }
 
 // MARK: Load test
-
-nonisolated(unsafe) var sink = 0.0
-
-@Sendable func cpuLoad(threads: Int, seconds: Double) {
-    let deadline = Date().addingTimeInterval(seconds)
-    let group = DispatchGroup()
-    for _ in 0..<threads {
-        group.enter()
-        let thread = Thread {
-            var x = 1.0
-            while Date() < deadline {
-                for _ in 0..<200_000 { x = x * 1.000_000_1 + 0.000_000_1 }
-            }
-            sink += x
-            group.leave()
-        }
-        thread.qualityOfService = .userInteractive
-        thread.start()
-    }
-    group.wait()
-}
-
-@Sendable func gpuLoad(seconds: Double) {
-    guard let device = MTLCreateSystemDefaultDevice(), let queue = device.makeCommandQueue() else { return }
-    let source = """
-    #include <metal_stdlib>
-    using namespace metal;
-    kernel void burn(device float *data [[buffer(0)]], uint id [[thread_position_in_grid]]) {
-        float x = data[id];
-        for (int i = 0; i < 2048; i++) { x = fma(x, 1.000001f, 0.000001f); x = sin(x) * 0.5f + x * 0.5f; }
-        data[id] = x;
-    }
-    """
-    guard let library = try? device.makeLibrary(source: source, options: nil),
-          let function = library.makeFunction(name: "burn"),
-          let pipeline = try? device.makeComputePipelineState(function: function) else { return }
-    let count = 1 << 22
-    guard let buffer = device.makeBuffer(length: count * 4, options: .storageModePrivate) else { return }
-    let deadline = Date().addingTimeInterval(seconds)
-    while Date() < deadline {
-        guard let commands = queue.makeCommandBuffer(), let encoder = commands.makeComputeCommandEncoder() else { return }
-        encoder.setComputePipelineState(pipeline)
-        encoder.setBuffer(buffer, offset: 0, index: 0)
-        encoder.dispatchThreads(MTLSize(width: count, height: 1, depth: 1),
-                                threadsPerThreadgroup: MTLSize(width: pipeline.maxTotalThreadsPerThreadgroup, height: 1, depth: 1))
-        encoder.endEncoding()
-        commands.commit()
-        commands.waitUntilCompleted()
-    }
-}
 
 if runLoad, let temps = temperatureClient {
     let superCount = info.clusters.first?.count ?? 4

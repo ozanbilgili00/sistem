@@ -61,13 +61,12 @@ import Testing
 @Test func cpuReaderDoesNotLeak() throws {
     var reader = CPULoadReader()
     for _ in 0..<500 { _ = reader.sample() }
-    let before = try #require(ProcessUsage.current()).physFootprint
     let refsBefore = hostPortSendRefs()
-    for _ in 0..<10_000 { _ = reader.sample() }
-    let after = try #require(ProcessUsage.current()).physFootprint
     // A missed vm_deallocate costs at least a 16 KB page per call (~160 MB here);
-    // the margin only absorbs tests running in parallel in this process.
-    #expect(after < before + 8 * 1024 * 1024, "grew \(Int64(after) - Int64(before)) bytes")
+    // the margin and the retry only absorb tests running in parallel in this process.
+    _ = try footprintStaysFlat(margin: 8 * 1024 * 1024) {
+        for _ in 0..<10_000 { _ = reader.sample() }
+    }
     // mach_host_self() per read would add one send right per call.
     #expect(hostPortSendRefs() < refsBefore + 100)
 }

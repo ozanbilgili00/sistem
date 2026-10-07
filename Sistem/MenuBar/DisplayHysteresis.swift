@@ -1,3 +1,5 @@
+import SystemKit
+
 /// Keeps a menu bar number from redrawing on every wobble.
 ///
 /// On recent macOS every change to a status item is re-rendered on the CPU once
@@ -17,6 +19,13 @@ struct DisplayHysteresis {
     var bigJump: Float = 0.05
     var patience = 5
     var minTicks = 2
+
+    /// Idle GPU load jumps 4 → 22 % with window compositing, so the GPU item needs
+    /// wider limits: replaying two idle minutes (2026-10-07) gave 21 redraws per
+    /// 60 ticks with the defaults, 12 with these.
+    static func `for`(_ module: ModuleID) -> DisplayHysteresis {
+        module == .gpu ? DisplayHysteresis(threshold: 0.03, bigJump: 0.15, minTicks: 3) : DisplayHysteresis()
+    }
 
     private var shown: Float?
     private var pending = 0

@@ -19,11 +19,16 @@ struct WidgetModel: Equatable {
             let count = min(store.cpuUser.count, chartSamples)
             let start = store.cpuUser.count - count
             let history = (0..<count).map { store.cpuUser[start + $0] + store.cpuSystem[start + $0] }
-            // Mean of the last two samples: a 4 s window at the default interval,
-            // closer to Activity Monitor's 5 s, and it damps the tick-to-tick
-            // wobble that would otherwise redraw the item (see DisplayHysteresis).
-            let value = history.isEmpty ? store.cpu?.total : history.suffix(2).reduce(0, +) / Float(history.suffix(2).count)
+            let value = smoothed(history, fallback: store.cpu?.total)
             return WidgetModel(label: "CPU", value: value, text: Format.percent(value), history: history)
+        case .gpu:
+            let count = min(store.gpuDevice.count, chartSamples)
+            let start = store.gpuDevice.count - count
+            let history = (0..<count).map { store.gpuDevice[start + $0] }
+            // Device Utilization %, the same number Activity Monitor's GPU history draws.
+            // Idle GPU load is bursty (compositing for every display), so a longer window.
+            let value = smoothed(history, window: 3, fallback: store.gpu?.device)
+            return WidgetModel(label: "GPU", value: value, text: Format.percent(value), history: history)
         case .ram:
             let count = min(store.memoryApp.count, chartSamples)
             let start = store.memoryApp.count - count
@@ -35,6 +40,15 @@ struct WidgetModel: Equatable {
         default:
             return WidgetModel(label: String(localized: module.menuBarTitle), value: nil, text: "—", history: [])
         }
+    }
+
+    /// Mean of the last `window` samples: two is a 4 s window at the default interval,
+    /// closer to Activity Monitor's 5 s, and it damps the tick-to-tick wobble that
+    /// would otherwise redraw the item (see DisplayHysteresis).
+    private static func smoothed(_ history: [Float], window: Int = 2, fallback: Float?) -> Float? {
+        guard !history.isEmpty else { return fallback }
+        let tail = history.suffix(window)
+        return tail.reduce(0, +) / Float(tail.count)
     }
 }
 
