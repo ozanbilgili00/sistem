@@ -65,4 +65,25 @@ int SMCReadKey(io_connect_t connection, uint32_t key, SMCKeyInfoData *_Nonnull i
 /// The key stored at `index` (0..<#KEY). Returns 0 on success.
 int SMCKeyAtIndex(io_connect_t connection, uint32_t index, uint32_t *_Nonnull key);
 
+// MARK: - NVMe SMART (public IOKit header, plain C wrapper)
+
+/// The fields of the NVMe SMART / Health log page that the app shows. Counters are
+/// the low 64 bits of the log page's 128-bit values.
+typedef struct {
+    uint8_t criticalWarning;
+    uint16_t temperatureKelvin;
+    uint8_t availableSpare, availableSpareThreshold, percentageUsed;
+    uint64_t dataUnitsRead, dataUnitsWritten;  // thousands of 512-byte blocks
+    uint64_t hostReadCommands, hostWriteCommands;
+    uint64_t controllerBusyMinutes, powerCycles, powerOnHours, unsafeShutdowns, mediaErrors;
+} SistemNVMeHealth;
+
+/// Opens the SMART user client of the first service that publishes "NVMe SMART Capable".
+/// The handle stays valid until `SistemNVMeClose`; NULL when none works. No root is
+/// needed for the internal SSD of this Mac (measured 2026-10-08).
+void *_Nullable SistemNVMeOpen(void);
+/// 0 on success.
+int SistemNVMeRead(void *_Nonnull handle, SistemNVMeHealth *_Nonnull out);
+void SistemNVMeClose(void *_Nullable handle);
+
 #endif

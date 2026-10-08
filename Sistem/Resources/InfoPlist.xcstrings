@@ -1,0 +1,40 @@
+{
+  "sourceLanguage": "tr",
+  "strings": {
+    "NSLocationUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location Services permission is needed to show the Wi-Fi network name. Location is never used for anything else and is never sent anywhere."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez."
+          }
+        }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location Services permission is needed to show the Wi-Fi network name. Location is never used for anything else and is never sent anywhere."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

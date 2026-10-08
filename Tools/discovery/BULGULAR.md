@@ -89,6 +89,16 @@ Taban → 6 Super çekirdek → 18 çekirdek → GPU, grup ortalaması °C:
 
 Eşleme durum sayısına göre yapılır (tek bir frekans listesi uyuyorsa kullanılır, birden fazla farklı liste uyuyorsa tahmin edilmez). Doğrulama: tek iş parçacıklı bir bağımlı-toplama döngüsü (1 toplama = 1 çevrim) en yüksek durumda 4.17–4.51 GHz ölçtü (tablo 4608; ~%93–98, zamanlayıcı ve geçiş kaybı); düşük önceliğe verilince Performance kümesinde 1.49–2.01 GHz ölçtü, IOReport×tablo en meşgul çekirdek için 1.56–2.15 GHz verdi. Ara durumlar yalnızca bu kaba aralıkta doğrulandı.
 
+## Faz 5: Disk, ağ, Wi-Fi
+
+- **Disk hızı:** `IOBlockStorageDriver` `Statistics` (Bytes/Operations okuma-yazma) fiziksel sürücü başına; yalnız fiziksel disk süzülür (APFS sanal birimleri iki kez saymaz). `sistem-probe --disk-check`: 512 MB yazma + 512 MB okuma, bizim toplam 1024.3 MB = `iostat disk0` 1024.3 MB (fark %0.0, 3 tekrarda aynı). Birim kapasitesi her 15. örnekte (`URLResourceValues`), tak/çıkar IOKit eşleşme + DiskArbitration bayrağıyla (polling yok).
+- **SMART ÇALIŞIYOR (root'suz):** plan "büyük olasılıkla kapalı" diyordu; dahili Apple SSD'de `IONVMeSMARTUserClient` root olmadan açılıyor. Okuma ~52-60 µs (100 okuma ortalaması 5.3e-05 sn). Alanlar: sıcaklık, harcanan ömür, yedek alan, yazılan/okunan bayt, güç döngüsü, açık saat, güvensiz kapanış, ortam hatası. Harici sürücülerde ve VM'de yok → `nil`, UI "Sağlık verisi yok" der. 30 tikte bir, yalnız Disk sayfası ister.
+- **Ağ hızı:** `getifaddrs` AF_LINK `if_data` deltası, 32-bit sayaç sarması 64-bit toplanır; loopback/tünel/köprü dışarıda. `--net-check`: en0 bizim ↓1382400 B ↑151552 B, `netstat -ib` ↓1382295 ↑152371 (zamanlama farkı, yüzlerce bayt).
+- **Bağlantı:** `NWPathMonitor` olay tabanlı (zamanlayıcı yok), bağlandı/koptu/arayüz değişti olayları bellekte (en çok 50). Varsayılan rota arayüzü hız okuyucusuna aktarılır.
+- **Wi-Fi:** CoreWLAN RSSI/gürültü/kanal/hız izin istemez; SSID Konum izni ister ve izin yokken `nil` döner. İzin yalnız kullanıcı "Ağ adını göster" düğmesine basınca istenir (başlangıçta asla); reddedilmiş durumda Sistem Ayarları yolu gösterilir. `NSLocationUsageDescription` tr + en (`InfoPlist.xcstrings`).
+- **Genel IP / gecikme:** ikisi de varsayılan KAPALI. Genel IP yalnız bağlantı değişince ve açıksa (`api.ipify.org`, 5 sn zaman aşımı, ephemeral oturum, çerez/önbellek yok); gecikme 1.1.1.1:443 TCP el sıkışma süresi, 60 sn, yalnız görünürken ve prizdeyken. Varsayılan ayarlarda dış istek 0 (kodda `URLSession`/`NWConnection` yalnız `Network/Extras.swift`).
+- **Ölçümler (Release, 60 sn):** boşta %0.17-0.34 CPU, 19 MB, 2.1-3.7 uyanma/sn (kullanıcı etkinliğiyle oynuyor); Disk penceresi %0.50, 41 MB, 2.7/sn; Ağ penceresi %0.70, 44 MB, 6.0/sn.
+
 ## ANE
 
 - Kullanım (utilization) için IOReport kanalı **bulunamadı**. Yalnızca enerji kanalı `ANE0`.

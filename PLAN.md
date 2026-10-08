@@ -312,11 +312,15 @@ Sonuç: `GPUReader` (`IOAccelerator/PerformanceStatistics`, 11 µs), `PowerReade
 - **ANE gücü doğrulanmadı:** Vision yükü CPU'da koştu; `ANE0` 0 W. Core ML ile ANE'ye giden bir yükle denenecek.
 - **GPU menübar öğesi varsayılan kapalı:** boşta +0.06 puan CPU, +0.5 uyanma/sn (art arda A/B ölçümü); üç öğeyle uyanma bütçesi sınırda. GPU öğesi kendi histerezisiyle (eşik 3, sıçrama 15 puan, en az 3 tik, 3 örnek ortalama): boşta 2 dk tekrarında 21 → 12 çizim/60 tik.
 
-### Faz 5 — Disk ve Ağ · ~3 gün
+### Faz 5 — Disk ve Ağ · ~3 gün · ✅ 2026-10-08 (kapı notlarıyla)
 - Disk: birimler, kapasite, okuma/yazma hızı, tak/çıkar bildirimi, SMART denemesi
 - Ağ: `getifaddrs` hız, `NWPathMonitor`, CoreWLAN (Konum izni akışı), bağlantı geçmişi; genel IP ve gecikme varsayılan kapalı
 
 Kapı: hız testi değerleri Activity Monitor ile uyumlu; varsayılan ayarlarla dış ağ isteği 0.
+
+Sonuç: `DiskReader` (IOBlockStorageDriver `Statistics`, hot-plug bildirimleri, kapasite 15 tikte bir), `NVMeHealthReader` (**SMART root'suz çalışıyor**, ~55 µs, 30 tikte bir), `NetworkReader` (`getifaddrs` AF_LINK, 32-bit sarma), `WiFiReader` (CoreWLAN; SSID yalnız "Ağ adını göster" ile Konum izni), `NetworkPathMonitor` (yalnız ağ görünürken başlar, bağlantı geçmişi bellekte). `--disk-check 1024`: iostat ile 0 MB fark; `--net-check`: `netstat -ib` ile yüzlerce bayt (zamanlama). Genel IP (ipify) ve gecikme varsayılan kapalı, 5 sn zaman aşımı → varsayılanla dış istek 0. 80 test. Pencere: Disk %0.50 / 41 MB / 2.7 uyanma; Ağ %0.70 / 44 MB / 6.0 uyanma. Disk/Ağ menübar öğeleri isteğe bağlı. Ayrıntı: `Tools/discovery/BULGULAR.md` Faz 5.
+- Boşta uyanma A/B (Faz 5 / Faz 4 yapısı, art arda): 3.3/2.1 vs 1.25/2.7 — gürültü içinde; boşta yol kodda değişmedi (tüm yeni okuyucular tembel, `NWPathMonitor` talep olunca).
+- Konum izni penceresi ve gerçek SSID canlı denenmedi (odak kuralı); imzasız yapıda CoreLocation sormayabilir → Ozan elle dener.
 
 ### Faz 6 — Sensörler · ~3.5 gün
 - SMC okuyucu birincil: `Tp/Tm/Tg` grupları, `…X` toplu anahtarlar, fanlar, `PSTR/PDTR/PPMC`; HID yalnızca SMC'de olmayanlar için

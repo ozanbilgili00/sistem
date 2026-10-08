@@ -165,7 +165,15 @@
       }
     },
     "Bluetooth": {
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth"
+          }
+        }
+      }
     },
     "Boşta hedef: saniyede 2'nin altı": {
       "localizations": {
@@ -248,7 +256,15 @@
       }
     },
     "CPU": {
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU"
+          }
+        }
+      }
     },
     "Daha uzun aralık, daha az pil tüketimi.": {
       "localizations": {
@@ -267,7 +283,15 @@
       }
     },
     "Disk": {
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk"
+          }
+        }
+      }
     },
     "Dock'ta göster": {
       "localizations": {
@@ -334,7 +358,15 @@
       }
     },
     "GPU": {
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU"
+          }
+        }
+      }
     },
     "GPU, render ve tiler kullanımı, Neural Engine ve grafik gücü.": {
       "localizations": {
@@ -465,7 +497,15 @@
       }
     },
     "MB": {
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MB"
+          }
+        }
+      }
     },
     "Menü çubuğu": {
       "localizations": {
@@ -580,7 +620,15 @@
       }
     },
     "RAM": {
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RAM"
+          }
+        }
+      }
     },
     "Saat": {
       "localizations": {
@@ -791,7 +839,15 @@
       }
     },
     "mW": {
-      "shouldTranslate": false
+      "shouldTranslate": false,
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "mW"
+          }
+        }
+      }
     },
     "yüzde": {
       "localizations": {
@@ -2149,6 +2205,848 @@
           "stringUnit": {
             "state": "translated",
             "value": "Frekans tablosu bulunamadı: performans düzeyi · aktif %@"
+          }
+        }
+      }
+    },
+    "%@ boş": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ free"
+          }
+        }
+      }
+    },
+    "%@ okuma/sn · %@ yazma/sn": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ reads/s · %@ writes/s"
+          }
+        }
+      }
+    },
+    "%@ · %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %@"
+          }
+        }
+      }
+    },
+    "Alınamadı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unavailable"
+          }
+        }
+      }
+    },
+    "Arayüz": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface"
+          }
+        }
+      }
+    },
+    "Arayüz değişti": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface changed"
+          }
+        }
+      }
+    },
+    "Arayüzler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interfaces"
+          }
+        }
+      }
+    },
+    "Arayüzler okunuyor…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading interfaces…"
+          }
+        }
+      }
+    },
+    "Açık kalma süresi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Power-on time"
+          }
+        }
+      }
+    },
+    "Açılıştan beri %@ indirildi · %@ yüklendi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ downloaded · %@ uploaded since launch"
+          }
+        }
+      }
+    },
+    "Açılıştan beri bağlantı değişikliği yok.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No connection changes since launch."
+          }
+        }
+      }
+    },
+    "Ağ adı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network name"
+          }
+        }
+      }
+    },
+    "Ağ adını göster": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show network name"
+          }
+        }
+      }
+    },
+    "Ağ ekranı ya da menü çubuğu öğesi görünürken ve prize takılıyken 60 saniyede bir 1.1.1.1'e bağlantı süresini ölçer.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "While the network screen or menu bar item is visible and the Mac is plugged in, measures the connection time to 1.1.1.1 every 60 seconds."
+          }
+        }
+      }
+    },
+    "Ağa bağlı değil": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not joined to a network"
+          }
+        }
+      }
+    },
+    "Bağlandı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected"
+          }
+        }
+      }
+    },
+    "Bağlantı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connection"
+          }
+        }
+      }
+    },
+    "Bağlantı bekleniyor": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for connection"
+          }
+        }
+      }
+    },
+    "Bağlantı geçmişi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connection history"
+          }
+        }
+      }
+    },
+    "Bağlantı her değiştiğinde api.ipify.org'a tek bir istek gönderir. Kapalıyken uygulama hiçbir dış istek yapmaz.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sends one request to api.ipify.org whenever the connection changes. While off, the app makes no outbound requests at all."
+          }
+        }
+      }
+    },
+    "Bağlantı hızı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link speed"
+          }
+        }
+      }
+    },
+    "Bağlantı koptu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disconnected"
+          }
+        }
+      }
+    },
+    "Bağlantı türü": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connection type"
+          }
+        }
+      }
+    },
+    "Bağlı değil": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not connected"
+          }
+        }
+      }
+    },
+    "Birimler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volumes"
+          }
+        }
+      }
+    },
+    "Birimler okunuyor…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading volumes…"
+          }
+        }
+      }
+    },
+    "Birimler, doluluk, okuma ve yazma hızı ve disk sağlığı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volumes, capacity, read and write speed, and drive health."
+          }
+        }
+      }
+    },
+    "Bu Mac'te Wi-Fi arayüzü yok.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Mac has no Wi-Fi interface."
+          }
+        }
+      }
+    },
+    "Dahili": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internal"
+          }
+        }
+      }
+    },
+    "Değer okuma ve yazma hızını, halka başlangıç biriminin doluluğunu gösterir. Widget'lar sekmesinden seçilir.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The value shows read and write speed; the ring shows how full the startup volume is. Choose in the Widgets tab."
+          }
+        }
+      }
+    },
+    "Dikkat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attention"
+          }
+        }
+      }
+    },
+    "Diğer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other"
+          }
+        }
+      }
+    },
+    "Düşük veri modu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low Data Mode"
+          }
+        }
+      }
+    },
+    "Ethernet": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ethernet"
+          }
+        }
+      }
+    },
+    "Gecikme": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latency"
+          }
+        }
+      }
+    },
+    "Gecikmeyi ölç": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Measure latency"
+          }
+        }
+      }
+    },
+    "Genel IP": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Public IP"
+          }
+        }
+      }
+    },
+    "Genel IP adresini göster": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show public IP address"
+          }
+        }
+      }
+    },
+    "Gürültü": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Noise"
+          }
+        }
+      }
+    },
+    "Güvenli olmayan kapanış": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unsafe shutdowns"
+          }
+        }
+      }
+    },
+    "Güç döngüsü": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Power cycles"
+          }
+        }
+      }
+    },
+    "Harcanan ömür": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Life used"
+          }
+        }
+      }
+    },
+    "Harici": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "External"
+          }
+        }
+      }
+    },
+    "Hücresel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cellular"
+          }
+        }
+      }
+    },
+    "Hız": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speed"
+          }
+        }
+      }
+    },
+    "Kablosuz ağ": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi"
+          }
+        }
+      }
+    },
+    "Kanal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Channel"
+          }
+        }
+      }
+    },
+    "Konum izni verilmedi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location permission not granted"
+          }
+        }
+      }
+    },
+    "Menü çubuğu içeriği": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menu bar content"
+          }
+        }
+      }
+    },
+    "Okuma": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read"
+          }
+        }
+      }
+    },
+    "Okunuyor…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading…"
+          }
+        }
+      }
+    },
+    "Orta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fair"
+          }
+        }
+      }
+    },
+    "Ortam hatası": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Media errors"
+          }
+        }
+      }
+    },
+    "Protokoller": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protocols"
+          }
+        }
+      }
+    },
+    "Sağlık": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health"
+          }
+        }
+      }
+    },
+    "Sağlık verisi yok: bu disk SMART bilgisi vermiyor ya da henüz okunmadı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No health data: this drive does not provide SMART information, or it has not been read yet."
+          }
+        }
+      }
+    },
+    "Sağlıklı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Healthy"
+          }
+        }
+      }
+    },
+    "Sinyal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signal"
+          }
+        }
+      }
+    },
+    "Sinyal gücü (RSSI)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signal strength (RSSI)"
+          }
+        }
+      }
+    },
+    "Sinyal/gürültü": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signal-to-noise"
+          }
+        }
+      }
+    },
+    "Sınırlı veri": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Metered"
+          }
+        }
+      }
+    },
+    "Tarife": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data plan"
+          }
+        }
+      }
+    },
+    "Tepe %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peak %@"
+          }
+        }
+      }
+    },
+    "Toplam okunan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total read"
+          }
+        }
+      }
+    },
+    "Toplam yazılan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total written"
+          }
+        }
+      }
+    },
+    "Varsayılan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Default"
+          }
+        }
+      }
+    },
+    "Wi-Fi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi"
+          }
+        }
+      }
+    },
+    "Wi-Fi kapalı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi is off"
+          }
+        }
+      }
+    },
+    "Yazma": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Write"
+          }
+        }
+      }
+    },
+    "Yedek alan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spare capacity"
+          }
+        }
+      }
+    },
+    "Yükleme": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upload"
+          }
+        }
+      }
+    },
+    "Zayıf": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poor"
+          }
+        }
+      }
+    },
+    "disk.okuma.kisa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "R"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O"
+          }
+        }
+      }
+    },
+    "disk.yazma.kisa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "W"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Y"
+          }
+        }
+      }
+    },
+    "hız": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "speed"
+          }
+        }
+      }
+    },
+    "macOS, ağ adını yalnızca Konum Servisleri izniyle paylaşıyor. Konum bu uygulamada başka hiçbir şey için kullanılmaz ve hiçbir yere gönderilmez.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS shares the network name only with Location Services permission. Location is used for nothing else in this app and is never sent anywhere."
+          }
+        }
+      }
+    },
+    "sa": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "h"
+          }
+        }
+      }
+    },
+    "Çok iyi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Excellent"
+          }
+        }
+      }
+    },
+    "Çıkarılabilir": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removable"
+          }
+        }
+      }
+    },
+    "Ölçülemedi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not measure"
+          }
+        }
+      }
+    },
+    "İndirme": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download"
+          }
+        }
+      }
+    },
+    "İyi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Good"
+          }
+        }
+      }
+    },
+    "İzni Sistem Ayarları > Gizlilik ve Güvenlik > Konum Servisleri bölümünden verebilirsin.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can grant it in System Settings > Privacy & Security > Location Services."
           }
         }
       }

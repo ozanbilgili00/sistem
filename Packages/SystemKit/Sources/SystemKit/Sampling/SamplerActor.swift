@@ -29,6 +29,7 @@ public actor SamplerActor {
     public nonisolated var unownedExecutor: UnownedSerialExecutor { queue.asUnownedSerialExecutor() }
 
     private let deliver: @Sendable (Snapshot) -> Void
+    private let pathMonitor: NetworkPathMonitor
     private var config = SamplerConfig(interval: 2, metrics: [], paused: true)
     private var timer: DispatchSourceTimer?
     private var tick = 0
@@ -48,9 +49,19 @@ public actor SamplerActor {
         return reader.isAvailable ? reader : nil
     }()
     private lazy var cpuFrequency = CPUFrequencyReader(subscription: performance)
+    // Drive services are matched once; hot-plug callbacks land on this queue.
+    private lazy var disk = DiskReader(queue: queue)
+    // nil where the system refuses SMART (external drives, virtual machines).
+    private lazy var health = NVMeHealthReader()
+    private var network = NetworkReader()
+    private lazy var wifi = WiFiReader()
+    /// Metrics that were just asked for and read slower than every tick: read once at
+    /// the next tick so a page doesn't sit empty for several intervals.
+    private var due: Set<Metric> = []
 
     /// `deliver` is called on the sampler queue after every tick that read anything.
-    public init(deliver: @escaping @Sendable (Snapshot) -> Void) {
+    public init(pathMonitor: NetworkPathMonitor = NetworkPathMonitor(), deliver: @escaping @Sendable (Snapshot) -> Void) {
+        self.pathMonitor = pathMonitor
         self.deliver = deliver
     }
 
@@ -72,6 +83,7 @@ public actor SamplerActor {
         let primeAll = old.isIdle
         for metric in new.metrics where primeAll || !old.metrics.contains(metric) {
             prime(metric)
+            if metric.everyTicks > 1 { due.insert(metric) }
         }
         if timer == nil || old.interval != new.interval { schedule() }
     }
@@ -108,6 +120,15 @@ public actor SamplerActor {
         case .cpuFrequency:
             cpuFrequency?.reset()
             _ = cpuFrequency?.sample()
+        case .disk:
+            disk.prime()
+        case .diskHealth:
+            break  // stateless
+        case .network:
+            network.reset()
+            _ = network.sample()
+        case .networkInfo:
+            break  // stateless
         }
     }
 
@@ -115,7 +136,7 @@ public actor SamplerActor {
         tick &+= 1
         var snapshot = Snapshot()
         var read = false
-        for metric in config.metrics where tick % metric.everyTicks == 0 {
+        for metric in config.metrics where tick % metric.everyTicks == 0 || due.contains(metric) {
             switch metric {
             case .cpu:
                 snapshot.cpu = cpu.sample()
@@ -129,9 +150,22 @@ public actor SamplerActor {
                 snapshot.power = power?.sample()
             case .cpuFrequency:
                 snapshot.cpuFrequency = cpuFrequency?.sample()
+            case .disk:
+                snapshot.disk = disk.sample()
+            case .diskHealth:
+                snapshot.diskHealth = health?.read()
+            case .network:
+                snapshot.network = network.sample().map {
+                    var sample = $0
+                    sample.primary = pathMonitor.primaryInterfaceName
+                    return sample
+                }
+            case .networkInfo:
+                snapshot.networkInfo = NetworkInfoSample(wifi: wifi.sample(), addresses: NetworkReader.localAddresses())
             }
             read = true
         }
+        due.removeAll()
         if read { deliver(snapshot) }
     }
 }

@@ -225,6 +225,12 @@ if args.count >= 2, args[1] == "--gpu-check" {
     exit(0)
 }
 
+// `sistem-probe --disk-check [MB]`, `--net-check [seconds]`, `--smart-check`: Faz 5 gate checks (IOChecks.swift).
+if args.count >= 2, args[1] == "--disk-check" { diskCheck(megabytes: args.count > 2 ? Int(args[2]) ?? 512 : 512); exit(0) }
+if args.count >= 2, args[1] == "--net-check" { netCheck(seconds: args.count > 2 ? Int(args[2]) ?? 10 : 10); exit(0) }
+if args.count == 2, args[1] == "--io-bench" { ioBench(); exit(0) }
+if args.count == 2, args[1] == "--smart-check" { smartCheck(); exit(0) }
+
 // `sistem-probe --freq-check`: cluster frequency while one Super-class thread, then all cores, run.
 if args.count >= 2, args[1] == "--freq-check" {
     guard let frequency = CPUFrequencyReader() else { print("CPUFrequencyReader: yok"); exit(1) }

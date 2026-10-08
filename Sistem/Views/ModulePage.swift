@@ -13,6 +13,8 @@ struct ModulePage: View {
         case .cpu: CPUPage(settings: settings)
         case .gpu: GPUPage(settings: settings)
         case .ram: RAMPage(settings: settings)
+        case .disk: DiskPage(settings: settings)
+        case .network: NetworkPage(settings: settings)
         default: placeholder
         }
     }

@@ -1,4 +1,5 @@
 import Foundation
+import SystemKit
 
 /// Number formatting shared by the menu bar and the window, so both follow the
 /// user's locale the same way (Turkish writes "%12", English "12%").
@@ -28,4 +29,20 @@ enum Format {
     static func decimal(_ value: Double, digits: Int = 2) -> String {
         value.formatted(.number.precision(.fractionLength(digits)))
     }
+
+    /// "12 MB/s": decimal units, two significant digits (see ``RateScale``).
+    static func rate(_ bytesPerSecond: Double?) -> String {
+        guard let bytesPerSecond else { return "—" }
+        let shown = RateScale.displayed(bytesPerSecond)
+        let number = shown.value.formatted(.number.precision(.fractionLength(shown.fractionDigits)))
+        return "\(number) \(shown.unit)\(String(localized: "/sn"))"
+    }
+
+    /// Bytes in the same decimal units as ``rate(_:)``, for totals ("4,5 TB").
+    static func bytesDecimal(_ value: UInt64?) -> String {
+        guard let value else { return "—" }
+        return Int64(clamping: value).formatted(.byteCount(style: .file))
+    }
+
+    static func integer(_ value: UInt64) -> String { Int64(clamping: value).formatted() }
 }

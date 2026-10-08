@@ -31,6 +31,8 @@ final class SettingsStore {
         static let cpuShowProcesses = "cpu.showProcesses"
         static let ramShowProcesses = "ram.showProcesses"
         static let gpuShowPower = "gpu.showPower"
+        static let networkPublicIP = "network.publicIP"
+        static let networkLatency = "network.latency"
     }
 
     /// Choices offered for the update interval, in seconds.
@@ -87,6 +89,17 @@ final class SettingsStore {
         didSet { defaults.set(gpuShowPower, forKey: Key.gpuShowPower) }
     }
 
+    /// Both off until the user asks: with the defaults the app makes no outbound
+    /// request at all (PLAN.md §3-E). The public address is looked up only when the
+    /// connection changes; latency is measured every 60 s while the network is on
+    /// screen and the Mac is on power.
+    var networkPublicIP: Bool {
+        didSet { defaults.set(networkPublicIP, forKey: Key.networkPublicIP) }
+    }
+    var networkLatency: Bool {
+        didSet { defaults.set(networkLatency, forKey: Key.networkLatency) }
+    }
+
     func widget(for module: ModuleID) -> WidgetConfig { widgets[module] ?? .default }
 
     func setWidget(_ config: WidgetConfig, for module: ModuleID) { widgets[module] = config }
@@ -119,6 +132,8 @@ final class SettingsStore {
         cpuShowProcesses = defaults.object(forKey: Key.cpuShowProcesses) as? Bool ?? true
         ramShowProcesses = defaults.object(forKey: Key.ramShowProcesses) as? Bool ?? true
         gpuShowPower = defaults.object(forKey: Key.gpuShowPower) as? Bool ?? true
+        networkPublicIP = defaults.object(forKey: Key.networkPublicIP) as? Bool ?? false
+        networkLatency = defaults.object(forKey: Key.networkLatency) as? Bool ?? false
     }
 
     func applyAppearance() {

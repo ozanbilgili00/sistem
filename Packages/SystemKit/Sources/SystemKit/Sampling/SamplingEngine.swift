@@ -8,6 +8,8 @@ public final class SamplingEngine {
     public let demand = DemandRegistry()
     public let power = PowerPolicy()
     public let pauses = PauseMonitor()
+    /// Connectivity events and the optional public-IP and latency lookups.
+    public let network: NetworkService
     private let sampler: SamplerActor
 
     /// The user's interval in seconds, before the power multiplier.
@@ -19,7 +21,8 @@ public final class SamplingEngine {
 
     public init(store: MetricStore = MetricStore()) {
         self.store = store
-        sampler = SamplerActor { snapshot in
+        network = NetworkService(store: store)
+        sampler = SamplerActor(pathMonitor: network.monitor) { snapshot in
             DispatchQueue.main.async {
                 MainActor.assumeIsolated { store.ingest(snapshot) }
             }
@@ -31,6 +34,8 @@ public final class SamplingEngine {
     }
 
     private func update(force: Bool = false) {
+        network.update(demanded: demand.active.contains(.network) || demand.active.contains(.networkInfo),
+                       onBattery: power.state.onBattery, paused: !pauses.reasons.isEmpty)
         let new = SamplerConfig(
             interval: baseInterval * power.multiplier(slowDownOnBattery: slowDownOnBattery),
             metrics: demand.active,

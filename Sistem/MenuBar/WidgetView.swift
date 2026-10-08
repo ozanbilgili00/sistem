@@ -10,8 +10,34 @@ struct WidgetModel: Equatable {
     var text: String
     /// Oldest first, 0...1, for the mini chart.
     var history: [Float]
+    /// Speeds in bytes per second for the two-line modules (disk, network): the top and
+    /// bottom line. nil for percentage modules.
+    var topRate: Double?
+    var bottomRate: Double?
+    /// Two-line speed readouts always stack, whatever the label setting says.
+    var isPair: Bool { topRate != nil }
 
     static let chartSamples = 30  // one minute at the default 2 s
+
+    /// Longest text a module's readout can take; the status item's width is reserved
+    /// for it so the menu bar never shifts.
+    static func widestText(for module: ModuleID) -> String {
+        switch module {
+        case .network, .disk: pairLine(module, top: true, rate: 888_000_000)  // "↑ 888 MB/s"
+        default: Format.percent(1)
+        }
+    }
+
+    /// "↑ 1,2 MB/s" / "↓ 34 KB/s"; the disk reads "R 3 MB/s" / "W 0 B/s".
+    static func pairLine(_ module: ModuleID, top: Bool, rate: Double) -> String {
+        let prefix: String = switch (module, top) {
+        case (.network, true): "↑"
+        case (.network, false): "↓"
+        case (_, true): String(localized: "disk.okuma.kisa")
+        default: String(localized: "disk.yazma.kisa")
+        }
+        return "\(prefix) \(Format.rate(rate))"
+    }
 
     @MainActor static func make(_ module: ModuleID, store: MetricStore) -> WidgetModel {
         switch module {
@@ -37,9 +63,31 @@ struct WidgetModel: Equatable {
             }
             let value = store.memory?.usedFraction
             return WidgetModel(label: "RAM", value: value, text: Format.percent(value), history: history)
+        case .network:
+            let down = store.network?.down ?? 0, up = store.network?.up ?? 0
+            let history = pairHistory(store.networkDown, store.networkUp)
+            return WidgetModel(label: WidgetModel.pairLine(.network, top: true, rate: up), value: nil,
+                               text: WidgetModel.pairLine(.network, top: false, rate: down), history: history,
+                               topRate: up, bottomRate: down)
+        case .disk:
+            let read = store.disk?.readRate ?? 0, write = store.disk?.writeRate ?? 0
+            let boot = store.diskVolumes.first { $0.isBoot } ?? store.diskVolumes.first
+            return WidgetModel(label: WidgetModel.pairLine(.disk, top: true, rate: read), value: boot?.usedFraction,
+                               text: WidgetModel.pairLine(.disk, top: false, rate: write),
+                               history: pairHistory(store.diskRead, store.diskWrite), topRate: read, bottomRate: write)
         default:
             return WidgetModel(label: String(localized: module.menuBarTitle), value: nil, text: "—", history: [])
         }
+    }
+
+    /// Both directions summed and scaled to the busiest second of the last minute
+    /// (at least 100 KB/s, so a trickle doesn't fill the chart).
+    private static func pairHistory(_ first: RingBuffer, _ second: RingBuffer) -> [Float] {
+        let count = min(first.count, second.count, chartSamples)
+        let start = first.count - count
+        let totals = (0..<count).map { first[start + $0] + second[second.count - count + $0] }
+        let peak = max(totals.max() ?? 0, 100_000)
+        return totals.map { $0 / peak }
     }
 
     /// Mean of the last `window` samples: two is a 4 s window at the default interval,
@@ -74,6 +122,8 @@ final class WidgetView: NSView {
         static let labelFont = NSFont.systemFont(ofSize: 7.5, weight: .semibold)
         static let stackedValueFont = NSFont.monospacedDigitSystemFont(ofSize: 10.5, weight: .semibold)
         static let valueFont = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium)
+        /// Two speeds stacked: smaller than a value-over-label pair, so both lines fit the bar.
+        static let pairFont = NSFont.monospacedDigitSystemFont(ofSize: 9.5, weight: .medium)
     }
 
     var onWidthChange: ((CGFloat) -> Void)?
@@ -81,6 +131,10 @@ final class WidgetView: NSView {
     private var config = WidgetConfig.default
     private var model = WidgetModel(label: "", value: nil, text: "—", history: [])
     private var key: RenderKey?
+    /// Set by the owner; text width is reserved for this string.
+    var widestText = Format.percent(1) {
+        didSet { if widestText != oldValue { strings = nil } }
+    }
 
     override var isFlipped: Bool { false }
     override func hitTest(_ point: NSPoint) -> NSView? { nil }
@@ -99,7 +153,8 @@ final class WidgetView: NSView {
         // Ring in 2 % steps: finer arcs are invisible at 14 pt but cost a redraw.
         let ring = config.kinds.contains(.ring) ? Int(((model.value ?? 0) * 50).rounded()) : 0
         let text = config.kinds.contains(.text) ? model.text : ""
-        let new = RenderKey(config: config, label: config.showLabel ? model.label : "", text: text,
+        let stackedNow = config.showLabel || model.isPair
+        let new = RenderKey(config: config, label: stackedNow ? model.label : "", text: text,
                             ringSteps: ring, chartPixels: pixels)
         let configChanged = config != self.config
         self.model = model
@@ -128,12 +183,18 @@ final class WidgetView: NSView {
 
     private var ringDiameter: CGFloat { max(10, NSStatusBar.system.thickness - 2 * Layout.ringInset) }
 
-    private var stacked: Bool { config.showLabel }
+    private var stacked: Bool { config.showLabel || model.isPair }
+
+    private var valueFont: NSFont {
+        model.isPair ? Layout.pairFont : stacked ? Layout.stackedValueFont : Layout.valueFont
+    }
 
     private var textWidth: CGFloat {
-        let widest = Format.percent(1)  // "%100" / "100%"
-        let valueWidth = (widest as NSString).size(withAttributes: [.font: stacked ? Layout.stackedValueFont : Layout.valueFont]).width
+        let widest = widestText  // "%100" / "100%", or the longest speed
+        let valueWidth = (widest as NSString).size(withAttributes: [.font: valueFont]).width
         guard stacked else { return ceil(valueWidth) }
+        // A speed's top line is as wide as the bottom one; a name only needs its own width.
+        guard !model.isPair else { return ceil(valueWidth) }
         let labelWidth = (model.label as NSString).size(withAttributes: [.font: Layout.labelFont]).width
         return ceil(max(valueWidth, labelWidth))
     }
@@ -162,13 +223,14 @@ final class WidgetView: NSView {
 
     private func makeStrings() -> (label: NSAttributedString, value: NSAttributedString) {
         let center = NSMutableParagraphStyle()
-        center.alignment = .center
+        // Speeds are left-aligned so the arrows stay put as the numbers change length.
+        center.alignment = model.isPair ? .left : .center
         let label = NSAttributedString(string: model.label, attributes: [
-            .font: Layout.labelFont, .foregroundColor: NSColor.secondaryLabelColor, .paragraphStyle: center,
+            .font: model.isPair ? Layout.pairFont : Layout.labelFont,
+            .foregroundColor: model.isPair ? NSColor.labelColor : NSColor.secondaryLabelColor, .paragraphStyle: center,
         ])
         let value = NSAttributedString(string: model.text, attributes: [
-            .font: stacked ? Layout.stackedValueFont : Layout.valueFont,
-            .foregroundColor: NSColor.labelColor, .paragraphStyle: center,
+            .font: valueFont, .foregroundColor: NSColor.labelColor, .paragraphStyle: center,
         ])
         return (label, value)
     }
@@ -176,7 +238,11 @@ final class WidgetView: NSView {
     private func drawText(in rect: NSRect) {
         let strings = self.strings ?? makeStrings()
         self.strings = strings
-        if stacked {
+        if model.isPair {
+            let mid = rect.midY
+            strings.label.draw(in: NSRect(x: rect.minX, y: mid, width: rect.width, height: 11.5))
+            strings.value.draw(in: NSRect(x: rect.minX, y: mid - 11.5, width: rect.width, height: 11.5))
+        } else if stacked {
             let mid = rect.midY
             strings.label.draw(in: NSRect(x: rect.minX, y: mid + 0.5, width: rect.width, height: 10))
             strings.value.draw(in: NSRect(x: rect.minX, y: mid - 11.5, width: rect.width, height: 13))

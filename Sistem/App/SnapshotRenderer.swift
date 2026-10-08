@@ -19,7 +19,7 @@ enum SnapshotRenderer {
 
         let pages: [(String, Page)] = [
             ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)), ("gpu", .module(.gpu)), ("ram", .module(.ram)),
-            ("settings", .settings), ("diagnostics", .diagnostics),
+            ("disk", .module(.disk)), ("network", .module(.network)), ("settings", .settings), ("diagnostics", .diagnostics),
         ]
         for (theme, name) in [("dark", NSAppearance.Name.darkAqua), ("light", .aqua)] {
             let appearance = NSAppearance(named: name)!
@@ -41,11 +41,23 @@ enum SnapshotRenderer {
                 save(GPUPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
                         .background(Palette.background), label, CGSize(width: 760, height: 520))
             }
+            save(DiskPopover(settings: settings, openWindow: {}), "popover-disk", CGSize(width: 300, height: 640))
+            save(NetworkPopover(settings: settings, openWindow: {}), "popover-network", CGSize(width: 300, height: 640))
+            for (label, tab) in [("disk-module", ModuleTab.module), ("disk-widgets", .widgets)] {
+                save(DiskPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
+                        .background(Palette.background), label, CGSize(width: 760, height: 520))
+            }
+            for (label, tab) in [("network-module", ModuleTab.module), ("network-widgets", .widgets)] {
+                save(NetworkPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
+                        .background(Palette.background), label, CGSize(width: 760, height: 520))
+            }
             save(RAMPage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
                     .background(Palette.background), "ram-module", CGSize(width: 760, height: 360))
             save(PopoverView(openWindow: {}), "popover", CGSize(width: 300, height: 200))
             renderWidgets(feed.store, module: .cpu, appearance: appearance, to: directory.appending(path: "menubar-\(theme).png"))
             renderWidgets(feed.store, module: .gpu, appearance: appearance, to: directory.appending(path: "menubar-gpu-\(theme).png"))
+            renderWidgets(feed.store, module: .disk, appearance: appearance, to: directory.appending(path: "menubar-disk-\(theme).png"))
+            renderWidgets(feed.store, module: .network, appearance: appearance, to: directory.appending(path: "menubar-network-\(theme).png"))
         }
     }
 
@@ -84,6 +96,7 @@ enum SnapshotRenderer {
             .init(name: "Super", coreCount: 6, activeFraction: 0.31, performanceLevel: 0.78, averageMHz: 3_650, maxMHz: 4_608),
             .init(name: "Performance", coreCount: 12, activeFraction: 0.12, performanceLevel: 0.34, averageMHz: 2_010, maxMHz: 4_380),
         ])))
+        addDiskAndNetwork(to: store)
         let names = ["Safari", "WindowServer", "Xcode", "Google Chrome Helper (Renderer)", "kernel_task", "Finder", "mds_stores", "Music"]
         let entries = names.enumerated().map { i, name in
             ProcessEntry(pid: pid_t(900 + i), name: name, cpu: Float(names.count - i) * 0.07,
@@ -92,6 +105,50 @@ enum SnapshotRenderer {
         }
         store.ingest(Snapshot(processes: ProcessSample(topCPU: entries, topMemory: entries, processCount: 1004)))
         return store
+    }
+
+    /// Bursty drive and network traffic, two volumes, SMART figures, a Wi-Fi link and a short connection history.
+    private static func addDiskAndNetwork(to store: MetricStore) {
+        let gb: UInt64 = 1_000_000_000
+        let volumes = [
+            DiskVolume(name: "Macintosh HD", mountPoint: "/", total: 1_000 * gb, available: 412 * gb, kind: .internalDisk, format: "APFS", isBoot: true),
+            DiskVolume(name: "Yedek", mountPoint: "/Volumes/Yedek", total: 2_000 * gb, available: 1_830 * gb, kind: .external, format: "exFAT"),
+        ]
+        for i in 0..<MetricStore.historyLength {
+            let t = Double(i) / 22
+            let burst = i % 53 < 7 ? 1.0 : 0.0
+            let read = max(0, 180_000 + 120_000 * sin(t) + burst * 640_000_000)
+            let write = max(0, 90_000 + 60_000 * cos(t * 1.3) + (i % 71 < 5 ? 210_000_000 : 0))
+            let device = DiskDeviceRate(id: 1, name: "APPLE SSD AP1024Z", bsdName: "disk0", isInternal: true, readRate: read, writeRate: write)
+            store.ingest(Snapshot(disk: DiskSample(readRate: read, writeRate: write, readOps: read / 60_000, writeOps: write / 50_000,
+                                                   devices: [device], interval: 2, volumes: i == 0 ? volumes : nil)))
+            let down = max(0, 420_000 + 300_000 * sin(t * 0.8) + (i % 89 < 12 ? 38_000_000 : 0))
+            let up = max(0, 60_000 + 40_000 * cos(t) + (i % 97 < 6 ? 4_500_000 : 0))
+            store.ingest(Snapshot(network: NetworkSample(
+                down: down, up: up, totalDown: 18 * gb, totalUp: 2 * gb,
+                interfaces: [
+                    NetworkInterfaceRate(name: "en0", down: down, up: up, totalDown: 18 * gb, totalUp: 2 * gb),
+                    NetworkInterfaceRate(name: "en5", down: 0, up: 0, totalDown: 12_000_000, totalUp: 3_000_000),
+                ], primary: "en0")))
+        }
+        store.ingest(Snapshot(diskHealth: DiskHealth(
+            criticalWarning: 0, temperatureCelsius: 38, availableSpare: 100, availableSpareThreshold: 99, percentageUsed: 2,
+            bytesRead: 64_300 * gb, bytesWritten: 41_800 * gb, powerCycles: 212, powerOnHours: 1_536, unsafeShutdowns: 9, mediaErrors: 0)))
+        let wifi = PathState.Interface(name: "en0", type: .wifi)
+        let path = PathState(status: .satisfied, interfaces: [wifi, .init(name: "en5", type: .wired)], primary: wifi)
+        let now = Date()
+        store.ingest(Snapshot(
+            networkInfo: NetworkInfoSample(
+                wifi: WiFiSample(interfaceName: "en0", isAssociated: true, rssi: -52, noise: -92, channel: 36, band: .ghz5, transmitRate: 866),
+                addresses: [LocalAddress(interface: "en0", address: "192.168.1.24", isIPv6: false),
+                            LocalAddress(interface: "en0", address: "fe80::1c2a:5bff:fe3e:91a2", isIPv6: true),
+                            LocalAddress(interface: "en5", address: "10.0.0.8", isIPv6: false)]),
+            path: path,
+            connectionEvents: [
+                ConnectionEvent(id: 0, date: now.addingTimeInterval(-5_400), kind: .connected, interface: wifi),
+                ConnectionEvent(id: 1, date: now.addingTimeInterval(-3_100), kind: .disconnected, interface: nil),
+                ConnectionEvent(id: 2, date: now.addingTimeInterval(-3_060), kind: .connected, interface: wifi),
+            ]))
     }
 
     /// The menu bar widget configurations side by side on a menu-bar-coloured strip.
@@ -110,6 +167,7 @@ enum SnapshotRenderer {
         var x: CGFloat = 8
         for config in configs {
             let view = WidgetView(frame: NSRect(x: x, y: 0, width: 200, height: height))
+            view.widestText = WidgetModel.widestText(for: module)
             view.update(.make(module, store: store), config: config)
             view.setFrameSize(NSSize(width: view.intrinsicWidth, height: height))
             strip.addSubview(view)

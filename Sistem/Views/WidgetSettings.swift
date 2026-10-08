@@ -8,6 +8,11 @@ struct WidgetSettings: View {
     let module: ModuleID
     @Bindable var settings: SettingsStore
 
+    /// A speed has no fraction to fill a ring with (the disk uses its capacity).
+    private var kinds: [WidgetKind] {
+        module == .network ? WidgetKind.allCases.filter { $0 != .ring } : WidgetKind.allCases
+    }
+
     var body: some View {
         let config = settings.widget(for: module)
         VStack(alignment: .leading, spacing: 14) {
@@ -22,8 +27,8 @@ struct WidgetSettings: View {
             }
             Card(padding: 0) {
                 VStack(spacing: 0) {
-                    ForEach(WidgetKind.allCases) { kind in
-                        if kind != WidgetKind.allCases.first { RowDivider() }
+                    ForEach(kinds) { kind in
+                        if kind != kinds.first { RowDivider() }
                         SettingRow(Text(kind.title), detail: Text(kind.detail)) {
                             Toggle(String(localized: kind.title), isOn: binding(kind, config))
                                 .labelsHidden().toggleStyle(.switch)
@@ -64,18 +69,20 @@ private struct WidgetPreview: View {
     var body: some View {
         let _ = feed.frame
         let model = WidgetModel.make(module, store: feed.store)
-        WidgetRepresentable(model: model, config: config)
-            .frame(width: WidgetRepresentable.width(model: model, config: config), height: NSStatusBar.system.thickness)
+        WidgetRepresentable(module: module, model: model, config: config)
+            .frame(width: WidgetRepresentable.width(module: module, model: model, config: config), height: NSStatusBar.system.thickness)
             .liveMetric(module.metric ?? .cpu)
     }
 }
 
 private struct WidgetRepresentable: NSViewRepresentable {
+    let module: ModuleID
     let model: WidgetModel
     let config: WidgetConfig
 
-    static func width(model: WidgetModel, config: WidgetConfig) -> CGFloat {
+    static func width(module: ModuleID, model: WidgetModel, config: WidgetConfig) -> CGFloat {
         let view = WidgetView(frame: NSRect(x: 0, y: 0, width: 0, height: NSStatusBar.system.thickness))
+        view.widestText = WidgetModel.widestText(for: module)
         view.update(model, config: config)
         return view.intrinsicWidth
     }
@@ -83,6 +90,7 @@ private struct WidgetRepresentable: NSViewRepresentable {
     func makeNSView(context: Context) -> WidgetView { WidgetView() }
 
     func updateNSView(_ view: WidgetView, context: Context) {
+        view.widestText = WidgetModel.widestText(for: module)
         view.update(model, config: config)
     }
 }

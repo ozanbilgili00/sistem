@@ -95,6 +95,8 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
         case .cpu: AnyView(CPUPopover(settings: settings, openWindow: { open(.module(.cpu)) }, close: close))
         case .gpu: AnyView(GPUPopover(settings: settings, openWindow: { open(.module(.gpu)) }))
         case .ram: AnyView(RAMPopover(settings: settings, openWindow: { open(.module(.ram)) }))
+        case .disk: AnyView(DiskPopover(settings: settings, openWindow: { open(.module(.disk)) }))
+        case .network: AnyView(NetworkPopover(settings: settings, openWindow: { open(.module(.network)) }))
         default: AnyView(PopoverView(openWindow: { open(nil) }))
         }
         let host = NSHostingController(rootView: content.environment(feed))
@@ -123,6 +125,7 @@ private final class ModuleItem {
     private let engine: SamplingEngine
     private var token: ObservationToken?
     private var shown: DisplayHysteresis
+    private var shownRates = RateHysteresis()
 
     var config: WidgetConfig {
         didSet { if config != oldValue { refresh() } }
@@ -143,6 +146,7 @@ private final class ModuleItem {
             view.autoresizingMask = [.width, .height]
             button.addSubview(view)
         }
+        view.widestText = WidgetModel.widestText(for: module)
         view.onWidthChange = { [weak self] width in self?.item.length = width }
         if let metric = module.metric { engine.demand.retain(metric) }
         token = engine.store.observe { [weak self] in self?.refresh() }
@@ -151,8 +155,16 @@ private final class ModuleItem {
 
     private func refresh() {
         var model = WidgetModel.make(module, store: engine.store)
-        model.value = shown.filter(model.value)
-        model.text = Format.percent(model.value)
+        if let top = model.topRate, let bottom = model.bottomRate {
+            // Speeds: two lines, shown through the rate hysteresis. The disk's ring
+            // (capacity) moves slowly enough to go straight through.
+            let (a, b) = shownRates.filter(top, bottom)
+            model.label = WidgetModel.pairLine(module, top: true, rate: a)
+            model.text = WidgetModel.pairLine(module, top: false, rate: b)
+        } else {
+            model.value = shown.filter(model.value)
+            model.text = Format.percent(model.value)
+        }
         if view.update(model, config: config) {
             item.button?.setAccessibilityValue(model.text)
             MenuBarStats.redraws += 1

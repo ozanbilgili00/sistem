@@ -24,10 +24,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    /// Keeps the sampler's interval in step with the settings.
+    /// Keeps the sampler's interval and the optional network lookups in step with the settings.
     private func syncEngineSettings() {
         engine.baseInterval = withObservationTracking {
             engine.slowDownOnBattery = settings.slowDownOnBattery
+            engine.network.publicIPEnabled = settings.networkPublicIP
+            engine.network.latencyEnabled = settings.networkLatency
             return settings.updateInterval
         } onChange: { [weak self] in
             DispatchQueue.main.async { MainActor.assumeIsolated { self?.syncEngineSettings() } }

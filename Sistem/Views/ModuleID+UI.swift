@@ -38,6 +38,8 @@ extension ModuleID {
         case .cpu: .cpu
         case .gpu: .gpu
         case .ram: .memory
+        case .disk: .disk
+        case .network: .network
         default: nil
         }
     }
@@ -61,7 +63,7 @@ extension ModuleID {
         case .cpu: "Toplam ve çekirdek başına yük, frekans, ortalama yük ve en çok CPU kullanan süreçler."
         case .gpu: "GPU, render ve tiler kullanımı, Neural Engine ve grafik gücü."
         case .ram: "Uygulama, bağlı, sıkıştırılmış bellek, takas, bellek baskısı ve en çok bellek kullanan süreçler."
-        case .disk: "Birimler, doluluk, okuma ve yazma hızı."
+        case .disk: "Birimler, doluluk, okuma ve yazma hızı ve disk sağlığı."
         case .sensors: "Çekirdek sıcaklıkları, fan hızları ve güç tüketimi."
         case .network: "İndirme ve yükleme hızı, bağlantı durumu ve Wi-Fi bilgileri."
         case .battery: "Şarj, kalan süre, pil sağlığı, döngü sayısı ve adaptör."
@@ -80,6 +82,7 @@ extension ModuleID {
     var menuBarUnit: LocalizedStringResource? {
         switch self {
         case .cpu, .gpu, .ram: "yüzde"
+        case .disk, .network: "hız"
         case .sensors: "derece"
         default: nil
         }

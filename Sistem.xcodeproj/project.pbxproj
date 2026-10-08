@@ -204,6 +204,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ozan.sistem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -231,6 +233,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
 				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ozan.sistem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
