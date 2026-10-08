@@ -11,6 +11,9 @@ public struct Snapshot: Sendable {
     public var diskHealth: DiskHealth?
     public var network: NetworkSample?
     public var networkInfo: NetworkInfoSample?
+    /// The few temperatures the menu bar shows; also derived from every full read.
+    public var temperature: TemperatureSample?
+    public var sensors: SensorSample?
     /// Connectivity, from `NWPathMonitor` events rather than a tick.
     public var path: PathState?
     public var connectionEvents: [ConnectionEvent] = []
@@ -20,6 +23,7 @@ public struct Snapshot: Sendable {
     public init(cpu: CPUSample? = nil, memory: MemorySample? = nil, processes: ProcessSample? = nil,
                 gpu: GPUSample? = nil, power: PowerSample? = nil, cpuFrequency: CPUFrequencySample? = nil,
                 disk: DiskSample? = nil, diskHealth: DiskHealth? = nil, network: NetworkSample? = nil, networkInfo: NetworkInfoSample? = nil,
+                temperature: TemperatureSample? = nil, sensors: SensorSample? = nil,
                 path: PathState? = nil, connectionEvents: [ConnectionEvent] = [],
                 publicIP: PublicIPState? = nil, latency: LatencyState? = nil) {
         self.cpu = cpu
@@ -32,6 +36,8 @@ public struct Snapshot: Sendable {
         self.diskHealth = diskHealth
         self.network = network
         self.networkInfo = networkInfo
+        self.temperature = temperature
+        self.sensors = sensors
         self.path = path
         self.connectionEvents = connectionEvents
         self.publicIP = publicIP

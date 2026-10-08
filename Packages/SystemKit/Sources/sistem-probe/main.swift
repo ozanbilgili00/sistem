@@ -230,6 +230,8 @@ if args.count >= 2, args[1] == "--disk-check" { diskCheck(megabytes: args.count 
 if args.count >= 2, args[1] == "--net-check" { netCheck(seconds: args.count > 2 ? Int(args[2]) ?? 10 : 10); exit(0) }
 if args.count == 2, args[1] == "--io-bench" { ioBench(); exit(0) }
 if args.count == 2, args[1] == "--smart-check" { smartCheck(); exit(0) }
+// `sistem-probe --sensors-check [loadSeconds]`: Faz 6 gate check (SensorChecks.swift).
+if args.count >= 2, args[1] == "--sensors-check" { sensorsCheck(loadSeconds: args.count > 2 ? Double(args[2]) ?? 20 : 20); exit(0) }
 
 // `sistem-probe --freq-check`: cluster frequency while one Super-class thread, then all cores, run.
 if args.count >= 2, args[1] == "--freq-check" {

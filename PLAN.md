@@ -322,13 +322,16 @@ Sonuç: `DiskReader` (IOBlockStorageDriver `Statistics`, hot-plug bildirimleri, 
 - Boşta uyanma A/B (Faz 5 / Faz 4 yapısı, art arda): 3.3/2.1 vs 1.25/2.7 — gürültü içinde; boşta yol kodda değişmedi (tüm yeni okuyucular tembel, `NWPathMonitor` talep olunca).
 - Konum izni penceresi ve gerçek SSID canlı denenmedi (odak kuralı); imzasız yapıda CoreLocation sormayabilir → Ozan elle dener.
 
-### Faz 6 — Sensörler · ~3.5 gün
+### Faz 6 — Sensörler · ~3.5 gün · ✅ 2026-10-08 (kapı notlarıyla)
 - SMC okuyucu birincil: `Tp/Tm/Tg` grupları, `…X` toplu anahtarlar, fanlar, `PSTR/PDTR/PPMC`; HID yalnızca SMC'de olmayanlar için
 - Eşleme tablosu `Mac17,8.json`'dan; bilinmeyen model → ham ad
 - Türetilmiş sensörler, gruplu liste (Fanlar · Sıcaklık · Voltaj · Akım · Güç · Enerji)
 - İki satırlı sensör yığını widget'ı
 
 Kapı: geçerli sensörlerin tamamı listeleniyor, −9200 °C gibi çöp değer yok; sensör modülü açıkken boşta < %0.4.
+
+Sonuç: `SensorReader` (SMC anahtar kataloğu ilk talepte bir kez: 143 ms duvar / 13 ms CPU; tür bilgisi önbellekte). Üç metrik: `.temperature` (63 CPU çekirdek anahtarı, 0.71 ms CPU — menübar), `.temperatureStack` (+42 GPU), `.sensors` (tam liste 266 anahtar, 3.4 ms CPU, yalnız sayfa/popover); hepsi 2 tikte bir. SMC yazma yolu yok. Süzme: float olmayan, tam sıfır, `TTPD` çöpü, `TVMD`=1 °C, ~2 dk sabit kodlar → çöp değer 0. HID atlandı (SMC'de olmayan sıcaklık yok). Menübar `TPDX` yerine çekirdek maksimumu (TPDX yükte 8–12 °C düşük). Boşta A/B (art arda 3 çift, sensör öğesi açık/kapalı): %0.25 / %0.20 CPU, uyanma 2.0 / 2.1 → öğe ≈ +0.06 puan, bütçe 0.4 içinde. Pencere: %0.64 / 46 MB / 3.0 uyanma. 88 test.
+- Sensör adları sıra numaralı ("Super sensörü 3"); çekirdek eşlemesi ve DRAM sensörü yok; voltaj/akımda yalnız 4 adlı anahtar (ray adları belgesiz).
 
 ### Faz 7 — Batarya, Bluetooth, Saat · ~2 gün
 - Batarya: `IOPSNotification` ile olay tabanlı; sağlık, döngü, adaptör, anlık güç; batarya widget'ı

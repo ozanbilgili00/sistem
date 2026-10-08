@@ -44,5 +44,27 @@ enum Format {
         return Int64(clamping: value).formatted(.byteCount(style: .file))
     }
 
+    /// "62°C" / "144°F": whole degrees, no space, so it fits the menu bar. The window uses
+    /// ``temperatureDetailed(_:unit:)``.
+    static func temperature(_ celsius: Float?, unit: SettingsStore.TemperatureUnit) -> String {
+        guard let celsius else { return "—" }
+        return "\(Int(unit.convert(celsius).rounded()))\(unit.symbol)"
+    }
+
+    /// "62,5 °C" / "144,5 °F"
+    static func temperatureDetailed(_ celsius: Float?, unit: SettingsStore.TemperatureUnit) -> String {
+        guard let celsius else { return "—" }
+        return "\(Double(unit.convert(celsius)).formatted(.number.precision(.fractionLength(1)))) \(unit.symbol)"
+    }
+
+    static func rpm(_ value: Float?) -> String {
+        guard let value else { return "—" }
+        return "\(Int(value.rounded()).formatted()) rpm"
+    }
+
+    static func volts(_ value: Float) -> String { "\(Double(value).formatted(.number.precision(.fractionLength(2)))) V" }
+
+    static func amps(_ value: Float) -> String { "\(Double(value).formatted(.number.precision(.fractionLength(2)))) A" }
+
     static func integer(_ value: UInt64) -> String { Int64(clamping: value).formatted() }
 }

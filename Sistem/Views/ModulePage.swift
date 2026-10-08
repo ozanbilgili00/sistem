@@ -15,6 +15,7 @@ struct ModulePage: View {
         case .ram: RAMPage(settings: settings)
         case .disk: DiskPage(settings: settings)
         case .network: NetworkPage(settings: settings)
+        case .sensors: SensorsPage(settings: settings)
         default: placeholder
         }
     }

@@ -3050,6 +3050,598 @@
           }
         }
       }
+    },
+    "%lld sensör": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sensors"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld sensör"
+          }
+        }
+      }
+    },
+    "Adaptör girişi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adapter input"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adaptör girişi"
+          }
+        }
+      }
+    },
+    "Akım": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akım"
+          }
+        }
+      }
+    },
+    "Aralık %@ – %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Range %@ – %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aralık %@ – %@"
+          }
+        }
+      }
+    },
+    "Batarya paketi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Battery pack"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batarya paketi"
+          }
+        }
+      }
+    },
+    "Batarya sensörü %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Battery sensor %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Batarya sensörü %lld"
+          }
+        }
+      }
+    },
+    "Bu Mac'te okunabilir sensör bulunamadı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No readable sensors were found on this Mac."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu Mac'te okunabilir sensör bulunamadı."
+          }
+        }
+      }
+    },
+    "Bu model için sensör adları doğrulanmadı; sensörler SMC anahtarlarıyla listelenir.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensor names are not verified for this model; sensors are listed by their SMC key."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu model için sensör adları doğrulanmadı; sensörler SMC anahtarlarıyla listelenir."
+          }
+        }
+      }
+    },
+    "Bölüm açık": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expanded"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bölüm açık"
+          }
+        }
+      }
+    },
+    "Bölüm kapalı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collapsed"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bölüm kapalı"
+          }
+        }
+      }
+    },
+    "CPU en sıcak": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU hottest"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU en sıcak"
+          }
+        }
+      }
+    },
+    "CPU ortalaması": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU average"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU ortalaması"
+          }
+        }
+      }
+    },
+    "CPU · Performance çekirdekler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU · Performance cores"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU · Performance çekirdekler"
+          }
+        }
+      }
+    },
+    "CPU · Super çekirdekler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU · Super cores"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU · Super çekirdekler"
+          }
+        }
+      }
+    },
+    "DC girişi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DC input"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DC girişi"
+          }
+        }
+      }
+    },
+    "Diğer sensörler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other sensors"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer sensörler"
+          }
+        }
+      }
+    },
+    "Fan %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fan %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fan %lld"
+          }
+        }
+      }
+    },
+    "Fanlar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fans"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fanlar"
+          }
+        }
+      }
+    },
+    "GPU en sıcak": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU hottest"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU en sıcak"
+          }
+        }
+      }
+    },
+    "GPU sensörü %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU sensor %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GPU sensörü %lld"
+          }
+        }
+      }
+    },
+    "Genel ayarlardan değiştirilir.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changed in the app's Settings."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genel ayarlardan değiştirilir."
+          }
+        }
+      }
+    },
+    "Menü çubuğunda CPU'nun altında GPU sıcaklığını da gösterir. GPU sensörleri için her turda 42 anahtar daha okunur.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Also shows the GPU temperature under the CPU in the menu bar. Reads 42 more SMC keys on every sensor update."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menü çubuğunda CPU'nun altında GPU sıcaklığını da gösterir. GPU sensörleri için her turda 42 anahtar daha okunur."
+          }
+        }
+      }
+    },
+    "Performance sensörü %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Performance sensor %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Performance sensörü %lld"
+          }
+        }
+      }
+    },
+    "SSD": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSD"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSD"
+          }
+        }
+      }
+    },
+    "SSD sensörü %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSD sensor %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSD sensörü %lld"
+          }
+        }
+      }
+    },
+    "Sensörler okunuyor…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading sensors…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensörler okunuyor…"
+          }
+        }
+      }
+    },
+    "SoC": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC"
+          }
+        }
+      }
+    },
+    "SoC CPU bölgesi %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC CPU region %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC CPU bölgesi %lld"
+          }
+        }
+      }
+    },
+    "SoC CPU bölgesi (en sıcak)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC CPU region (hottest)"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC CPU bölgesi (en sıcak)"
+          }
+        }
+      }
+    },
+    "SoC bölgesi A-%lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC region A-%lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC bölgesi A-%lld"
+          }
+        }
+      }
+    },
+    "SoC bölgesi B-%lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC region B-%lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC bölgesi B-%lld"
+          }
+        }
+      }
+    },
+    "SoC en sıcak nokta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC hotspot"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SoC en sıcak nokta"
+          }
+        }
+      }
+    },
+    "Super sensörü %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Super sensor %lld"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Super sensörü %lld"
+          }
+        }
+      }
+    },
+    "Voltaj": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voltage"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voltaj"
+          }
+        }
+      }
+    },
+    "ort. %@ · maks %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "avg. %@ · max %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ort. %@ · maks %@"
+          }
+        }
+      }
+    },
+    "Ölçek %@ – %@. CPU çizgisi çekirdek sensörlerinin en yükseğidir.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scale %@ – %@. The CPU line is the highest of the core sensors."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ölçek %@ – %@. CPU çizgisi çekirdek sensörlerinin en yükseğidir."
+          }
+        }
+      }
+    },
+    "İki satırlı gösterim": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Two-line display"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki satırlı gösterim"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

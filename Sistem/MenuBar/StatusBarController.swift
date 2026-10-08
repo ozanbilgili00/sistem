@@ -33,25 +33,26 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
 
     /// Re-reads the menu bar settings whenever they change.
     private func trackSettings() {
-        let wanted = withObservationTracking {
-            settings.menuBarModules.filter { $0.metric != nil }.map { ($0, settings.widget(for: $0)) }
+        let (wanted, sensors) = withObservationTracking {
+            (settings.menuBarModules.filter { $0.metric != nil }.map { ($0, settings.widget(for: $0)) }, settings.sensorsDisplay)
         } onChange: { [weak self] in
             // Fires on willSet; read the new values on the next turn.
             DispatchQueue.main.async { MainActor.assumeIsolated { self?.trackSettings() } }
         }
-        apply(wanted)
+        apply(wanted, sensors: sensors)
     }
 
-    private func apply(_ wanted: [(ModuleID, WidgetConfig)]) {
+    private func apply(_ wanted: [(ModuleID, WidgetConfig)], sensors: SensorsDisplay) {
         if wanted.map(\.0) != items.map(\.module) {
             if popover.isShown { popover.performClose(nil) }
             items.forEach { $0.remove() }
             // A new status item lands left of the existing ones; build right to left.
             items = wanted.reversed().map { module, config in
-                ModuleItem(module: module, config: config, engine: engine, target: self, action: #selector(clicked(_:)))
+                ModuleItem(module: module, config: config, sensors: sensors, engine: engine, target: self, action: #selector(clicked(_:)))
             }.reversed()
         } else {
             for (item, (_, config)) in zip(items, wanted) { item.config = config }
+            for item in items where item.module == .sensors { item.sensors = sensors }
         }
         updateFallback()
     }
@@ -97,6 +98,7 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
         case .ram: AnyView(RAMPopover(settings: settings, openWindow: { open(.module(.ram)) }))
         case .disk: AnyView(DiskPopover(settings: settings, openWindow: { open(.module(.disk)) }))
         case .network: AnyView(NetworkPopover(settings: settings, openWindow: { open(.module(.network)) }))
+        case .sensors: AnyView(SensorsPopover(settings: settings, openWindow: { open(.module(.sensors)) }))
         default: AnyView(PopoverView(openWindow: { open(nil) }))
         }
         let host = NSHostingController(rootView: content.environment(feed))
@@ -126,14 +128,37 @@ private final class ModuleItem {
     private var token: ObservationToken?
     private var shown: DisplayHysteresis
     private var shownRates = RateHysteresis()
+    /// The GPU line of the stacked sensors item, with its own hysteresis.
+    private var shownGPU = DisplayHysteresis.for(.sensors)
+    /// The metric this item holds demand for: the sensors item reads more keys when stacked.
+    private var demanded: Metric?
 
     var config: WidgetConfig {
         didSet { if config != oldValue { refresh() } }
     }
 
-    init(module: ModuleID, config: WidgetConfig, engine: SamplingEngine, target: AnyObject, action: Selector) {
+    var sensors: SensorsDisplay {
+        didSet {
+            guard sensors != oldValue else { return }
+            syncDemand()
+            view.widestText = WidgetModel.widestText(for: module, sensors: sensors)
+            if sensors.stacked != oldValue.stacked { shown = DisplayHysteresis.for(module); shownGPU = DisplayHysteresis.for(.sensors) }
+            refresh()
+        }
+    }
+
+    private func syncDemand() {
+        let wanted: Metric? = module == .sensors && sensors.stacked ? .temperatureStack : module.metric
+        guard wanted != demanded else { return }
+        if let wanted { engine.demand.retain(wanted) }  // take the new one first: no gap in demand
+        if let demanded { engine.demand.release(demanded) }
+        demanded = wanted
+    }
+
+    init(module: ModuleID, config: WidgetConfig, sensors: SensorsDisplay, engine: SamplingEngine, target: AnyObject, action: Selector) {
         self.module = module
         self.config = config
+        self.sensors = sensors
         self.engine = engine
         shown = DisplayHysteresis.for(module)
         item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -146,16 +171,27 @@ private final class ModuleItem {
             view.autoresizingMask = [.width, .height]
             button.addSubview(view)
         }
-        view.widestText = WidgetModel.widestText(for: module)
+        view.widestText = WidgetModel.widestText(for: module, sensors: sensors)
         view.onWidthChange = { [weak self] width in self?.item.length = width }
-        if let metric = module.metric { engine.demand.retain(metric) }
+        syncDemand()
         token = engine.store.observe { [weak self] in self?.refresh() }
         refresh()
     }
 
     private func refresh() {
-        var model = WidgetModel.make(module, store: engine.store)
-        if let top = model.topRate, let bottom = model.bottomRate {
+        var model = WidgetModel.make(module, store: engine.store, sensors: sensors)
+        if module == .sensors {
+            // A whole degree at a time (see DisplayHysteresis.for), shown in the user's unit.
+            model.value = shown.filter(model.value)
+            let cpu = Format.temperature(model.value.map(SensorScale.celsius), unit: sensors.unit)
+            if sensors.stacked {
+                model.gpuValue = shownGPU.filter(model.gpuValue)
+                model.label = "CPU \(cpu)"
+                model.text = "GPU \(Format.temperature(model.gpuValue.map(SensorScale.celsius), unit: sensors.unit))"
+            } else {
+                model.text = cpu
+            }
+        } else if let top = model.topRate, let bottom = model.bottomRate {
             // Speeds: two lines, shown through the rate hysteresis. The disk's ring
             // (capacity) moves slowly enough to go straight through.
             let (a, b) = shownRates.filter(top, bottom)
@@ -173,7 +209,8 @@ private final class ModuleItem {
 
     func remove() {
         token = nil
-        if let metric = module.metric { engine.demand.release(metric) }
+        if let demanded { engine.demand.release(demanded) }
+        demanded = nil
         NSStatusBar.system.removeStatusItem(item)
     }
 }

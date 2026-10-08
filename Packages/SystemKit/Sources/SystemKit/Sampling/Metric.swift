@@ -25,12 +25,22 @@ public enum Metric: String, CaseIterable, Sendable {
     /// and popover show them.
     case networkInfo
 
+    /// CPU core temperatures only (63 SMC keys, ~0.7 ms of CPU): all the menu bar item
+    /// needs. Separate from `.sensors` so a widget alone never pays for the full list.
+    case temperature
+    /// `.temperature` plus the GPU's sensors, for the two-line CPU/GPU widget.
+    case temperatureStack
+    /// Every sensor: temperatures, fans, voltages, currents, power (~260 keys, ~3.5 ms of
+    /// CPU). Only while the Sensors page or popover is on screen.
+    case sensors
+
     /// How often it is read, in base ticks (PLAN.md §3-A): CPU and RAM every tick,
     /// sensors every 2nd, battery every 15th, Bluetooth every 30th.
     public var everyTicks: Int {
         switch self {
         case .cpu, .memory, .processes, .gpu, .power, .cpuFrequency, .disk, .network: 1
         case .networkInfo: 5
+        case .temperature, .temperatureStack, .sensors: 2
         case .diskHealth: 30
         }
     }

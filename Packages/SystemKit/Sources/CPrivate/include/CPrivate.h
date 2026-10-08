@@ -62,6 +62,13 @@ void SMCClose(io_connect_t connection);
 /// Reads one key. Returns 0 on success; fills `info` and up to 32 bytes.
 int SMCReadKey(io_connect_t connection, uint32_t key, SMCKeyInfoData *_Nonnull info, uint8_t *_Nonnull bytes);
 
+/// Key metadata (type, size, attributes) alone: one call. Constant per key, so callers
+/// cache it and use ``SMCReadBytesWithInfo`` afterwards.
+int SMCReadKeyInfo(io_connect_t connection, uint32_t key, SMCKeyInfoData *_Nonnull info);
+
+/// Reads a key whose `info` is already known: one IOKit call instead of two. Read-only.
+int SMCReadBytesWithInfo(io_connect_t connection, uint32_t key, SMCKeyInfoData info, uint8_t *_Nonnull bytes);
+
 /// The key stored at `index` (0..<#KEY). Returns 0 on success.
 int SMCKeyAtIndex(io_connect_t connection, uint32_t index, uint32_t *_Nonnull key);
 

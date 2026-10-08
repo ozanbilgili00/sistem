@@ -24,7 +24,14 @@ struct DisplayHysteresis {
     /// wider limits: replaying two idle minutes (2026-10-07) gave 21 redraws per
     /// 60 ticks with the defaults, 12 with these.
     static func `for`(_ module: ModuleID) -> DisplayHysteresis {
-        module == .gpu ? DisplayHysteresis(threshold: 0.03, bigJump: 0.15, minTicks: 3) : DisplayHysteresis()
+        switch module {
+        case .gpu: DisplayHysteresis(threshold: 0.03, bigJump: 0.15, minTicks: 3)
+        // Temperatures on the 30...100 °C ring scale: redraw only after a change of a whole
+        // degree (0.014 × 70 = 0.98 °C), never for a smaller drift. The sensors arrive every
+        // second tick, so this is at most one update per two ticks whatever else ticks.
+        case .sensors: DisplayHysteresis(threshold: SensorScale.degree * 0.98, bigJump: SensorScale.degree * 5, patience: .max, minTicks: 1)
+        default: DisplayHysteresis()
+        }
     }
 
     private var shown: Float?

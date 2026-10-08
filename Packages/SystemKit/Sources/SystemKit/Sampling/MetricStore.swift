@@ -43,6 +43,11 @@ public final class MetricStore {
     public private(set) var networkDown = RingBuffer(capacity: historyLength)
     public private(set) var networkUp = RingBuffer(capacity: historyLength)
     public private(set) var networkInfo: NetworkInfoSample?
+    public private(set) var temperature: TemperatureSample?
+    public private(set) var sensors: SensorSample?
+    /// °C, not fractions: hottest CPU core sensor and hottest GPU sensor.
+    public private(set) var cpuTemperature = RingBuffer(capacity: historyLength)
+    public private(set) var gpuTemperature = RingBuffer(capacity: historyLength)
     public private(set) var path: PathState?
     /// Newest first, in memory only.
     public private(set) var connectionEvents: [ConnectionEvent] = []
@@ -103,6 +108,14 @@ public final class MetricStore {
         }
         if let sample = snapshot.networkInfo {
             networkInfo = sample
+        }
+        if let sample = snapshot.temperature {
+            temperature = sample
+            if let celsius = sample.headline { cpuTemperature.append(celsius) }
+            if let celsius = sample.gpuHottest { gpuTemperature.append(celsius) }
+        }
+        if let sample = snapshot.sensors {
+            sensors = sample
         }
         if let state = snapshot.path {
             path = state

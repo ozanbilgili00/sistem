@@ -53,6 +53,8 @@ public actor SamplerActor {
     private lazy var disk = DiskReader(queue: queue)
     // nil where the system refuses SMART (external drives, virtual machines).
     private lazy var health = NVMeHealthReader()
+    // One SMC connection for sensors, opened when a sensor metric is first wanted.
+    private lazy var sensorReader = SensorReader()
     private var network = NetworkReader()
     private lazy var wifi = WiFiReader()
     /// Metrics that were just asked for and read slower than every tick: read once at
@@ -129,6 +131,8 @@ public actor SamplerActor {
             _ = network.sample()
         case .networkInfo:
             break  // stateless
+        case .temperature, .temperatureStack, .sensors:
+            _ = sensorReader?.catalog  // enumerate the keys now, not inside the first tick
         }
     }
 
@@ -162,6 +166,19 @@ public actor SamplerActor {
                 }
             case .networkInfo:
                 snapshot.networkInfo = NetworkInfoSample(wifi: wifi.sample(), addresses: NetworkReader.localAddresses())
+            case .sensors:
+                let sample = sensorReader?.sample()
+                snapshot.sensors = sample
+                snapshot.temperature = sample?.temperature
+            case .temperature:
+                // The full read already covers it, and so does the wider one.
+                if !config.metrics.contains(.sensors), !config.metrics.contains(.temperatureStack) {
+                    snapshot.temperature = sensorReader?.sampleTemperature()
+                }
+            case .temperatureStack:
+                if !config.metrics.contains(.sensors) {
+                    snapshot.temperature = sensorReader?.sampleTemperature(includeGPU: true)
+                }
             }
             read = true
         }

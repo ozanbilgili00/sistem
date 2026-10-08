@@ -14,17 +14,26 @@ struct WidgetModel: Equatable {
     /// bottom line. nil for percentage modules.
     var topRate: Double?
     var bottomRate: Double?
-    /// Two-line speed readouts always stack, whatever the label setting says.
-    var isPair: Bool { topRate != nil }
+    /// The GPU's temperature as a ring fraction, for the stacked CPU/GPU sensors item.
+    var gpuValue: Float?
+    /// CPU over GPU: two lines, like the speeds.
+    var stacked = false
+    /// Two-line readouts (speeds, CPU/GPU temperatures) always stack, whatever the label setting says.
+    var isPair: Bool { topRate != nil || stacked }
 
     static let chartSamples = 30  // one minute at the default 2 s
 
     /// Longest text a module's readout can take; the status item's width is reserved
     /// for it so the menu bar never shifts.
-    static func widestText(for module: ModuleID) -> String {
+    static func widestText(for module: ModuleID, sensors: SensorsDisplay = SensorsDisplay()) -> String {
         switch module {
-        case .network, .disk: pairLine(module, top: true, rate: 888_000_000)  // "↑ 888 MB/s"
-        default: Format.percent(1)
+        case .sensors:
+            let value = Format.temperature(199, unit: sensors.unit)  // "199°C" / "390°F"
+            return sensors.stacked ? "GPU \(value)" : value
+        case .network, .disk:
+            return pairLine(module, top: true, rate: 888_000_000)  // "↑ 888 MB/s"
+        default:
+            return Format.percent(1)
         }
     }
 
@@ -39,8 +48,22 @@ struct WidgetModel: Equatable {
         return "\(prefix) \(Format.rate(rate))"
     }
 
-    @MainActor static func make(_ module: ModuleID, store: MetricStore) -> WidgetModel {
+    @MainActor static func make(_ module: ModuleID, store: MetricStore, sensors: SensorsDisplay = SensorsDisplay()) -> WidgetModel {
         switch module {
+        case .sensors:
+            let count = min(store.cpuTemperature.count, chartSamples)
+            let start = store.cpuTemperature.count - count
+            let history = (0..<count).map { SensorScale.fraction(store.cpuTemperature[start + $0]) }
+            let cpu = store.temperature?.headline, gpu = store.temperature?.gpuHottest
+            var model = WidgetModel(label: "CPU", value: cpu.map(SensorScale.fraction),
+                                    text: Format.temperature(cpu, unit: sensors.unit), history: history)
+            if sensors.stacked {
+                model.stacked = true
+                model.gpuValue = gpu.map(SensorScale.fraction)
+                model.label = "CPU \(model.text)"
+                model.text = "GPU \(Format.temperature(gpu, unit: sensors.unit))"
+            }
+            return model
         case .cpu:
             let count = min(store.cpuUser.count, chartSamples)
             let start = store.cpuUser.count - count
@@ -133,7 +156,11 @@ final class WidgetView: NSView {
     private var key: RenderKey?
     /// Set by the owner; text width is reserved for this string.
     var widestText = Format.percent(1) {
-        didSet { if widestText != oldValue { strings = nil } }
+        didSet {
+            guard widestText != oldValue else { return }
+            strings = nil
+            if frame.width > 0 { onWidthChange?(intrinsicWidth) }
+        }
     }
 
     override var isFlipped: Bool { false }
@@ -156,7 +183,7 @@ final class WidgetView: NSView {
         let stackedNow = config.showLabel || model.isPair
         let new = RenderKey(config: config, label: stackedNow ? model.label : "", text: text,
                             ringSteps: ring, chartPixels: pixels)
-        let configChanged = config != self.config
+        let configChanged = config != self.config || model.isPair != self.model.isPair
         self.model = model
         self.config = config
         guard new != key else { return false }

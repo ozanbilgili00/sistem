@@ -40,6 +40,7 @@ extension ModuleID {
         case .ram: .memory
         case .disk: .disk
         case .network: .network
+        case .sensors: .temperature
         default: nil
         }
     }

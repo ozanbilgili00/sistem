@@ -19,7 +19,7 @@ struct WidgetSettings: View {
             Card {
                 VStack(alignment: .leading, spacing: 12) {
                     SectionLabel("Önizleme")
-                    WidgetPreview(module: module, config: config)
+                    WidgetPreview(module: module, config: config, sensors: settings.sensorsDisplay)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 10)
                         .background(Palette.surface2, in: .rect(cornerRadius: Metrics.controlRadius))
@@ -64,14 +64,15 @@ struct WidgetSettings: View {
 private struct WidgetPreview: View {
     let module: ModuleID
     let config: WidgetConfig
+    let sensors: SensorsDisplay
     @Environment(LiveFeed.self) private var feed
 
     var body: some View {
         let _ = feed.frame
-        let model = WidgetModel.make(module, store: feed.store)
-        WidgetRepresentable(module: module, model: model, config: config)
-            .frame(width: WidgetRepresentable.width(module: module, model: model, config: config), height: NSStatusBar.system.thickness)
-            .liveMetric(module.metric ?? .cpu)
+        let model = WidgetModel.make(module, store: feed.store, sensors: sensors)
+        WidgetRepresentable(module: module, model: model, config: config, sensors: sensors)
+            .frame(width: WidgetRepresentable.width(module: module, model: model, config: config, sensors: sensors), height: NSStatusBar.system.thickness)
+            .liveMetric(module == .sensors && sensors.stacked ? .temperatureStack : module.metric ?? .cpu)
     }
 }
 
@@ -79,10 +80,11 @@ private struct WidgetRepresentable: NSViewRepresentable {
     let module: ModuleID
     let model: WidgetModel
     let config: WidgetConfig
+    let sensors: SensorsDisplay
 
-    static func width(module: ModuleID, model: WidgetModel, config: WidgetConfig) -> CGFloat {
+    static func width(module: ModuleID, model: WidgetModel, config: WidgetConfig, sensors: SensorsDisplay) -> CGFloat {
         let view = WidgetView(frame: NSRect(x: 0, y: 0, width: 0, height: NSStatusBar.system.thickness))
-        view.widestText = WidgetModel.widestText(for: module)
+        view.widestText = WidgetModel.widestText(for: module, sensors: sensors)
         view.update(model, config: config)
         return view.intrinsicWidth
     }
@@ -90,7 +92,7 @@ private struct WidgetRepresentable: NSViewRepresentable {
     func makeNSView(context: Context) -> WidgetView { WidgetView() }
 
     func updateNSView(_ view: WidgetView, context: Context) {
-        view.widestText = WidgetModel.widestText(for: module)
+        view.widestText = WidgetModel.widestText(for: module, sensors: sensors)
         view.update(model, config: config)
     }
 }

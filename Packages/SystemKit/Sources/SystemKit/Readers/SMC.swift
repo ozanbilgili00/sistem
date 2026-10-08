@@ -34,6 +34,72 @@ public final class SMC {
         )
     }
 
+    /// A key whose metadata is known, for repeated cheap reads (see ``readNumber(_:)``).
+    public struct Key: Sendable, Hashable {
+        let code: UInt32
+        let info: SMCKeyInfoData
+        public let name: String
+        public let type: String
+        public var size: Int { Int(info.dataSize) }
+        public static func == (a: Key, b: Key) -> Bool { a.code == b.code }
+        public func hash(into hasher: inout Hasher) { hasher.combine(code) }
+    }
+
+    /// Looks a key up once: type and size never change, so later reads skip the
+    /// metadata call and cost a single IOKit round trip. nil if the key doesn't exist.
+    public func key(_ name: String) -> Key? {
+        guard let code = FourCC(name) else { return nil }
+        return key(code: code.rawValue)
+    }
+
+    func key(code: UInt32) -> Key? {
+        var info = SMCKeyInfoData()
+        guard SMCReadKeyInfo(connection, code, &info) == 0 else { return nil }
+        return Key(code: code, info: info, name: FourCC(rawValue: code).string, type: FourCC(rawValue: info.dataType).string)
+    }
+
+    /// Numeric value of a known key, without allocating: only for the 4-byte `flt `
+    /// layout (every sensor this app reads); nil for other types or a failed read.
+    public func readNumber(_ key: Key) -> Double? {
+        guard key.size == 4, key.info.dataType == Self.floatType else { return nil }
+        return withUnsafeTemporaryAllocation(of: UInt8.self, capacity: 32) { buffer in
+            guard SMCReadBytesWithInfo(connection, key.code, key.info, buffer.baseAddress!) == 0 else { return nil }
+            let bits = UInt32(buffer[0]) | UInt32(buffer[1]) << 8 | UInt32(buffer[2]) << 16 | UInt32(buffer[3]) << 24
+            return Double(Float(bitPattern: bits))
+        }
+    }
+
+    private static let floatType = FourCC("flt ")!.rawValue
+
+    /// Every key whose name starts with `prefix` (1 to 3 characters), found by binary
+    /// search over the SMC's index order, which is sorted by name. A few dozen calls
+    /// instead of walking all ~3600 keys. Verified against a full walk in the tests.
+    public func keys(withPrefix prefix: String) -> [String] {
+        let bytes = Array(prefix.utf8)
+        guard (1...3).contains(bytes.count) else { return [] }
+        let low = bytes.reduce(UInt32(0)) { $0 << 8 | UInt32($1) } << UInt32(8 * (4 - bytes.count))
+        let high = low | (UInt32.max >> UInt32(8 * bytes.count))
+        let count = keyCount
+        func code(at index: Int) -> UInt32? {
+            var code: UInt32 = 0
+            return SMCKeyAtIndex(connection, UInt32(index), &code) == 0 ? code : nil
+        }
+        // First index whose key is >= low.
+        var lo = 0, hi = count
+        while lo < hi {
+            let mid = (lo + hi) / 2
+            guard let c = code(at: mid) else { return [] }
+            if c < low { lo = mid + 1 } else { hi = mid }
+        }
+        var result: [String] = []
+        var index = lo
+        while index < count, let c = code(at: index), c <= high {
+            result.append(FourCC(rawValue: c).string)
+            index += 1
+        }
+        return result
+    }
+
     /// Number of keys the SMC exposes (`#KEY`).
     public var keyCount: Int {
         guard let value = read("#KEY"), value.bytes.count == 4 else { return 0 }

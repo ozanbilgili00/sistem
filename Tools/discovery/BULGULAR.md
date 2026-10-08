@@ -108,3 +108,19 @@ Eşleme durum sayısına göre yapılır (tek bir frekans listesi uyuyorsa kulla
 
 - libproc: 886 sürecin 564'ü okunuyor, 322 root süreci EPERM. `ps` setuid root.
 - `proc_pid_rusage` CPU süreleri Mach tick (×125/3 ns).
+
+## Faz 6: Sensörler
+
+Yeniden üretmek: `swift run -c release --package-path Packages/SystemKit sistem-probe --sensors-check 30`
+
+- **Anahtar listesi:** 3626 anahtar, SMC dizin sırası ada göre sıralı. `SMC.keys(withPrefix:)` ikili aramayla yalnız `T…` (285 anahtar) aralığını gezer; tam taramayla (3626 çağrı) birebir aynı sonucu verir (test `smcPrefixSearchMatchesFullWalk`). Katalog kurulumu (anahtar listesi + tür bilgisi + ilk okuma): 143 ms duvar / 13 ms CPU, **bir kez**, ilk talepte.
+- **Okuma maliyeti (Release, ölçüldü):** anahtar bilgisi (tür, boyut) önbelleğe alınınca okuma tek IOKit çağrısı: ~12–13 µs CPU / ~100–140 µs duvar. Tam liste 266 anahtar = 3.4 ms CPU (37 ms duvar). Menü çubuğu okuması (63 CPU çekirdek anahtarı: 23 `Tp??` + 40 `Tm??`) = 0.71 ms CPU; GPU'lu yığın değişkeni +42 `Tg??` anahtarı.
+- **Katalog:** 264 geçerli sıcaklık/voltaj/akım/güç sensörü + 2 fan. Gruplar: Super 23, Performance 40, GPU 42, SoC 52 (`TPD?` 16 + `TRD?` 16 + `TUD?` 16 + `TCMb` + `TPDX`…), SSD 3 (`TH0a/b/x`), Batarya 3 (`TB0T/1T/2T`), diğer ~94 ham adla. Bellek (DRAM) için ayrı SMC sensörü doğrulanamadı → grup boş, gösterilmiyor.
+- **Adlar:** yalnız Mac17,8 için eşleme var; sıra numaralı ("Super sensörü 3"): SMC sensörün hangi fiziksel çekirdeğe ait olduğunu söylemiyor, bu yüzden numara anahtar sırasıdır, çekirdek no değil. Bilinmeyen model: her şey "Diğer", ham SMC anahtarı adıyla; menü çubuğu başlığı tüm sıcaklıkların en yükseği.
+- **Süzme kuralları (`SensorValidity`):** (1) yalnız `flt ` türü sıcaklık anahtarı (`ioft` ve `si32` olanlar derece değil: `TG0B…`, `TVAi…`; `TTPD` çöp −306783232); (2) sonlu, −50…150 °C; (3) tam 0.0 = termistörü olmayan sensör (10 anahtar: `Tz1x`, `TfCB`…); (4) katalog girişinde < 5 °C reddedilir (`TVMD` sabit 1.0); (5) "diğer" gruptaki bir sıcaklık 60 tam okuma boyunca bit-bit aynıysa (~2 dk) gizlenir (`TVMX`/`TVmS`/`TVms`=42, `TVS1`=25 gibi sabit kodlar); adlandırılmış gruplar muaf (pil/SSD gerçekten sabit kalabilir). Voltaj 0…60 V, akım −30…30 A, güç 0…500 W, fan 0…20000 rpm (0 = durmuş fan, geçerli). Sonuç: listede çöp değer 0, min 1.0 → kural 4 sonrası 5 °C altı yok.
+- **Voltaj/akım:** SMC'de ~50 voltaj ve ~60 akım ray anahtarı var (`VP1b`, `IS7l`…) ama adları belgesiz; yalnız `VD0R`/`ID0R` (DC girişi, 27.4 V) ve `Vb0f`/`Ib0f` (batarya paketi, 12.5 V) listelenir.
+- **Güç:** `PSTR` sistem, `PDTR` adaptör girişi, `PPMC` CPU (yükte 30–39 W).
+- **Fan:** `FNum`=2, `F{n}Ac/Mn/Mx`; boşta ~1350 rpm (min), yazma yok, `F0md/F0Tg` hiç dokunulmadı.
+- **TPDX karşılaştırması:** yükte `TPDX` çekirdek maksimumunun 8–12 °C altında (örn. 76.4 vs 86.0). Menü çubuğu bu yüzden `TPDX` değil 63 çekirdek anahtarını okur (0.71 ms/okuma, 2 tikte bir → ~%0.02 CPU); sayfadaki "CPU en sıcak" ile aynı sayıyı verir.
+- **HID kararı: ATLANDI.** HID'de SMC'de olmayan sıcaklık yok: `gas gauge battery` = `TB0T`, `NAND CH0 temp` = `TH0x`, `PMU tdie*` = `TPD*`; `PMU tcal` kalibrasyon sabiti (51.8), `PMU tdev*` −9200 çöp. Maliyeti sensör başına ~1 ms. Voltaj/akım için HID 0xFF08 ayrıca denenmedi: SMC'deki curated anahtarlar yeterli.
+- **Yazma yok:** `SensorReader`/`SMC` tarafında SMC yazma çağrısı bulunmuyor (C katmanında yalnız `SMCReadKeyInfo`, `SMCReadBytesWithInfo`, `SMCReadKey`, `SMCKeyAtIndex`).

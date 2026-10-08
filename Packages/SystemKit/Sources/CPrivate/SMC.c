@@ -54,3 +54,22 @@ int SMCKeyAtIndex(io_connect_t connection, uint32_t index, uint32_t *key) {
     *key = output.key;
     return 0;
 }
+
+int SMCReadKeyInfo(io_connect_t connection, uint32_t key, SMCKeyInfoData *info) {
+    SMCParamStruct input = {0}, output = {0};
+    input.key = key;
+    input.data8 = kSMCCmdReadKeyInfo;
+    if (call(connection, &input, &output) != 0) return -1;
+    *info = output.keyInfo;
+    return 0;
+}
+
+int SMCReadBytesWithInfo(io_connect_t connection, uint32_t key, SMCKeyInfoData info, uint8_t *bytes) {
+    SMCParamStruct input = {0}, output = {0};
+    input.key = key;
+    input.keyInfo = info;
+    input.data8 = kSMCCmdReadBytes;
+    if (call(connection, &input, &output) != 0) return -1;
+    memcpy(bytes, output.bytes, sizeof output.bytes);
+    return 0;
+}

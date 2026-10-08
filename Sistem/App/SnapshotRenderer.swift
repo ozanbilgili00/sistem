@@ -19,7 +19,7 @@ enum SnapshotRenderer {
 
         let pages: [(String, Page)] = [
             ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)), ("gpu", .module(.gpu)), ("ram", .module(.ram)),
-            ("disk", .module(.disk)), ("network", .module(.network)), ("settings", .settings), ("diagnostics", .diagnostics),
+            ("disk", .module(.disk)), ("network", .module(.network)), ("sensors", .module(.sensors)), ("settings", .settings), ("diagnostics", .diagnostics),
         ]
         for (theme, name) in [("dark", NSAppearance.Name.darkAqua), ("light", .aqua)] {
             let appearance = NSAppearance(named: name)!
@@ -51,6 +51,11 @@ enum SnapshotRenderer {
                 save(NetworkPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
                         .background(Palette.background), label, CGSize(width: 760, height: 520))
             }
+            save(SensorsPopover(settings: settings, openWindow: {}), "popover-sensors", CGSize(width: 300, height: 640))
+            for (label, tab) in [("sensors-module", ModuleTab.module), ("sensors-widgets", .widgets)] {
+                save(SensorsPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
+                        .background(Palette.background), label, CGSize(width: 760, height: 520))
+            }
             save(RAMPage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
                     .background(Palette.background), "ram-module", CGSize(width: 760, height: 360))
             save(PopoverView(openWindow: {}), "popover", CGSize(width: 300, height: 200))
@@ -58,6 +63,9 @@ enum SnapshotRenderer {
             renderWidgets(feed.store, module: .gpu, appearance: appearance, to: directory.appending(path: "menubar-gpu-\(theme).png"))
             renderWidgets(feed.store, module: .disk, appearance: appearance, to: directory.appending(path: "menubar-disk-\(theme).png"))
             renderWidgets(feed.store, module: .network, appearance: appearance, to: directory.appending(path: "menubar-network-\(theme).png"))
+            renderWidgets(feed.store, module: .sensors, appearance: appearance, to: directory.appending(path: "menubar-sensors-\(theme).png"))
+            renderWidgets(feed.store, module: .sensors, sensors: SensorsDisplay(unit: .fahrenheit, stacked: true), appearance: appearance,
+                          to: directory.appending(path: "menubar-sensors-stack-\(theme).png"))
         }
     }
 
@@ -97,6 +105,7 @@ enum SnapshotRenderer {
             .init(name: "Performance", coreCount: 12, activeFraction: 0.12, performanceLevel: 0.34, averageMHz: 2_010, maxMHz: 4_380),
         ])))
         addDiskAndNetwork(to: store)
+        addSensors(to: store)
         let names = ["Safari", "WindowServer", "Xcode", "Google Chrome Helper (Renderer)", "kernel_task", "Finder", "mds_stores", "Music"]
         let entries = names.enumerated().map { i, name in
             ProcessEntry(pid: pid_t(900 + i), name: name, cpu: Float(names.count - i) * 0.07,
@@ -105,6 +114,68 @@ enum SnapshotRenderer {
         }
         store.ingest(Snapshot(processes: ProcessSample(topCPU: entries, topMemory: entries, processCount: 1004)))
         return store
+    }
+
+    /// A Mac17,8-shaped sensor list with a load wave in the temperatures, two fans, and the
+    /// handful of voltage, current and power rows.
+    private static func addSensors(to store: MetricStore) {
+        var sensors: [SensorInfo] = []
+        func add(_ prefix: String, _ count: Int, _ kind: SensorKind, _ group: SensorGroup, _ base: SensorLabelBase?) {
+            for i in 0..<count {
+                let key = "\(prefix)\(String(format: "%02d", i))"
+                sensors.append(SensorInfo(key: key, kind: kind, group: group, label: base.map { .indexed($0, i + 1) } ?? .raw(key)))
+            }
+        }
+        add("Tp", 23, .temperature, .cpuSuper, .superCore)
+        add("Tm", 40, .temperature, .cpuPerformance, .performanceCore)
+        add("Tg", 42, .temperature, .gpu, .gpuUnit)
+        sensors.append(SensorInfo(key: "TCMb", kind: .temperature, group: .soc, label: .named(.socHotspot)))
+        add("TPD", 16, .temperature, .soc, .socCPU)
+        add("TH", 3, .temperature, .ssd, .nand)
+        add("TB", 3, .temperature, .battery, .battery)
+        add("Ts", 6, .temperature, .other, nil)
+        sensors.append(SensorInfo(key: "VD0R", kind: .voltage, group: .other, label: .named(.dcIn)))
+        sensors.append(SensorInfo(key: "Vb0f", kind: .voltage, group: .other, label: .named(.batteryPack)))
+        sensors.append(SensorInfo(key: "ID0R", kind: .current, group: .other, label: .named(.dcIn)))
+        sensors.append(SensorInfo(key: "Ib0f", kind: .current, group: .other, label: .named(.batteryPack)))
+        sensors.append(SensorInfo(key: "PSTR", kind: .power, group: .other, label: .named(.system)))
+        sensors.append(SensorInfo(key: "PDTR", kind: .power, group: .other, label: .named(.adapter)))
+        sensors.append(SensorInfo(key: "PPMC", kind: .power, group: .other, label: .named(.cpu)))
+        let fans = [FanInfo(index: 0, minRPM: 1_350, maxRPM: 5_349), FanInfo(index: 1, minRPM: 1_350, maxRPM: 5_777)]
+        let catalog = SensorCatalog(model: "Mac17,8", isKnownModel: true, sensors: sensors, fans: fans)
+        for i in 0..<MetricStore.historyLength {
+            let t = Float(i) / 14
+            let load = max(0, 0.35 + 0.25 * sin(t) + (i % 53 < 9 ? 0.3 : 0))
+            let cpu = 44 + 38 * load
+            let gpu = 40 + 12 * load
+            var values: [Float?] = []
+            for (n, info) in sensors.enumerated() {
+                let wobble = Float(n % 7) * 0.45
+                let value: Float? = switch (info.kind, info.group) {
+                case (.temperature, .cpuSuper): cpu - wobble
+                case (.temperature, .cpuPerformance): cpu - 7 - wobble
+                case (.temperature, .gpu): gpu - wobble * 0.3
+                case (.temperature, .soc): cpu - 8 - wobble
+                case (.temperature, .ssd): 36 + load * 4
+                case (.temperature, .battery): 29.5
+                case (.temperature, _): 27 + Float(n % 5) * 3 + load * 4
+                case (.voltage, _): info.key == "VD0R" ? 27.4 : 12.53
+                case (.current, _): info.key == "ID0R" ? 0.4 + load * 2 : 0.03
+                case (.power, _): info.key == "PPMC" ? 3 + load * 30 : 9 + load * 55
+                default: nil
+                }
+                values.append(value)
+            }
+            let hottest = values.enumerated().compactMap { catalog.sensors[$0.offset].group == .cpuSuper || catalog.sensors[$0.offset].group == .cpuPerformance ? $0.element : nil }
+            let temperature = TemperatureSample(cpuHottest: hottest.max(), cpuAverage: hottest.reduce(0, +) / Float(hottest.count),
+                                                gpuHottest: gpu, hottest: hottest.max())
+            let rpm: Float = 1_350 + load * 900
+            store.ingest(Snapshot(
+                temperature: temperature,
+                sensors: SensorSample(catalog: catalog, values: values,
+                                      fans: fans.map { FanReading(info: $0, rpm: rpm + Float($0.index) * 40) },
+                                      temperature: temperature)))
+        }
     }
 
     /// Bursty drive and network traffic, two volumes, SMART figures, a Wi-Fi link and a short connection history.
@@ -152,7 +223,7 @@ enum SnapshotRenderer {
     }
 
     /// The menu bar widget configurations side by side on a menu-bar-coloured strip.
-    private static func renderWidgets(_ store: MetricStore, module: ModuleID, appearance: NSAppearance, to url: URL) {
+    private static func renderWidgets(_ store: MetricStore, module: ModuleID, sensors: SensorsDisplay = SensorsDisplay(), appearance: NSAppearance, to url: URL) {
         let configs: [WidgetConfig] = [
             .default,
             WidgetConfig(kinds: [.text], showLabel: false),
@@ -167,8 +238,8 @@ enum SnapshotRenderer {
         var x: CGFloat = 8
         for config in configs {
             let view = WidgetView(frame: NSRect(x: x, y: 0, width: 200, height: height))
-            view.widestText = WidgetModel.widestText(for: module)
-            view.update(.make(module, store: store), config: config)
+            view.widestText = WidgetModel.widestText(for: module, sensors: sensors)
+            view.update(.make(module, store: store, sensors: sensors), config: config)
             view.setFrameSize(NSSize(width: view.intrinsicWidth, height: height))
             strip.addSubview(view)
             x += view.intrinsicWidth + 14

@@ -15,6 +15,7 @@ final class SettingsStore {
         case celsius, fahrenheit
         var id: Self { self }
         var symbol: String { self == .celsius ? "°C" : "°F" }
+        func convert(_ celsius: Float) -> Float { self == .celsius ? celsius : celsius * 9 / 5 + 32 }
     }
 
     /// Typed keys: a typo here is a compile error, not a silently lost setting.
@@ -31,6 +32,7 @@ final class SettingsStore {
         static let cpuShowProcesses = "cpu.showProcesses"
         static let ramShowProcesses = "ram.showProcesses"
         static let gpuShowPower = "gpu.showPower"
+        static let sensorsStack = "sensors.stack"
         static let networkPublicIP = "network.publicIP"
         static let networkLatency = "network.latency"
     }
@@ -100,6 +102,14 @@ final class SettingsStore {
         didSet { defaults.set(networkLatency, forKey: Key.networkLatency) }
     }
 
+    /// The sensors menu bar item as two lines, CPU over GPU, instead of one CPU number.
+    /// The GPU line reads 42 more SMC keys (~0.2 ms of CPU) every other tick.
+    var sensorsStack: Bool {
+        didSet { defaults.set(sensorsStack, forKey: Key.sensorsStack) }
+    }
+
+    var sensorsDisplay: SensorsDisplay { SensorsDisplay(unit: temperatureUnit, stacked: sensorsStack) }
+
     func widget(for module: ModuleID) -> WidgetConfig { widgets[module] ?? .default }
 
     func setWidget(_ config: WidgetConfig, for module: ModuleID) { widgets[module] = config }
@@ -132,6 +142,7 @@ final class SettingsStore {
         cpuShowProcesses = defaults.object(forKey: Key.cpuShowProcesses) as? Bool ?? true
         ramShowProcesses = defaults.object(forKey: Key.ramShowProcesses) as? Bool ?? true
         gpuShowPower = defaults.object(forKey: Key.gpuShowPower) as? Bool ?? true
+        sensorsStack = defaults.object(forKey: Key.sensorsStack) as? Bool ?? false
         networkPublicIP = defaults.object(forKey: Key.networkPublicIP) as? Bool ?? false
         networkLatency = defaults.object(forKey: Key.networkLatency) as? Bool ?? false
     }
