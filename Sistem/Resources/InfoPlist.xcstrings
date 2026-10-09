@@ -1,57 +1,93 @@
 {
-  "sourceLanguage": "tr",
-  "strings": {
-    "NSLocationUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Location Services permission is needed to show the Wi-Fi network name. Location is never used for anything else and is never sent anywhere."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez."
+  "sourceLanguage" : "tr",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sistem"
           }
         }
       }
     },
-    "NSLocationWhenInUseUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Location Services permission is needed to show the Wi-Fi network name. Location is never used for anything else and is never sent anywhere."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez."
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Sistem"
           }
         }
       }
     },
-    "NSBluetoothAlwaysUsageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth permission is needed to read the connection state of Bluetooth devices directly from the system. The device list and battery levels are shown even without it. Nothing is used for any other purpose or sent anywhere."
+    "NSBluetoothAlwaysUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth permission is needed to read the connection state of Bluetooth devices directly from the system. The device list and battery levels are shown even without it. Nothing is used for any other purpose or sent anywhere."
           }
         },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bluetooth cihazlarının bağlantı durumunu sistemden doğrudan okumak için Bluetooth izni gerekir. İzin verilmese de cihaz listesi ve pil seviyeleri gösterilir. Hiçbir bilgi başka bir amaçla kullanılmaz veya gönderilmez."
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bluetooth cihazlarının bağlantı durumunu sistemden doğrudan okumak için Bluetooth izni gerekir. İzin verilmese de cihaz listesi ve pil seviyeleri gösterilir. Hiçbir bilgi başka bir amaçla kullanılmaz veya gönderilmez."
+          }
+        }
+      }
+    },
+    "NSHumanReadableCopyright" : {
+      "comment" : "Copyright (human-readable)",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "tr" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : ""
+          }
+        }
+      }
+    },
+    "NSLocationUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location Services permission is needed to show the Wi-Fi network name. Location is never used for anything else and is never sent anywhere."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez."
+          }
+        }
+      }
+    },
+    "NSLocationWhenInUseUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location Services permission is needed to show the Wi-Fi network name. Location is never used for anything else and is never sent anywhere."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez."
           }
         }
       }
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }
