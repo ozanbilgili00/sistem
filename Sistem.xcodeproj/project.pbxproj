@@ -203,6 +203,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Sistem;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Bluetooth cihazlarının bağlantı durumunu sistemden doğrudan okumak için Bluetooth izni gerekir. İzin verilmese de cihaz listesi ve pil seviyeleri gösterilir. Hiçbir bilgi başka bir amaçla kullanılmaz veya gönderilmez.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
@@ -232,6 +233,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Sistem;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Bluetooth cihazlarının bağlantı durumunu sistemden doğrudan okumak için Bluetooth izni gerekir. İzin verilmese de cihaz listesi ve pil seviyeleri gösterilir. Hiçbir bilgi başka bir amaçla kullanılmaz veya gönderilmez.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSLocationUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";

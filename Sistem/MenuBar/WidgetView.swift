@@ -18,6 +18,8 @@ struct WidgetModel: Equatable {
     var gpuValue: Float?
     /// CPU over GPU: two lines, like the speeds.
     var stacked = false
+    /// SF Symbol drawn left of the value (the battery's charging bolt); nil for none.
+    var glyph: String?
     /// Two-line readouts (speeds, CPU/GPU temperatures) always stack, whatever the label setting says.
     var isPair: Bool { topRate != nil || stacked }
 
@@ -25,8 +27,10 @@ struct WidgetModel: Equatable {
 
     /// Longest text a module's readout can take; the status item's width is reserved
     /// for it so the menu bar never shifts.
-    static func widestText(for module: ModuleID, sensors: SensorsDisplay = SensorsDisplay()) -> String {
+    @MainActor static func widestText(for module: ModuleID, sensors: SensorsDisplay = SensorsDisplay(), clock: ClockDisplay? = nil) -> String {
         switch module {
+        case .clock:
+            return clock?.widestText ?? "00:00"
         case .sensors:
             let value = Format.temperature(199, unit: sensors.unit)  // "199°C" / "390°F"
             return sensors.stacked ? "GPU \(value)" : value
@@ -48,8 +52,33 @@ struct WidgetModel: Equatable {
         return "\(prefix) \(Format.rate(rate))"
     }
 
-    @MainActor static func make(_ module: ModuleID, store: MetricStore, sensors: SensorsDisplay = SensorsDisplay()) -> WidgetModel {
+    /// The clock reads the date it is given (the item's timer decides when), not the store.
+    @MainActor static func makeClock(_ display: ClockDisplay, date: Date = .now) -> WidgetModel {
+        WidgetModel(label: display.dateLabel(date), value: nil, text: display.text(date), history: [])
+    }
+
+    /// Percentage and a bolt (charging) or plug (on power, not charging). Desktop Macs show "—".
+    @MainActor static func makeBattery(_ status: BatteryStatus?) -> WidgetModel {
+        let label = String(localized: ModuleID.battery.menuBarTitle)
+        guard case .present(let sample)? = status else {
+            return WidgetModel(label: label, value: nil, text: "—", history: [])
+        }
+        let fraction = Float(sample.percent) / 100
+        var model = WidgetModel(label: label, value: fraction, text: Format.percent(fraction), history: [])
+        switch sample.state {
+        case .charging: model.glyph = "bolt.fill"
+        case .charged, .pluggedNotCharging: model.glyph = "powerplug.fill"
+        case .discharging: break
+        }
+        return model
+    }
+
+    @MainActor static func make(_ module: ModuleID, store: MetricStore, sensors: SensorsDisplay = SensorsDisplay(), clock: ClockDisplay? = nil) -> WidgetModel {
         switch module {
+        case .battery:
+            return makeBattery(store.battery)
+        case .clock:
+            return makeClock(clock ?? ClockDisplay(pattern: ClockFormat.defaultPattern()))
         case .sensors:
             let count = min(store.cpuTemperature.count, chartSamples)
             let start = store.cpuTemperature.count - count
@@ -133,6 +162,7 @@ final class WidgetView: NSView {
         var config: WidgetConfig
         var label: String
         var text: String
+        var glyph: String?
         var ringSteps: Int
         var chartPixels: [UInt8]
     }
@@ -147,7 +177,11 @@ final class WidgetView: NSView {
         static let valueFont = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium)
         /// Two speeds stacked: smaller than a value-over-label pair, so both lines fit the bar.
         static let pairFont = NSFont.monospacedDigitSystemFont(ofSize: 9.5, weight: .medium)
+        static let glyphSize: CGFloat = 8
+        static let glyphGap: CGFloat = 2
     }
+
+    private var glyphReserve: CGFloat { reservesGlyph ? Layout.glyphSize + Layout.glyphGap : 0 }
 
     var onWidthChange: ((CGFloat) -> Void)?
 
@@ -159,6 +193,22 @@ final class WidgetView: NSView {
         didSet {
             guard widestText != oldValue else { return }
             strings = nil
+            if frame.width > 0 { onWidthChange?(intrinsicWidth) }
+        }
+    }
+
+    /// Set by the owner: the label's width is reserved for this string (a date that varies in width).
+    var widestLabel: String? {
+        didSet {
+            guard widestLabel != oldValue else { return }
+            strings = nil
+            if frame.width > 0 { onWidthChange?(intrinsicWidth) }
+        }
+    }
+    /// Room for a glyph left of the value is always kept, so the item doesn't resize when it appears.
+    var reservesGlyph = false {
+        didSet {
+            guard reservesGlyph != oldValue else { return }
             if frame.width > 0 { onWidthChange?(intrinsicWidth) }
         }
     }
@@ -182,7 +232,7 @@ final class WidgetView: NSView {
         let text = config.kinds.contains(.text) ? model.text : ""
         let stackedNow = config.showLabel || model.isPair
         let new = RenderKey(config: config, label: stackedNow ? model.label : "", text: text,
-                            ringSteps: ring, chartPixels: pixels)
+                            glyph: config.kinds.contains(.text) ? model.glyph : nil, ringSteps: ring, chartPixels: pixels)
         let configChanged = config != self.config || model.isPair != self.model.isPair
         self.model = model
         self.config = config
@@ -218,11 +268,11 @@ final class WidgetView: NSView {
 
     private var textWidth: CGFloat {
         let widest = widestText  // "%100" / "100%", or the longest speed
-        let valueWidth = (widest as NSString).size(withAttributes: [.font: valueFont]).width
+        let valueWidth = (widest as NSString).size(withAttributes: [.font: valueFont]).width + glyphReserve
         guard stacked else { return ceil(valueWidth) }
         // A speed's top line is as wide as the bottom one; a name only needs its own width.
         guard !model.isPair else { return ceil(valueWidth) }
-        let labelWidth = (model.label as NSString).size(withAttributes: [.font: Layout.labelFont]).width
+        let labelWidth = ((widestLabel ?? model.label) as NSString).size(withAttributes: [.font: Layout.labelFont]).width
         return ceil(max(valueWidth, labelWidth))
     }
 
@@ -262,9 +312,24 @@ final class WidgetView: NSView {
         return (label, value)
     }
 
-    private func drawText(in rect: NSRect) {
+    private func drawText(in full: NSRect) {
         let strings = self.strings ?? makeStrings()
         self.strings = strings
+        var rect = full
+        if glyphReserve > 0 {
+            if let name = model.glyph, let image = NSImage(systemSymbolName: name, accessibilityDescription: nil)?
+                .withSymbolConfiguration(.init(pointSize: Layout.glyphSize, weight: .semibold)) {
+                let tinted = NSImage(size: image.size, flipped: false) { frame in
+                    image.draw(in: frame)
+                    NSColor.labelColor.setFill()
+                    frame.fill(using: .sourceIn)
+                    return true
+                }
+                tinted.draw(at: NSPoint(x: full.minX, y: full.midY - tinted.size.height / 2), from: .zero, operation: .sourceOver, fraction: 1)
+            }
+            rect.origin.x += glyphReserve
+            rect.size.width -= glyphReserve
+        }
         if model.isPair {
             let mid = rect.midY
             strings.label.draw(in: NSRect(x: rect.minX, y: mid, width: rect.width, height: 11.5))

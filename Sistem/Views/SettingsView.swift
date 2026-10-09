@@ -64,7 +64,7 @@ struct SettingsView: View {
                         if index > 0 { RowDivider() }
                         SettingRow(Text(module.menuBarTitle), detail: module.menuBarUnit.map { Text($0) }) {
                             HStack(spacing: 10) {
-                                if module.metric == nil {
+                                if !module.isLive {
                                     Pill(Text("Faz \(module.phase)"), tone: .neutral)
                                 }
                                 Toggle(String(localized: module.menuBarTitle), isOn: Binding(

@@ -41,9 +41,17 @@ extension ModuleID {
         case .disk: .disk
         case .network: .network
         case .sensors: .temperature
+        case .battery: .battery
         default: nil
         }
     }
+
+    /// True once the module has a real page. Clock and Bluetooth have no menu bar metric: the clock is
+    /// driven by its own timer, and Bluetooth reads only while its page or popover is open.
+    var isLive: Bool { metric != nil || self == .clock || self == .bluetooth }
+
+    /// Whether the menu bar can hold an item for it.
+    var hasMenuBarItem: Bool { ModuleID.menuBarCandidates.contains(self) && isLive }
 
     /// The PLAN.md phase that brings this module to life.
     var phase: Int {
@@ -82,7 +90,8 @@ extension ModuleID {
     /// as percentages.
     var menuBarUnit: LocalizedStringResource? {
         switch self {
-        case .cpu, .gpu, .ram: "yüzde"
+        case .cpu, .gpu, .ram, .battery: "yüzde"
+        case .clock: "saat"
         case .disk, .network: "hız"
         case .sensors: "derece"
         default: nil

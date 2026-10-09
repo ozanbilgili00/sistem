@@ -46,6 +46,8 @@ let results = [
     row("Bellek", rate.footprintMB, "MB", budget: budgetMem),
     row("Uyanma", rate.wakeupsPerSecond, "/sn", budget: budgetWakeups),
     row("Güç", rate.milliwatts, "mW", budget: nil),
+    // Children that exited in the window (system_profiler, ps): 0 means the app spawned nothing.
+    row("Alt süreç CPU", rate.childCPUMilliseconds, "ms", budget: nil),
 ]
 let failed = results.contains(false)
 

@@ -11,6 +11,9 @@ public struct ProcessUsage: Sendable {
     /// Package-idle plus interrupt wakeups since the process started.
     public let wakeups: UInt64
     public let energyNanojoules: UInt64
+    /// CPU time of child processes that have exited and been reaped (`system_profiler`, `ps`).
+    /// Stays put while the app spawns nothing, which is how the "no subprocess" gates are shown.
+    public let childCPUTime: Duration
     public let sampledAt: ContinuousClock.Instant
 
     public static func read(pid: pid_t) -> ProcessUsage? {
@@ -29,6 +32,7 @@ public struct ProcessUsage: Sendable {
             physFootprint: info.ri_phys_footprint,
             wakeups: info.ri_pkg_idle_wkups + info.ri_interrupt_wkups,
             energyNanojoules: info.ri_energy_nj,
+            childCPUTime: .nanoseconds(Int64(MachTime.nanoseconds(fromTicks: info.ri_child_user_time + info.ri_child_system_time))),
             sampledAt: .now
         )
     }
@@ -37,13 +41,14 @@ public struct ProcessUsage: Sendable {
 
     public func rate(since earlier: ProcessUsage) -> UsageRate {
         let elapsed = earlier.sampledAt.duration(to: sampledAt).seconds
-        guard elapsed > 0 else { return UsageRate(cpuPercent: 0, wakeupsPerSecond: 0, milliwatts: 0, footprintMB: footprintMB) }
+        guard elapsed > 0 else { return UsageRate(cpuPercent: 0, wakeupsPerSecond: 0, milliwatts: 0, footprintMB: footprintMB, childCPUMilliseconds: 0) }
         let cpu = (cpuTime - earlier.cpuTime).seconds
         return UsageRate(
             cpuPercent: cpu / elapsed * 100,
             wakeupsPerSecond: Double(wakeups &- earlier.wakeups) / elapsed,
             milliwatts: Double(energyNanojoules &- earlier.energyNanojoules) / elapsed / 1_000_000,
-            footprintMB: footprintMB
+            footprintMB: footprintMB,
+            childCPUMilliseconds: (childCPUTime - earlier.childCPUTime).seconds * 1000
         )
     }
 
@@ -56,6 +61,8 @@ public struct UsageRate: Sendable, Equatable {
     public let wakeupsPerSecond: Double
     public let milliwatts: Double
     public let footprintMB: Double
+    /// CPU spent by child processes that finished in the window; 0 means none ran.
+    public let childCPUMilliseconds: Double
 }
 
 enum MachTime {

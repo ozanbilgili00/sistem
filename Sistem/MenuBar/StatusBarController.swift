@@ -33,26 +33,27 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
 
     /// Re-reads the menu bar settings whenever they change.
     private func trackSettings() {
-        let (wanted, sensors) = withObservationTracking {
-            (settings.menuBarModules.filter { $0.metric != nil }.map { ($0, settings.widget(for: $0)) }, settings.sensorsDisplay)
+        let (wanted, sensors, clock) = withObservationTracking {
+            (settings.menuBarModules.filter(\.hasMenuBarItem).map { ($0, settings.widget(for: $0)) }, settings.sensorsDisplay, settings.clockDisplay)
         } onChange: { [weak self] in
             // Fires on willSet; read the new values on the next turn.
             DispatchQueue.main.async { MainActor.assumeIsolated { self?.trackSettings() } }
         }
-        apply(wanted, sensors: sensors)
+        apply(wanted, sensors: sensors, clock: clock)
     }
 
-    private func apply(_ wanted: [(ModuleID, WidgetConfig)], sensors: SensorsDisplay) {
+    private func apply(_ wanted: [(ModuleID, WidgetConfig)], sensors: SensorsDisplay, clock: ClockDisplay) {
         if wanted.map(\.0) != items.map(\.module) {
             if popover.isShown { popover.performClose(nil) }
             items.forEach { $0.remove() }
             // A new status item lands left of the existing ones; build right to left.
             items = wanted.reversed().map { module, config in
-                ModuleItem(module: module, config: config, sensors: sensors, engine: engine, target: self, action: #selector(clicked(_:)))
+                ModuleItem(module: module, config: config, sensors: sensors, clock: clock, engine: engine, target: self, action: #selector(clicked(_:)))
             }.reversed()
         } else {
             for (item, (_, config)) in zip(items, wanted) { item.config = config }
             for item in items where item.module == .sensors { item.sensors = sensors }
+            for item in items where item.module == .clock { item.clock = clock }
         }
         updateFallback()
     }
@@ -99,6 +100,9 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
         case .disk: AnyView(DiskPopover(settings: settings, openWindow: { open(.module(.disk)) }))
         case .network: AnyView(NetworkPopover(settings: settings, openWindow: { open(.module(.network)) }))
         case .sensors: AnyView(SensorsPopover(settings: settings, openWindow: { open(.module(.sensors)) }))
+        case .battery: AnyView(BatteryPopover(settings: settings, openWindow: { open(.module(.battery)) }))
+        case .clock: AnyView(ClockPopover(settings: settings, openWindow: { open(.module(.clock)) }))
+        case .bluetooth: AnyView(BluetoothPopover(openWindow: { open(.module(.bluetooth)) }))
         default: AnyView(PopoverView(openWindow: { open(nil) }))
         }
         let host = NSHostingController(rootView: content.environment(feed))
@@ -137,6 +141,18 @@ private final class ModuleItem {
         didSet { if config != oldValue { refresh() } }
     }
 
+    var clock: ClockDisplay {
+        didSet {
+            guard clock != oldValue else { return }
+            view.widestText = WidgetModel.widestText(for: module, sensors: sensors, clock: clock)
+            ticker?.start(pattern: clock.pattern)
+            refresh()
+        }
+    }
+
+    /// Only the clock has one: it redraws at its own boundary, not on the sampler's tick.
+    private var ticker: ClockTicker?
+
     var sensors: SensorsDisplay {
         didSet {
             guard sensors != oldValue else { return }
@@ -155,10 +171,11 @@ private final class ModuleItem {
         demanded = wanted
     }
 
-    init(module: ModuleID, config: WidgetConfig, sensors: SensorsDisplay, engine: SamplingEngine, target: AnyObject, action: Selector) {
+    init(module: ModuleID, config: WidgetConfig, sensors: SensorsDisplay, clock: ClockDisplay, engine: SamplingEngine, target: AnyObject, action: Selector) {
         self.module = module
         self.config = config
         self.sensors = sensors
+        self.clock = clock
         self.engine = engine
         shown = DisplayHysteresis.for(module)
         item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -171,16 +188,39 @@ private final class ModuleItem {
             view.autoresizingMask = [.width, .height]
             button.addSubview(view)
         }
-        view.widestText = WidgetModel.widestText(for: module, sensors: sensors)
+        if module == .bluetooth {
+            // A fixed icon: nothing to redraw, no metric demanded while the popover is closed.
+            item.length = NSStatusItem.squareLength
+            let image = NSImage(systemSymbolName: ModuleID.bluetooth.symbol, accessibilityDescription: "Bluetooth")
+            image?.isTemplate = true
+            item.button?.image = image
+            view.removeFromSuperview()
+            return
+        }
+        view.widestText = WidgetModel.widestText(for: module, sensors: sensors, clock: clock)
+        view.reservesGlyph = module == .battery
+        if module == .clock { view.widestLabel = clock.widestLabel }
         view.onWidthChange = { [weak self] width in self?.item.length = width }
         syncDemand()
-        token = engine.store.observe { [weak self] in self?.refresh() }
+        if module == .clock {
+            let ticker = ClockTicker { [weak self] in self?.refresh() }
+            self.ticker = ticker
+            ticker.start(pattern: clock.pattern)
+        } else {
+            token = engine.store.observe { [weak self] in self?.refresh() }
+        }
         refresh()
     }
 
     private func refresh() {
-        var model = WidgetModel.make(module, store: engine.store, sensors: sensors)
-        if module == .sensors {
+        var model = WidgetModel.make(module, store: engine.store, sensors: sensors, clock: clock)
+        if module == .clock {
+            // Text only changes at the ticker's boundary; nothing to filter.
+        } else if module == .battery {
+            // The system reports whole percents on its own events; the hysteresis only passes 1-point steps.
+            model.value = shown.filter(model.value)
+            if let value = model.value { model.text = Format.percent(value) }
+        } else if module == .sensors {
             // A whole degree at a time (see DisplayHysteresis.for), shown in the user's unit.
             model.value = shown.filter(model.value)
             let cpu = Format.temperature(model.value.map(SensorScale.celsius), unit: sensors.unit)
@@ -209,6 +249,8 @@ private final class ModuleItem {
 
     func remove() {
         token = nil
+        ticker?.stop()
+        ticker = nil
         if let demanded { engine.demand.release(demanded) }
         demanded = nil
         NSStatusBar.system.removeStatusItem(item)

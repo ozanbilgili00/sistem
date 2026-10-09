@@ -34,6 +34,23 @@
           }
         }
       }
+    },
+    "NSBluetoothAlwaysUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth permission is needed to read the connection state of Bluetooth devices directly from the system. The device list and battery levels are shown even without it. Nothing is used for any other purpose or sent anywhere."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bluetooth cihazlarının bağlantı durumunu sistemden doğrudan okumak için Bluetooth izni gerekir. İzin verilmese de cihaz listesi ve pil seviyeleri gösterilir. Hiçbir bilgi başka bir amaçla kullanılmaz veya gönderilmez."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

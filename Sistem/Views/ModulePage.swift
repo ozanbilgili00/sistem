@@ -16,6 +16,9 @@ struct ModulePage: View {
         case .disk: DiskPage(settings: settings)
         case .network: NetworkPage(settings: settings)
         case .sensors: SensorsPage(settings: settings)
+        case .battery: BatteryPage(settings: settings)
+        case .bluetooth: BluetoothPage(settings: settings)
+        case .clock: ClockPage(settings: settings)
         default: placeholder
         }
     }

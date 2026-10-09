@@ -233,6 +233,14 @@ if args.count == 2, args[1] == "--smart-check" { smartCheck(); exit(0) }
 // `sistem-probe --sensors-check [loadSeconds]`: Faz 6 gate check (SensorChecks.swift).
 if args.count >= 2, args[1] == "--sensors-check" { sensorsCheck(loadSeconds: args.count > 2 ? Double(args[2]) ?? 20 : 20); exit(0) }
 
+// `sistem-probe --battery-check [samples] [seconds between]`: Phase 7 gate check (BatteryChecks.swift).
+if args.count >= 2, args[1] == "--battery-check" {
+    batteryCheck(samples: args.count > 2 ? Int(args[2]) ?? 5 : 5, gap: args.count > 3 ? Double(args[3]) ?? 2 : 2)
+    exit(0)
+}
+
+if args.count >= 2, args[1] == "--battery-watch" { batteryWatch(seconds: args.count > 2 ? Double(args[2]) ?? 60 : 60); exit(0) }
+
 // `sistem-probe --freq-check`: cluster frequency while one Super-class thread, then all cores, run.
 if args.count >= 2, args[1] == "--freq-check" {
     guard let frequency = CPUFrequencyReader() else { print("CPUFrequencyReader: yok"); exit(1) }

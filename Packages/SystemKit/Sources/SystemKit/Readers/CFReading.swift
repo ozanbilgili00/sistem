@@ -25,4 +25,17 @@ enum CFReading {
         guard let value = value(dictionary, key), CFGetTypeID(value) == CFDictionaryGetTypeID() else { return nil }
         return unsafeDowncast(value, to: CFDictionary.self)
     }
+
+    static func bool(_ dictionary: CFDictionary, _ key: String) -> Bool? {
+        guard let value = value(dictionary, key) else { return nil }
+        if CFGetTypeID(value) == CFBooleanGetTypeID() { return CFBooleanGetValue(unsafeDowncast(value, to: CFBoolean.self)) }
+        if CFGetTypeID(value) == CFNumberGetTypeID() { return int64(dictionary, key).map { $0 != 0 } }
+        return nil
+    }
+
+    static func double(_ dictionary: CFDictionary, _ key: String) -> Double? {
+        guard let value = value(dictionary, key), CFGetTypeID(value) == CFNumberGetTypeID() else { return nil }
+        var result: Double = 0
+        return CFNumberGetValue(unsafeDowncast(value, to: CFNumber.self), .doubleType, &result) ? result : nil
+    }
 }

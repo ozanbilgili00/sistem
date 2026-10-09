@@ -8,9 +8,14 @@ struct WidgetSettings: View {
     let module: ModuleID
     @Bindable var settings: SettingsStore
 
-    /// A speed has no fraction to fill a ring with (the disk uses its capacity).
+    /// A speed has no fraction to fill a ring with (the disk uses its capacity); the battery
+    /// changes on system events, so there is no minute of history to chart.
     private var kinds: [WidgetKind] {
-        module == .network ? WidgetKind.allCases.filter { $0 != .ring } : WidgetKind.allCases
+        switch module {
+        case .network: WidgetKind.allCases.filter { $0 != .ring }
+        case .battery: WidgetKind.allCases.filter { $0 != .chart }
+        default: WidgetKind.allCases
+        }
     }
 
     var body: some View {
@@ -61,17 +66,18 @@ struct WidgetSettings: View {
 }
 
 /// Hosts a real ``WidgetView`` at menu bar height.
-private struct WidgetPreview: View {
+struct WidgetPreview: View {
     let module: ModuleID
     let config: WidgetConfig
     let sensors: SensorsDisplay
+    var clock: ClockDisplay?
     @Environment(LiveFeed.self) private var feed
 
     var body: some View {
         let _ = feed.frame
-        let model = WidgetModel.make(module, store: feed.store, sensors: sensors)
-        WidgetRepresentable(module: module, model: model, config: config, sensors: sensors)
-            .frame(width: WidgetRepresentable.width(module: module, model: model, config: config, sensors: sensors), height: NSStatusBar.system.thickness)
+        let model = WidgetModel.make(module, store: feed.store, sensors: sensors, clock: clock)
+        WidgetRepresentable(module: module, model: model, config: config, sensors: sensors, clock: clock)
+            .frame(width: WidgetRepresentable.width(module: module, model: model, config: config, sensors: sensors, clock: clock), height: NSStatusBar.system.thickness)
             .liveMetric(module == .sensors && sensors.stacked ? .temperatureStack : module.metric ?? .cpu)
     }
 }
@@ -81,18 +87,25 @@ private struct WidgetRepresentable: NSViewRepresentable {
     let model: WidgetModel
     let config: WidgetConfig
     let sensors: SensorsDisplay
+    var clock: ClockDisplay?
 
-    static func width(module: ModuleID, model: WidgetModel, config: WidgetConfig, sensors: SensorsDisplay) -> CGFloat {
+    static func width(module: ModuleID, model: WidgetModel, config: WidgetConfig, sensors: SensorsDisplay, clock: ClockDisplay?) -> CGFloat {
         let view = WidgetView(frame: NSRect(x: 0, y: 0, width: 0, height: NSStatusBar.system.thickness))
-        view.widestText = WidgetModel.widestText(for: module, sensors: sensors)
+        configure(view, module: module, sensors: sensors, clock: clock)
         view.update(model, config: config)
         return view.intrinsicWidth
+    }
+
+    private static func configure(_ view: WidgetView, module: ModuleID, sensors: SensorsDisplay, clock: ClockDisplay?) {
+        view.widestText = WidgetModel.widestText(for: module, sensors: sensors, clock: clock)
+        view.reservesGlyph = module == .battery
+        if module == .clock { view.widestLabel = clock?.widestLabel }
     }
 
     func makeNSView(context: Context) -> WidgetView { WidgetView() }
 
     func updateNSView(_ view: WidgetView, context: Context) {
-        view.widestText = WidgetModel.widestText(for: module, sensors: sensors)
+        Self.configure(view, module: module, sensors: sensors, clock: clock)
         view.update(model, config: config)
     }
 }

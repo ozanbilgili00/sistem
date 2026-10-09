@@ -8,6 +8,8 @@ enum ModuleTab: Hashable { case overview, module, widgets }
 struct ModulePageHeader: View {
     let module: ModuleID
     @Binding var tab: ModuleTab
+    /// Modules with nothing to draw in the menu bar (Bluetooth) have no Widgets tab.
+    var showsWidgets = true
 
     var body: some View {
         HStack(alignment: .top) {
@@ -15,7 +17,7 @@ struct ModulePageHeader: View {
             Picker("Bölüm", selection: $tab) {
                 Text("Genel bakış").tag(ModuleTab.overview)
                 Text("Modül").tag(ModuleTab.module)
-                Text("Widget'lar").tag(ModuleTab.widgets)
+                if showsWidgets { Text("Widget'lar").tag(ModuleTab.widgets) }
             }
             .pickerStyle(.segmented)
             .labelsHidden()

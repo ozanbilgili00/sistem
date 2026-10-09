@@ -48,6 +48,8 @@ public final class MetricStore {
     /// °C, not fractions: hottest CPU core sensor and hottest GPU sensor.
     public private(set) var cpuTemperature = RingBuffer(capacity: historyLength)
     public private(set) var gpuTemperature = RingBuffer(capacity: historyLength)
+    public private(set) var battery: BatteryStatus?
+    public private(set) var bluetooth: BluetoothSample?
     public private(set) var path: PathState?
     /// Newest first, in memory only.
     public private(set) var connectionEvents: [ConnectionEvent] = []
@@ -116,6 +118,12 @@ public final class MetricStore {
         }
         if let sample = snapshot.sensors {
             sensors = sample
+        }
+        if let status = snapshot.battery {
+            battery = status
+        }
+        if let sample = snapshot.bluetooth {
+            bluetooth = sample
         }
         if let state = snapshot.path {
             path = state

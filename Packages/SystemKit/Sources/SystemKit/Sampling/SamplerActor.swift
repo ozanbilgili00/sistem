@@ -55,6 +55,13 @@ public actor SamplerActor {
     private lazy var health = NVMeHealthReader()
     // One SMC connection for sensors, opened when a sensor metric is first wanted.
     private lazy var sensorReader = SensorReader()
+    // The power-source notification is registered when battery is first wanted; its
+    // callback (main thread) hops back onto this queue.
+    private lazy var batteryReader = BatteryReader { [weak self] in
+        guard let self else { return }
+        self.queue.async { self.assumeIsolated { $0.powerSourceChanged() } }
+    }
+    private lazy var bluetoothReader = BluetoothReader()
     private var network = NetworkReader()
     private lazy var wifi = WiFiReader()
     /// Metrics that were just asked for and read slower than every tick: read once at
@@ -133,7 +140,19 @@ public actor SamplerActor {
             break  // stateless
         case .temperature, .temperatureStack, .sensors:
             _ = sensorReader?.catalog  // enumerate the keys now, not inside the first tick
+        case .battery:
+            batteryReader.markChanged()  // also creates the reader, and with it the notification source
+            deliver(Snapshot(battery: batteryReader.sample()))  // the widget shows a value at once
+        case .bluetooth:
+            break  // first read comes with the `due` tick
         }
+    }
+
+    /// The system said a power source changed: reread now instead of waiting for a tick.
+    private func powerSourceChanged() {
+        guard config.metrics.contains(.battery), !config.isIdle else { return }
+        batteryReader.markChanged()
+        deliver(Snapshot(battery: batteryReader.sample()))
     }
 
     private func fire() {
@@ -170,6 +189,15 @@ public actor SamplerActor {
                 let sample = sensorReader?.sample()
                 snapshot.sensors = sample
                 snapshot.temperature = sample?.temperature
+            case .battery:
+                snapshot.battery = batteryReader.sample()
+            case .bluetooth:
+                // A child process: started in the background, delivered when it finishes.
+                bluetoothReader.refresh { [weak self] sample in
+                    guard let self, let sample else { return }
+                    self.queue.async { self.assumeIsolated { $0.deliver(Snapshot(bluetooth: sample)) } }
+                }
+                continue
             case .temperature:
                 // The full read already covers it, and so does the wider one.
                 if !config.metrics.contains(.sensors), !config.metrics.contains(.temperatureStack) {

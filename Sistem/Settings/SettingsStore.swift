@@ -35,6 +35,8 @@ final class SettingsStore {
         static let sensorsStack = "sensors.stack"
         static let networkPublicIP = "network.publicIP"
         static let networkLatency = "network.latency"
+        static let clockPattern = "clock.pattern"
+        static let clockZones = "clock.zones"
     }
 
     /// Choices offered for the update interval, in seconds.
@@ -108,9 +110,35 @@ final class SettingsStore {
         didSet { defaults.set(sensorsStack, forKey: Key.sensorsStack) }
     }
 
+    /// `DateFormatter` pattern of the clock menu bar item; empty follows the system's time style.
+    /// The item redraws once a minute, or once a second only when the pattern has seconds.
+    var clockPattern: String {
+        didSet {
+            let clean = ClockFormat.sanitized(clockPattern)
+            if clean != clockPattern { clockPattern = clean; return }
+            defaults.set(clockPattern, forKey: Key.clockPattern)
+        }
+    }
+
+    /// Time zone identifiers shown next to local time, in the order added.
+    var clockZones: [String] {
+        didSet { defaults.set(clockZones, forKey: Key.clockZones) }
+    }
+
+    static let clockZoneLimit = 8
+
+    var clockDisplay: ClockDisplay { ClockDisplay(pattern: clockPattern.isEmpty ? ClockFormat.defaultPattern() : clockPattern) }
+
+    func addClockZone(_ identifier: String) {
+        guard TimeZone(identifier: identifier) != nil, !clockZones.contains(identifier), clockZones.count < Self.clockZoneLimit else { return }
+        clockZones.append(identifier)
+    }
+
     var sensorsDisplay: SensorsDisplay { SensorsDisplay(unit: temperatureUnit, stacked: sensorsStack) }
 
-    func widget(for module: ModuleID) -> WidgetConfig { widgets[module] ?? .default }
+    func widget(for module: ModuleID) -> WidgetConfig {
+        widgets[module] ?? (module == .battery || module == .clock ? .plain : .default)
+    }
 
     func setWidget(_ config: WidgetConfig, for module: ModuleID) { widgets[module] = config }
 
@@ -145,6 +173,8 @@ final class SettingsStore {
         sensorsStack = defaults.object(forKey: Key.sensorsStack) as? Bool ?? false
         networkPublicIP = defaults.object(forKey: Key.networkPublicIP) as? Bool ?? false
         networkLatency = defaults.object(forKey: Key.networkLatency) as? Bool ?? false
+        clockPattern = ClockFormat.sanitized(defaults.string(forKey: Key.clockPattern) ?? "")
+        clockZones = Array((defaults.stringArray(forKey: Key.clockZones) ?? []).filter { TimeZone(identifier: $0) != nil }.prefix(Self.clockZoneLimit))
     }
 
     func applyAppearance() {

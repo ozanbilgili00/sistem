@@ -19,7 +19,7 @@ enum SnapshotRenderer {
 
         let pages: [(String, Page)] = [
             ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)), ("gpu", .module(.gpu)), ("ram", .module(.ram)),
-            ("disk", .module(.disk)), ("network", .module(.network)), ("sensors", .module(.sensors)), ("settings", .settings), ("diagnostics", .diagnostics),
+            ("disk", .module(.disk)), ("network", .module(.network)), ("sensors", .module(.sensors)), ("battery", .module(.battery)), ("bluetooth", .module(.bluetooth)), ("clock", .module(.clock)), ("settings", .settings), ("diagnostics", .diagnostics),
         ]
         for (theme, name) in [("dark", NSAppearance.Name.darkAqua), ("light", .aqua)] {
             let appearance = NSAppearance(named: name)!
@@ -56,6 +56,19 @@ enum SnapshotRenderer {
                 save(SensorsPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
                         .background(Palette.background), label, CGSize(width: 760, height: 520))
             }
+            save(BatteryPopover(settings: settings, openWindow: {}), "popover-battery", CGSize(width: 300, height: 560))
+            save(BluetoothPopover(openWindow: {}), "popover-bluetooth", CGSize(width: 300, height: 420))
+            save(ClockPopover(settings: settings, openWindow: {}), "popover-clock", CGSize(width: 300, height: 640))
+            for (label, tab) in [("battery-module", ModuleTab.module), ("battery-widgets", .widgets)] {
+                save(BatteryPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
+                        .background(Palette.background), label, CGSize(width: 760, height: 420))
+            }
+            save(BluetoothPage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
+                    .background(Palette.background), "bluetooth-module", CGSize(width: 760, height: 360))
+            for (label, tab) in [("clock-module", ModuleTab.module), ("clock-widgets", .widgets)] {
+                save(ClockPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
+                        .background(Palette.background), label, CGSize(width: 760, height: 620))
+            }
             save(RAMPage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
                     .background(Palette.background), "ram-module", CGSize(width: 760, height: 360))
             save(PopoverView(openWindow: {}), "popover", CGSize(width: 300, height: 200))
@@ -63,6 +76,8 @@ enum SnapshotRenderer {
             renderWidgets(feed.store, module: .gpu, appearance: appearance, to: directory.appending(path: "menubar-gpu-\(theme).png"))
             renderWidgets(feed.store, module: .disk, appearance: appearance, to: directory.appending(path: "menubar-disk-\(theme).png"))
             renderWidgets(feed.store, module: .network, appearance: appearance, to: directory.appending(path: "menubar-network-\(theme).png"))
+            renderWidgets(feed.store, module: .battery, appearance: appearance, to: directory.appending(path: "menubar-battery-\(theme).png"))
+            renderWidgets(feed.store, module: .clock, clock: ClockDisplay(pattern: "EEE HH:mm"), appearance: appearance, to: directory.appending(path: "menubar-clock-\(theme).png"))
             renderWidgets(feed.store, module: .sensors, appearance: appearance, to: directory.appending(path: "menubar-sensors-\(theme).png"))
             renderWidgets(feed.store, module: .sensors, sensors: SensorsDisplay(unit: .fahrenheit, stacked: true), appearance: appearance,
                           to: directory.appending(path: "menubar-sensors-stack-\(theme).png"))
@@ -106,6 +121,7 @@ enum SnapshotRenderer {
         ])))
         addDiskAndNetwork(to: store)
         addSensors(to: store)
+        addBatteryAndBluetooth(to: store)
         let names = ["Safari", "WindowServer", "Xcode", "Google Chrome Helper (Renderer)", "kernel_task", "Finder", "mds_stores", "Music"]
         let entries = names.enumerated().map { i, name in
             ProcessEntry(pid: pid_t(900 + i), name: name, cpu: Float(names.count - i) * 0.07,
@@ -178,6 +194,22 @@ enum SnapshotRenderer {
         }
     }
 
+    /// A discharging battery with health figures, and a handful of made-up Bluetooth devices.
+    private static func addBatteryAndBluetooth(to store: MetricStore) {
+        store.ingest(Snapshot(battery: .present(BatterySample(
+            percent: 64, state: .charging, minutesRemaining: 85,
+            health: BatteryHealth(maximumCapacityPercent: 97, designCapacity: 8_579, nominalCapacity: 8_320, cycleCount: 212, designCycleCount: 1_000,
+                                  temperatureCelsius: 31.4, volts: 12.62, amps: 1.84, systemWatts: 9.6),
+            adapter: AdapterInfo(watts: 140, name: "140W USB-C Power Adapter")))))
+        store.ingest(Snapshot(bluetooth: BluetoothSample(isPoweredOn: true, devices: [
+            BluetoothDevice(id: "AA:BB:CC:00:00:01", name: "Kulaklık", isConnected: true, kind: .headphones,
+                            batteries: [.init(part: .left, percent: 100), .init(part: .right, percent: 90), .init(part: .case, percent: 45)]),
+            BluetoothDevice(id: "AA:BB:CC:00:00:02", name: "Klavye", isConnected: true, kind: .keyboard, batteries: [.init(part: .main, percent: 67)]),
+            BluetoothDevice(id: "AA:BB:CC:00:00:03", name: "Fare", isConnected: true, kind: .mouse, batteries: [.init(part: .main, percent: 14)]),
+            BluetoothDevice(id: "AA:BB:CC:00:00:04", name: "Hoparlör", isConnected: false, kind: .speaker),
+        ], access: .allowed)))
+    }
+
     /// Bursty drive and network traffic, two volumes, SMART figures, a Wi-Fi link and a short connection history.
     private static func addDiskAndNetwork(to store: MetricStore) {
         let gb: UInt64 = 1_000_000_000
@@ -223,7 +255,7 @@ enum SnapshotRenderer {
     }
 
     /// The menu bar widget configurations side by side on a menu-bar-coloured strip.
-    private static func renderWidgets(_ store: MetricStore, module: ModuleID, sensors: SensorsDisplay = SensorsDisplay(), appearance: NSAppearance, to url: URL) {
+    private static func renderWidgets(_ store: MetricStore, module: ModuleID, sensors: SensorsDisplay = SensorsDisplay(), clock: ClockDisplay? = nil, appearance: NSAppearance, to url: URL) {
         let configs: [WidgetConfig] = [
             .default,
             WidgetConfig(kinds: [.text], showLabel: false),
@@ -238,8 +270,10 @@ enum SnapshotRenderer {
         var x: CGFloat = 8
         for config in configs {
             let view = WidgetView(frame: NSRect(x: x, y: 0, width: 200, height: height))
-            view.widestText = WidgetModel.widestText(for: module, sensors: sensors)
-            view.update(.make(module, store: store, sensors: sensors), config: config)
+            view.widestText = WidgetModel.widestText(for: module, sensors: sensors, clock: clock)
+            view.reservesGlyph = module == .battery
+            if module == .clock { view.widestLabel = clock?.widestLabel }
+            view.update(.make(module, store: store, sensors: sensors, clock: clock), config: config)
             view.setFrameSize(NSSize(width: view.intrinsicWidth, height: height))
             strip.addSubview(view)
             x += view.intrinsicWidth + 14

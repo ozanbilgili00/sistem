@@ -30,6 +30,9 @@ struct DisplayHysteresis {
         // degree (0.014 × 70 = 0.98 °C), never for a smaller drift. The sensors arrive every
         // second tick, so this is at most one update per two ticks whatever else ticks.
         case .sensors: DisplayHysteresis(threshold: SensorScale.degree * 0.98, bigJump: SensorScale.degree * 5, patience: .max, minTicks: 1)
+        // The battery moves in whole percents and only on the system's own events, so there is no
+        // wobble to damp: pass every 1-point step at once, never a smaller drift.
+        case .battery: DisplayHysteresis(threshold: 0.0095, bigJump: 0.05, patience: .max, minTicks: 1)
         default: DisplayHysteresis()
         }
     }

@@ -29,6 +29,8 @@ struct WidgetConfig: Codable, Equatable {
     var showLabel: Bool
 
     static let `default` = WidgetConfig(kinds: [.text], showLabel: true)
+    /// Battery and clock: the value alone, since the glyph or the digits say what it is.
+    static let plain = WidgetConfig(kinds: [.text], showLabel: false)
 
     var orderedKinds: [WidgetKind] { WidgetKind.allCases.filter(kinds.contains) }
 }

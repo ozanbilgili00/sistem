@@ -333,12 +333,16 @@ Kapı: geçerli sensörlerin tamamı listeleniyor, −9200 °C gibi çöp değer
 Sonuç: `SensorReader` (SMC anahtar kataloğu ilk talepte bir kez: 143 ms duvar / 13 ms CPU; tür bilgisi önbellekte). Üç metrik: `.temperature` (63 CPU çekirdek anahtarı, 0.71 ms CPU — menübar), `.temperatureStack` (+42 GPU), `.sensors` (tam liste 266 anahtar, 3.4 ms CPU, yalnız sayfa/popover); hepsi 2 tikte bir. SMC yazma yolu yok. Süzme: float olmayan, tam sıfır, `TTPD` çöpü, `TVMD`=1 °C, ~2 dk sabit kodlar → çöp değer 0. HID atlandı (SMC'de olmayan sıcaklık yok). Menübar `TPDX` yerine çekirdek maksimumu (TPDX yükte 8–12 °C düşük). Boşta A/B (art arda 3 çift, sensör öğesi açık/kapalı): %0.25 / %0.20 CPU, uyanma 2.0 / 2.1 → öğe ≈ +0.06 puan, bütçe 0.4 içinde. Pencere: %0.64 / 46 MB / 3.0 uyanma. 88 test.
 - Sensör adları sıra numaralı ("Super sensörü 3"); çekirdek eşlemesi ve DRAM sensörü yok; voltaj/akımda yalnız 4 adlı anahtar (ray adları belgesiz).
 
-### Faz 7 — Batarya, Bluetooth, Saat · ~2 gün
+### Faz 7 — Batarya, Bluetooth, Saat · ~2 gün · ✅ 2026-10-09 (kapı notlarıyla)
 - Batarya: `IOPSNotification` ile olay tabanlı; sağlık, döngü, adaptör, anlık güç; batarya widget'ı
 - Bluetooth: cihazlar + pil, 60 sn, yalnız görünürken
 - Saat: çoklu dilim, özel biçim, takvim popover'ı, isteğe bağlı NTP
 
 Kapı: pil yüzdesi/süresi sistemle birebir; Bluetooth popover kapalıyken `system_profiler` çağrısı 0.
+
+Sonuç: `BatteryReader` (`IOPSNotificationCreateRunLoopSource` olayı — yüzde/durum/süre için polling yok; AppleSmartBattery 15 tikte bir ~190 µs; sıcaklık SMC `TB0T/1T/2T`; azami kapasite Nominal/Design), `BluetoothReader`, `SNTP` (yalnız düğmeyle, 5 sn), `ClockFormat` + `ClockTicker` (örnekleyiciden bağımsız, yalnız dakika/saniye sınırında). `--battery-check` pmset ile 6/6 (bu Mac AC + şarj sınırı; pilde süre karşılaştırması Ozan'da). Bluetooth UI kapalıyken `system_profiler` 0 (test `closedBluetoothUILaunchesNothing` + perfcheck "Alt süreç CPU" 0.000 ms). Saat öğesi +0.03 puan / +0.18 uyanma. Pencereler: batarya %0.45 / 38 MB, Bluetooth %0.37 / 34 MB, saat %0.32 / 36 MB. 110 test.
+- **macOS 27 tuzağı:** `IOBluetoothDevice.pairedDevices()` CoreBluetooth izin kararına kadar iş parçacığını süresiz bekletir. Liste/pil `system_profiler SPBluetoothDataType -json` (izinsiz, ~70 ms, sabit argv, 10 sn, 4 MB sınır); IOBluetooth yalnız `.allowedAlways` iken ayrı iş parçacığında 3 sn.
+- Batarya/saat/Bluetooth menübar öğeleri isteğe bağlı. "En çok enerji tüketenler" listesi yapılmadı.
 
 ### Faz 8 — Bildirimler, gösterge paneli, genel ayarlar · ~2 gün
 - Eşik motoru: histerezis + soğuma süresi; eşik metrikleri DemandRegistry'ye düşük frekanslı tüketici olarak kaydolur. Sonraki fazlar (Uyanık Tut, Sunucular) bu motoru kullanır

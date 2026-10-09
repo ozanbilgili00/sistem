@@ -34,6 +34,13 @@ public enum Metric: String, CaseIterable, Sendable {
     /// CPU). Only while the Sensors page or popover is on screen.
     case sensors
 
+    /// Charge, state and time remaining arrive as power-source events (no polling); a tick
+    /// only rereads the electrical details. Every 15th tick as a safety net.
+    case battery
+    /// Paired devices and their battery levels via `system_profiler`: a child process, so
+    /// only while a Bluetooth page or popover is on screen, every 30th tick.
+    case bluetooth
+
     /// How often it is read, in base ticks (PLAN.md §3-A): CPU and RAM every tick,
     /// sensors every 2nd, battery every 15th, Bluetooth every 30th.
     public var everyTicks: Int {
@@ -41,7 +48,8 @@ public enum Metric: String, CaseIterable, Sendable {
         case .cpu, .memory, .processes, .gpu, .power, .cpuFrequency, .disk, .network: 1
         case .networkInfo: 5
         case .temperature, .temperatureStack, .sensors: 2
-        case .diskHealth: 30
+        case .battery: 15
+        case .diskHealth, .bluetooth: 30
         }
     }
 }
