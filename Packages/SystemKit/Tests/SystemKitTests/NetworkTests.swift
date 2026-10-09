@@ -298,24 +298,22 @@ private final class StubProtocol: URLProtocol, @unchecked Sendable {
 // MARK: Sampler and store wiring
 
 @Test func samplerReadsNetworkAndDiskAndSlowMetricsRightAway() async throws {
-    let seen = Mutex((network: 0, disk: 0, info: 0, health: 0))
+    let seen = Mutex((network: 0, disk: 0, info: 0))
     let sampler = SamplerActor { snapshot in
         seen.withLock {
             if snapshot.network != nil { $0.network += 1 }
             if snapshot.disk != nil { $0.disk += 1 }
             if snapshot.networkInfo != nil { $0.info += 1 }
-            if snapshot.diskHealth != nil { $0.health += 1 }
         }
     }
-    // Two ticks only: networkInfo (every 5th) and diskHealth (every 30th) must still
-    // arrive on the first one, or a page would sit empty for 10 s.
-    sampler.send(SamplerConfig(interval: 0.1, metrics: [.network, .disk, .networkInfo, .diskHealth], paused: false))
+    // Two ticks only: networkInfo (every 5th) must still arrive on the first one, or a
+    // page would sit empty for 10 s. (Not diskHealth: SMART is exclusive and has its own test.)
+    sampler.send(SamplerConfig(interval: 0.1, metrics: [.network, .disk, .networkInfo], paused: false))
     try await Task.sleep(for: .milliseconds(320))
     sampler.send(SamplerConfig(interval: 0.1, metrics: [], paused: false))
     let counts = seen.withLock { $0 }
     #expect(counts.network >= 2 && counts.disk >= 2)
     #expect(counts.info >= 1, "networkInfo (every 5th tick) arrived on the first one")
-    _ = counts.health  // SMART's user client is exclusive; another test may hold it
 }
 
 @MainActor @Test func storeKeepsCapacityBetweenRefreshes() {

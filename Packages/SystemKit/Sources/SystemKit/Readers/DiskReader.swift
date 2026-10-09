@@ -312,6 +312,13 @@ public final class DiskReader {
         volumes = paths.compactMap(Self.volume(at:))
     }
 
+    /// The startup volume alone: one resource-value read, no device or list work.
+    public static func bootVolume() -> DiskVolume? {
+        guard var volume = volume(at: "/") else { return nil }
+        volume.isBoot = true
+        return volume
+    }
+
     /// A fresh URL each time: `URL` caches resource values, which would freeze the
     /// free-space figure at its first reading.
     private static func volume(at path: String) -> DiskVolume? {

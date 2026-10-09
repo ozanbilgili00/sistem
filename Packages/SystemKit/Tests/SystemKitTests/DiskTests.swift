@@ -119,10 +119,16 @@ import CPrivate
 
 // MARK: SMART
 
-/// One test: the SMART user client is exclusive, so two readers open at once (tests run
-/// in parallel) would make the second `init` fail.
-@Test func nvmeHealthReaderReportsPlausibleValuesAndDoesNotLeak() throws {
-    let reader = try #require(NVMeHealthReader(), "SMART should open without root on the internal SSD")
+/// One test: the SMART user client is exclusive, so two readers open at once would make
+/// the second `init` fail. Another test's sampler (`.diskHealth`) may hold it for a moment
+/// while tests run in parallel, so wait for it to be released.
+@Test func nvmeHealthReaderReportsPlausibleValuesAndDoesNotLeak() async throws {
+    var opened = NVMeHealthReader()
+    for _ in 0..<50 where opened == nil {
+        try await Task.sleep(for: .milliseconds(100))
+        opened = NVMeHealthReader()
+    }
+    let reader = try #require(opened, "SMART should open without root on the internal SSD")
     let health = try #require(reader.read())
     #expect((0...100).contains(health.availableSpare))
     #expect(health.percentageUsed <= 255)
@@ -147,4 +153,21 @@ import CPrivate
     raw.temperatureKelvin = 303
     #expect(abs((DiskHealth(raw).temperatureCelsius ?? 0) - 29.85) < 0.01)
     #expect(health.isHealthy)
+}
+
+/// SMART is opened only while wanted: after the Disk page stops asking, another process
+/// (or reader) must be able to open the exclusive user client again.
+@Test func samplerReleasesSMARTWhenNoLongerWanted() async throws {
+    let sampler = SamplerActor { _ in }
+    sampler.send(SamplerConfig(interval: 0.1, metrics: [.diskHealth], paused: false))
+    try await Task.sleep(for: .milliseconds(250))
+    sampler.send(SamplerConfig(interval: 0.1, metrics: [], paused: false))
+    try await Task.sleep(for: .milliseconds(100))
+    var reopened = NVMeHealthReader()
+    for _ in 0..<50 where reopened == nil {  // the other SMART test may hold it briefly
+        try await Task.sleep(for: .milliseconds(100))
+        reopened = NVMeHealthReader()
+    }
+    #expect(reopened != nil)
+    withExtendedLifetime(sampler) {}
 }

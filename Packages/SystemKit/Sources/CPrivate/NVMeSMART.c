@@ -1,9 +1,18 @@
 #include "CPrivate.h"
+#include <stdlib.h>
 #include <string.h>
 #include <IOKit/IOCFPlugIn.h>
 #include <IOKit/storage/nvme/NVMeSMARTLibExternal.h>
 
 typedef IONVMeSMARTInterface **SmartHandle;
+
+/// The SMART interface and the plug-in it came from. The plug-in must be destroyed with
+/// `IODestroyPlugInInterface`, not just released: only that closes the (exclusive) user
+/// client, so another reader or app can open SMART again.
+typedef struct {
+    SmartHandle smart;
+    IOCFPlugInInterface **plugin;
+} SmartConnection;
 
 void *SistemNVMeOpen(void) {
     CFMutableDictionaryRef match = IOServiceMatching("IOService");
@@ -13,17 +22,21 @@ void *SistemNVMeOpen(void) {
     CFRelease(properties);
     io_iterator_t iterator = IO_OBJECT_NULL;
     if (IOServiceGetMatchingServices(kIOMainPortDefault, match, &iterator) != KERN_SUCCESS) return NULL;
-    SmartHandle result = NULL;
+    SmartConnection *result = NULL;
     io_service_t service;
     while (result == NULL && (service = IOIteratorNext(iterator)) != IO_OBJECT_NULL) {
         IOCFPlugInInterface **plugin = NULL;
         SInt32 score = 0;
         if (IOCreatePlugInInterfaceForService(service, kIONVMeSMARTUserClientTypeID, kIOCFPlugInInterfaceID, &plugin, &score) == KERN_SUCCESS && plugin) {
             SmartHandle smart = NULL;
-            if ((*plugin)->QueryInterface(plugin, CFUUIDGetUUIDBytes(kIONVMeSMARTInterfaceID), (LPVOID *)&smart) == S_OK && smart) {
-                result = smart;
+            if ((*plugin)->QueryInterface(plugin, CFUUIDGetUUIDBytes(kIONVMeSMARTInterfaceID), (LPVOID *)&smart) == S_OK && smart
+                && (result = malloc(sizeof *result)) != NULL) {
+                result->smart = smart;
+                result->plugin = plugin;
+            } else {
+                if (smart) (*smart)->Release(smart);
+                IODestroyPlugInInterface(plugin);
             }
-            (*plugin)->Release(plugin);
         }
         IOObjectRelease(service);
     }
@@ -32,7 +45,7 @@ void *SistemNVMeOpen(void) {
 }
 
 int SistemNVMeRead(void *handle, SistemNVMeHealth *out) {
-    SmartHandle smart = (SmartHandle)handle;
+    SmartHandle smart = ((SmartConnection *)handle)->smart;
     NVMeSMARTData data;
     memset(&data, 0, sizeof data);
     if ((*smart)->SMARTReadData(smart, &data) != kIOReturnSuccess) return -1;
@@ -54,5 +67,9 @@ int SistemNVMeRead(void *handle, SistemNVMeHealth *out) {
 }
 
 void SistemNVMeClose(void *handle) {
-    if (handle) (*(SmartHandle)handle)->Release(handle);
+    if (!handle) return;
+    SmartConnection *connection = handle;
+    (*connection->smart)->Release(connection->smart);
+    IODestroyPlugInInterface(connection->plugin);
+    free(connection);
 }

@@ -37,6 +37,8 @@ public final class MetricStore {
     public private(set) var diskRead = RingBuffer(capacity: historyLength)
     public private(set) var diskWrite = RingBuffer(capacity: historyLength)
     public private(set) var diskHealth: DiskHealth?
+    /// Latest figures for the startup volume, from either `.disk` or `.diskSpace`.
+    public private(set) var bootVolume: DiskVolume?
 
     public private(set) var network: NetworkSample?
     /// Bytes per second.
@@ -96,10 +98,14 @@ public final class MetricStore {
         }
         if let sample = snapshot.disk {
             disk = sample
-            if let volumes = sample.volumes { diskVolumes = volumes }
+            if let volumes = sample.volumes {
+                diskVolumes = volumes
+                if let boot = volumes.first(where: \.isBoot) { bootVolume = boot }
+            }
             diskRead.append(Float(sample.readRate))
             diskWrite.append(Float(sample.writeRate))
         }
+        if let volume = snapshot.bootVolume { bootVolume = volume }
         if let health = snapshot.diskHealth {
             diskHealth = health
         }

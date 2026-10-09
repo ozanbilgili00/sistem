@@ -7,15 +7,34 @@ public struct SamplerConfig: Sendable, Equatable {
     public var interval: Double
     public var metrics: Set<Metric>
     public var paused: Bool
+    /// Metrics read slower than their natural rate because only periodic consumers
+    /// (notification rules) hold them; base ticks between reads.
+    public var ticks: [Metric: Int]
 
-    public init(interval: Double, metrics: Set<Metric>, paused: Bool) {
+    public init(interval: Double, metrics: Set<Metric>, paused: Bool, ticks: [Metric: Int] = [:]) {
         self.interval = interval
         self.metrics = metrics
         self.paused = paused
+        self.ticks = ticks
     }
+
+    /// Base ticks between two reads of `metric`.
+    public func every(_ metric: Metric) -> Int { ticks[metric] ?? metric.everyTicks }
+
+    /// What the timer steps by: the greatest common divisor of every wanted metric's
+    /// rate, so a lone ten-second rule wakes the app every ten seconds, not every two.
+    public var stride: Int {
+        metrics.reduce(0) { Self.gcd($0, every($1)) }.clamped(toAtLeast: 1)
+    }
+
+    private static func gcd(_ a: Int, _ b: Int) -> Int { b == 0 ? a : gcd(b, a % b) }
 
     /// True when the timer has nothing to do and should not exist at all.
     public var isIdle: Bool { paused || metrics.isEmpty }
+}
+
+private extension Int {
+    func clamped(toAtLeast minimum: Int) -> Int { Swift.max(self, minimum) }
 }
 
 /// The one place readers live and the one timer that wakes the app.
@@ -51,8 +70,9 @@ public actor SamplerActor {
     private lazy var cpuFrequency = CPUFrequencyReader(subscription: performance)
     // Drive services are matched once; hot-plug callbacks land on this queue.
     private lazy var disk = DiskReader(queue: queue)
-    // nil where the system refuses SMART (external drives, virtual machines).
-    private lazy var health = NVMeHealthReader()
+    // Open only while wanted: the SMART user client is exclusive, and holding it would
+    // lock other disk-health tools out. nil also where the system refuses SMART.
+    private var health: NVMeHealthReader?
     // One SMC connection for sensors, opened when a sensor metric is first wanted.
     private lazy var sensorReader = SensorReader()
     // The power-source notification is registered when battery is first wanted; its
@@ -82,6 +102,7 @@ public actor SamplerActor {
     private func apply(_ new: SamplerConfig) {
         let old = config
         config = new
+        if new.isIdle || !new.metrics.contains(.diskHealth) { health = nil }
         guard !new.isIdle else {
             timer?.cancel()
             timer = nil
@@ -92,18 +113,21 @@ public actor SamplerActor {
         let primeAll = old.isIdle
         for metric in new.metrics where primeAll || !old.metrics.contains(metric) {
             prime(metric)
-            if metric.everyTicks > 1 { due.insert(metric) }
+            if new.every(metric) > 1 { due.insert(metric) }
         }
-        if timer == nil || old.interval != new.interval { schedule() }
+        if timer == nil || old.interval != new.interval || old.stride != new.stride {
+            tick = 0  // keep `tick % rate == 0` meaningful for the new step
+            schedule()
+        }
     }
 
     private func schedule() {
         timer?.cancel()
         let source = DispatchSource.makeTimerSource(queue: queue)
-        let interval = DispatchTimeInterval.milliseconds(Int(config.interval * 1000))
+        let interval = DispatchTimeInterval.milliseconds(Int(config.interval * 1000) * config.stride)
         // 20 % leeway lets the kernel fold our wakeup into someone else's.
         source.schedule(deadline: .now() + interval, repeating: interval,
-                        leeway: .milliseconds(Int(config.interval * 200)))
+                        leeway: .milliseconds(Int(config.interval * 200) * config.stride))
         source.setEventHandler { [weak self] in
             self?.assumeIsolated { $0.fire() }
         }
@@ -132,7 +156,7 @@ public actor SamplerActor {
         case .disk:
             disk.prime()
         case .diskHealth:
-            break  // stateless
+            if health == nil { health = NVMeHealthReader() }
         case .network:
             network.reset()
             _ = network.sample()
@@ -145,6 +169,8 @@ public actor SamplerActor {
             deliver(Snapshot(battery: batteryReader.sample()))  // the widget shows a value at once
         case .bluetooth:
             break  // first read comes with the `due` tick
+        case .diskSpace, .connectivity:
+            break  // stateless / event-driven
         }
     }
 
@@ -156,10 +182,10 @@ public actor SamplerActor {
     }
 
     private func fire() {
-        tick &+= 1
+        tick &+= config.stride
         var snapshot = Snapshot()
         var read = false
-        for metric in config.metrics where tick % metric.everyTicks == 0 || due.contains(metric) {
+        for metric in config.metrics where !metric.isEventDriven && (tick % config.every(metric) == 0 || due.contains(metric)) {
             switch metric {
             case .cpu:
                 snapshot.cpu = cpu.sample()
@@ -197,6 +223,10 @@ public actor SamplerActor {
                     guard let self, let sample else { return }
                     self.queue.async { self.assumeIsolated { $0.deliver(Snapshot(bluetooth: sample)) } }
                 }
+                continue
+            case .diskSpace:
+                snapshot.bootVolume = DiskReader.bootVolume()
+            case .connectivity:
                 continue
             case .temperature:
                 // The full read already covers it, and so does the wider one.

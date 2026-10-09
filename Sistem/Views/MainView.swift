@@ -25,6 +25,7 @@ struct MainView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .background(Palette.background)
+        .environment(\.openPage, PageNavigator { page.wrappedValue = $0 })
         .ignoresSafeArea()
     }
 

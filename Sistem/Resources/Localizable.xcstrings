@@ -4890,6 +4890,1302 @@
           }
         }
       }
+    },
+    "%lld ayar içe aktarıldı, %lld geçersiz değer atlandı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld settings imported, %lld invalid values skipped."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ayar içe aktarıldı, %lld geçersiz değer atlandı."
+          }
+        }
+      }
+    },
+    "%lld ayar içe aktarıldı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld settings imported."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld ayar içe aktarıldı."
+          }
+        }
+      }
+    },
+    "%lld dk": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld min"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld dk"
+          }
+        }
+      }
+    },
+    "Ayarlar dışa aktarıldı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings exported."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar dışa aktarıldı."
+          }
+        }
+      }
+    },
+    "Ayarlar sıfırlansın mı?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset settings?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar sıfırlansın mı?"
+          }
+        }
+      }
+    },
+    "Ayarlar varsayılana döndü.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings were reset to defaults."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarlar varsayılana döndü."
+          }
+        }
+      }
+    },
+    "Ayarları yönet": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manage settings"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayarları yönet"
+          }
+        }
+      }
+    },
+    "Ağ bağlantısı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network connection"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ağ bağlantısı"
+          }
+        }
+      }
+    },
+    "Ağ bağlantısı kesildi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network connection lost"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ağ bağlantısı kesildi"
+          }
+        }
+      }
+    },
+    "Bağlantı kesilir ve geri gelmezse.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If the connection drops and does not come back."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantı kesilir ve geri gelmezse."
+          }
+        }
+      }
+    },
+    "Bağlı cihaz": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connected devices"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlı cihaz"
+          }
+        }
+      }
+    },
+    "Başlangıç diskinde boş alan eşiğin altına inerse.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If free space on the startup disk falls below the threshold."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlangıç diskinde boş alan eşiğin altına inerse."
+          }
+        }
+      }
+    },
+    "Başlangıç diskinde yalnızca %@ boş alan kaldı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only %@ is free on the startup disk."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlangıç diskinde yalnızca %@ boş alan kaldı."
+          }
+        }
+      }
+    },
+    "Bekleniyor": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bekleniyor"
+          }
+        }
+      }
+    },
+    "Bellek baskısı yükseldi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Memory pressure rose"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bellek baskısı yükseldi"
+          }
+        }
+      }
+    },
+    "Bildirim ayarlarını aç": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open notification settings"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildirim ayarlarını aç"
+          }
+        }
+      }
+    },
+    "Bildirim izni": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notification permission"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildirim izni"
+          }
+        }
+      }
+    },
+    "Bildirim kuralları da kapanır. Oturum açınca başlatma sistemde kalır.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notification rules turn off too. Launch at login stays as the system has it."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildirim kuralları da kapanır. Oturum açınca başlatma sistemde kalır."
+          }
+        }
+      }
+    },
+    "Bildirimler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildirimler"
+          }
+        }
+      }
+    },
+    "Bildirimler Bildirim Merkezi'ne düşer; tıklayınca ilgili modül açılır.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications appear in Notification Center; clicking one opens the module."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bildirimler Bildirim Merkezi'ne düşer; tıklayınca ilgili modül açılır."
+          }
+        }
+      }
+    },
+    "Boş disk alanı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free disk space"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş disk alanı"
+          }
+        }
+      }
+    },
+    "Bu bir Sistem ayar dosyası değil.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is not a Sistem settings file."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bir Sistem ayar dosyası değil."
+          }
+        }
+      }
+    },
+    "Bu dosya Sistem'in daha yeni bir sürümünden; içe aktarılamadı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This file is from a newer version of Sistem and cannot be imported."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu dosya Sistem'in daha yeni bir sürümünden; içe aktarılamadı."
+          }
+        }
+      }
+    },
+    "Bu kopya kaydedilemiyor. Uygulamayı Uygulamalar klasörüne taşıyıp yeniden dene.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This copy cannot be registered. Move the app to the Applications folder and try again."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu kopya kaydedilemiyor. Uygulamayı Uygulamalar klasörüne taşıyıp yeniden dene."
+          }
+        }
+      }
+    },
+    "CPU kullanımı eşiğin üstünde kalırsa.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If CPU usage stays above the threshold."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU kullanımı eşiğin üstünde kalırsa."
+          }
+        }
+      }
+    },
+    "CPU sıcaklığı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU temperature"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU sıcaklığı"
+          }
+        }
+      }
+    },
+    "CPU sıcaklığı yüksek": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU temperature is high"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU sıcaklığı yüksek"
+          }
+        }
+      }
+    },
+    "CPU yükü": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU load"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU yükü"
+          }
+        }
+      }
+    },
+    "CPU yükü yüksek": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU load is high"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CPU yükü yüksek"
+          }
+        }
+      }
+    },
+    "Disk dolmak üzere": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk is almost full"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk dolmak üzere"
+          }
+        }
+      }
+    },
+    "Dosya doğrulanır; tanınmayan ya da geçersiz değerler atlanır.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The file is validated; unknown or invalid values are skipped."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosya doğrulanır; tanınmayan ya da geçersiz değerler atlanır."
+          }
+        }
+      }
+    },
+    "Dosya yazılamadı.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The file could not be written."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dosya yazılamadı."
+          }
+        }
+      }
+    },
+    "Düzey": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Level"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düzey"
+          }
+        }
+      }
+    },
+    "Dışa aktar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dışa aktar"
+          }
+        }
+      }
+    },
+    "Dışa aktar…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dışa aktar…"
+          }
+        }
+      }
+    },
+    "En düşük pil %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lowest battery %@"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En düşük pil %@"
+          }
+        }
+      }
+    },
+    "En sıcak çekirdek %lld%@, eşik %lld%@.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hottest core %lld%@, threshold %lld%@."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En sıcak çekirdek %lld%@, eşik %lld%@."
+          }
+        }
+      }
+    },
+    "En sıcak çekirdek eşiği aşarsa.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If the hottest core exceeds the threshold."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En sıcak çekirdek eşiği aşarsa."
+          }
+        }
+      }
+    },
+    "Eşik": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Threshold"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eşik"
+          }
+        }
+      }
+    },
+    "Genel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "General"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genel"
+          }
+        }
+      }
+    },
+    "Güç profili": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Power profile"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güç profili"
+          }
+        }
+      }
+    },
+    "Hassas": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Precise"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hassas"
+          }
+        }
+      }
+    },
+    "Henüz istenmedi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not asked yet"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Henüz istenmedi"
+          }
+        }
+      }
+    },
+    "Her zaman en az iki kat seyrek ölçer; pilde dört kat.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Always measures at least twice as rarely; four times on battery."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her zaman en az iki kat seyrek ölçer; pilde dört kat."
+          }
+        }
+      }
+    },
+    "Kullanım yüzde %lld eşiğinin üstünde, şu an yüzde %lld.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usage is above the %lld percent threshold, now at %lld percent."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kullanım yüzde %lld eşiğinin üstünde, şu an yüzde %lld."
+          }
+        }
+      }
+    },
+    "Kurallar varsayılan olarak kapalıdır. Açık bir kural yalnızca kendi ölçümünü en çok 10 saniyede bir okur; kapalıysa hiçbir şey okunmaz. Bir kural sınırda gidip gelse de tek bildirim gönderir.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rules are off by default. An enabled rule reads only its own measurement, at most every 10 seconds; when off, nothing is read. A rule that hovers around its limit still sends a single notification."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurallar varsayılan olarak kapalıdır. Açık bir kural yalnızca kendi ölçümünü en çok 10 saniyede bir okur; kapalıysa hiçbir şey okunmaz. Bir kural sınırda gidip gelse de tek bildirim gönderir."
+          }
+        }
+      }
+    },
+    "Mac açıldığında Sistem menü çubuğunda kendiliğinden başlar.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem starts in the menu bar by itself when the Mac starts."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac açıldığında Sistem menü çubuğunda kendiliğinden başlar."
+          }
+        }
+      }
+    },
+    "Mac şu an internete ulaşamıyor.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Mac cannot reach the internet right now."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac şu an internete ulaşamıyor."
+          }
+        }
+      }
+    },
+    "Modüller": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modules"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modüller"
+          }
+        }
+      }
+    },
+    "Onay bekliyor": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs approval"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Onay bekliyor"
+          }
+        }
+      }
+    },
+    "Otomatik": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Automatic"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Otomatik"
+          }
+        }
+      }
+    },
+    "Oturum Açma Öğeleri'ni aç": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Login Items"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oturum Açma Öğeleri'ni aç"
+          }
+        }
+      }
+    },
+    "Oturum açınca başlat": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Launch at login"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oturum açınca başlat"
+          }
+        }
+      }
+    },
+    "Pil azaldı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Battery is low"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pil azaldı"
+          }
+        }
+      }
+    },
+    "Pil seviyesi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Battery level"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pil seviyesi"
+          }
+        }
+      }
+    },
+    "Pil tasarrufu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Battery saver"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pil tasarrufu"
+          }
+        }
+      }
+    },
+    "Pilde bile yavaşlamaz. Yalnızca Mac aşırı ısınırsa seyrekleşir.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never slows down, even on battery. Only backs off if the Mac gets very hot."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pilde bile yavaşlamaz. Yalnızca Mac aşırı ısınırsa seyrekleşir."
+          }
+        }
+      }
+    },
+    "Pilde ve Düşük Güç Modu'nda aralık uzar; aşağıdaki anahtar bunu kapatabilir.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The interval grows on battery and in Low Power Mode; the switch below can turn that off."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pilde ve Düşük Güç Modu'nda aralık uzar; aşağıdaki anahtar bunu kapatabilir."
+          }
+        }
+      }
+    },
+    "Pilde çalışırken şarj eşiğin altına inerse.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If the charge falls below the threshold while on battery."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pilde çalışırken şarj eşiğin altına inerse."
+          }
+        }
+      }
+    },
+    "Sistem Ayarları'nda Sistem için bildirimler kapalı; kurallar çalışır ama bildirim görünmez.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications are off for Sistem in System Settings; rules run but nothing is shown."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sistem Ayarları'nda Sistem için bildirimler kapalı; kurallar çalışır ama bildirim görünmez."
+          }
+        }
+      }
+    },
+    "Süre": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Duration"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Süre"
+          }
+        }
+      }
+    },
+    "Sıfırla": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıfırla"
+          }
+        }
+      }
+    },
+    "Sıfırla…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıfırla…"
+          }
+        }
+      }
+    },
+    "Tüm ayarlar ve bildirim kuralları fabrika değerlerine döner.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All settings and notification rules return to factory values."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm ayarlar ve bildirim kuralları fabrika değerlerine döner."
+          }
+        }
+      }
+    },
+    "Tüm ayarlar ve bildirim kuralları tek bir JSON dosyasına yazılır.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All settings and notification rules are written to a single JSON file."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm ayarlar ve bildirim kuralları tek bir JSON dosyasına yazılır."
+          }
+        }
+      }
+    },
+    "Varsayılana sıfırla": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset to defaults"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Varsayılana sıfırla"
+          }
+        }
+      }
+    },
+    "Vazgeç": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vazgeç"
+          }
+        }
+      }
+    },
+    "Yalnızca Otomatik profilde geçerli.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only applies to the Automatic profile."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca Otomatik profilde geçerli."
+          }
+        }
+      }
+    },
+    "boş": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "free"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "boş"
+          }
+        }
+      }
+    },
+    "macOS bellek baskısını kritik olarak bildiriyor.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS reports critical memory pressure."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS bellek baskısını kritik olarak bildiriyor."
+          }
+        }
+      }
+    },
+    "macOS bellek baskısını uyarı düzeyinde bildiriyor.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS reports memory pressure at warning level."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS bellek baskısını uyarı düzeyinde bildiriyor."
+          }
+        }
+      }
+    },
+    "macOS bellek baskısını yükseltirse.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If macOS raises memory pressure."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS bellek baskısını yükseltirse."
+          }
+        }
+      }
+    },
+    "macOS izin vermeni bekliyor: Sistem Ayarları'nda Oturum Açma Öğeleri.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS is waiting for your approval: Login Items in System Settings."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS izin vermeni bekliyor: Sistem Ayarları'nda Oturum Açma Öğeleri."
+          }
+        }
+      }
+    },
+    "macOS'un izin sorusu bekleniyor.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waiting for macOS's permission prompt."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS'un izin sorusu bekleniyor."
+          }
+        }
+      }
+    },
+    "Çalışma süresi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uptime"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çalışma süresi"
+          }
+        }
+      }
+    },
+    "İlk kuralı açtığında macOS izin ister; o ana kadar hiçbir şey sorulmaz.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS asks for permission when you turn on the first rule; nothing is asked before that."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İlk kuralı açtığında macOS izin ister; o ana kadar hiçbir şey sorulmaz."
+          }
+        }
+      }
+    },
+    "İzin kapalı": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permission off"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzin kapalı"
+          }
+        }
+      }
+    },
+    "İzin verildi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permission granted"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzin verildi"
+          }
+        }
+      }
+    },
+    "İçe aktar": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İçe aktar"
+          }
+        }
+      }
+    },
+    "İçe aktar…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import…"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İçe aktar…"
+          }
+        }
+      }
+    },
+    "Şarj yüzde %lld; pil boşalıyor.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Charge is at %lld percent and draining."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şarj yüzde %lld; pil boşalıyor."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

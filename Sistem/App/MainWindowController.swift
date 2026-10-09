@@ -10,12 +10,14 @@ import SystemKit
 final class MainWindowController: NSObject, NSWindowDelegate {
     private let settings: SettingsStore
     private let engine: SamplingEngine
+    private let notifier: AlertNotifier
     private var window: NSWindow?
     private var feed: LiveFeed?
 
-    init(settings: SettingsStore, engine: SamplingEngine) {
+    init(settings: SettingsStore, engine: SamplingEngine, notifier: AlertNotifier) {
         self.settings = settings
         self.engine = engine
+        self.notifier = notifier
         super.init()
     }
 
@@ -37,7 +39,7 @@ final class MainWindowController: NSObject, NSWindowDelegate {
         )
         let feed = LiveFeed(engine: engine)
         self.feed = feed
-        let host = NSHostingController(rootView: MainView(settings: settings).environment(feed))
+        let host = NSHostingController(rootView: MainView(settings: settings).environment(feed).environment(notifier))
         host.sizingOptions = []
         window.contentViewController = host
         window.setContentSize(NSSize(width: 1000, height: 660))

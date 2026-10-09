@@ -344,12 +344,16 @@ Sonuç: `BatteryReader` (`IOPSNotificationCreateRunLoopSource` olayı — yüzde
 - **macOS 27 tuzağı:** `IOBluetoothDevice.pairedDevices()` CoreBluetooth izin kararına kadar iş parçacığını süresiz bekletir. Liste/pil `system_profiler SPBluetoothDataType -json` (izinsiz, ~70 ms, sabit argv, 10 sn, 4 MB sınır); IOBluetooth yalnız `.allowedAlways` iken ayrı iş parçacığında 3 sn.
 - Batarya/saat/Bluetooth menübar öğeleri isteğe bağlı. "En çok enerji tüketenler" listesi yapılmadı.
 
-### Faz 8 — Bildirimler, gösterge paneli, genel ayarlar · ~2 gün
+### Faz 8 — Bildirimler, gösterge paneli, genel ayarlar · ~2 gün · ✅ 2026-10-09
 - Eşik motoru: histerezis + soğuma süresi; eşik metrikleri DemandRegistry'ye düşük frekanslı tüketici olarak kaydolur. Sonraki fazlar (Uyanık Tut, Sunucular) bu motoru kullanır
 - Gösterge paneli (cihaz görseli, donanım satırları, 13 modülün özeti)
 - Genel ayarlar: başlangıçta çalıştır (`SMAppService.mainApp`), Dock'ta göster, sıcaklık birimi, **güç profili** (Otomatik / Pil tasarrufu / Hassas), ayar dışa/içe aktar/sıfırla
 
 Kapı: eşik aşımında tek bildirim; sınır etrafında salınırken tekrar yok.
+
+Sonuç: `Alerts/` — `ThresholdMachine` (saf: histerezis, en az süre, soğuma, uyku boşluğunda sıfırlama), `AlertRule` (6 tür, hepsi varsayılan kapalı), `AlertCenter`; salınım testinde tam 1 bildirim. `DemandRegistry.retain(_:period:)`: kural tutan metrik ≈10 sn'de bir (disk/pil 60 sn), örnekleyici hızların OBEB'iyle uyanır. Yeni metrikler `.diskSpace`, olay tabanlı `.connectivity`. Bildirim izni yalnız ilk kural açılınca; ret durumu + Sistem Ayarları yolu; tıklama modül sayfasını açar. Gösterge paneli (donanım + 9 modül kartı, yalnız görünürken talep). Genel ayarlar: oturum açınca başlat (`SMAppService`), güç profili (Otomatik/Pil tasarrufu/Hassas), JSON dışa/içe aktar/sıfırla (`schemaVersion: 1`, doğrulama). Boşta A/B (kurallar kapalı) F8 %0.16 / F7 %0.17; `WINDOW=dashboard` %0.73 / 41 MB / 4.3 uyanma. 134 test.
+- **SMART düzeltmesi (Opus):** `SistemNVMeClose` eklentiyi yalnız `Release` ediyordu; özel (exclusive) kullanıcı istemcisi kapanmıyor, aynı/diğer süreç SMART'ı yeniden açamıyordu. Artık `IODestroyPlugInInterface`; örnekleyici SMART'ı yalnız `.diskHealth` istenirken açık tutar (Disk sayfası kapanınca DriveDx/smartctl gibi araçlar erişebilir). Test `samplerReleasesSMARTWhenNoLongerWanted`.
+- Gerçek bildirim/izin istemi ve imzalı kopyada oturum açınca başlat Ozan'da.
 
 ### Faz 9 — Uyanık Tut modülü (LidRun'dan) · ~3 gün
 Kaynak: `Araştırma/lidrun.md`. Ayrıcalıksız, ad-hoc imzayla.

@@ -37,6 +37,8 @@ final class SettingsStore {
         static let networkLatency = "network.latency"
         static let clockPattern = "clock.pattern"
         static let clockZones = "clock.zones"
+        static let powerProfile = "powerProfile"
+        static let alertRules = "alertRules"
     }
 
     /// Choices offered for the update interval, in seconds.
@@ -59,6 +61,19 @@ final class SettingsStore {
     var temperatureUnit: TemperatureUnit {
         didSet { defaults.set(temperatureUnit.rawValue, forKey: Key.temperatureUnit) }
     }
+
+    /// Automatic follows "slow down on battery"; the other two override it (PowerProfile).
+    var powerProfile: PowerProfile {
+        didSet { defaults.set(powerProfile.rawValue, forKey: Key.powerProfile) }
+    }
+
+    /// Notification rules, one per kind, all off until the user turns them on.
+    var alertRules: [AlertRule] {
+        didSet { defaults.set(AlertRule.encode(alertRules), forKey: Key.alertRules) }
+    }
+
+    /// Launch at login is the system's state, not ours: it is read from `SMAppService`, never stored or exported.
+    @ObservationIgnored let loginItem = LoginItem()
     var menuBarModules: [ModuleID] {
         didSet { defaults.set(menuBarModules.map(\.rawValue), forKey: Key.menuBarModules) }
     }
@@ -158,6 +173,8 @@ final class SettingsStore {
         updateInterval = defaults.object(forKey: Key.updateInterval) as? Double ?? 2
         slowDownOnBattery = defaults.object(forKey: Key.slowDownOnBattery) as? Bool ?? true
         temperatureUnit = defaults.string(forKey: Key.temperatureUnit).flatMap(TemperatureUnit.init) ?? .celsius
+        powerProfile = defaults.string(forKey: Key.powerProfile).flatMap(PowerProfile.init) ?? .automatic
+        alertRules = AlertRule.decode(defaults.data(forKey: Key.alertRules))
         menuBarModules = (defaults.stringArray(forKey: Key.menuBarModules)?.compactMap(ModuleID.init))
             ?? ModuleID.defaultMenuBar
         let stored = defaults.data(forKey: Key.widgets)
@@ -187,5 +204,116 @@ final class SettingsStore {
 
     func applyDockPolicy() {
         NSApp.setActivationPolicy(showInDock ? .regular : .accessory)
+    }
+
+    // MARK: Export, import, reset
+
+    /// Every exportable setting as JSON-compatible values.
+    func exportValues() -> [String: Any] {
+        var values: [String: Any] = [
+            Key.appearance: appearance.rawValue,
+            Key.showInDock: showInDock,
+            Key.updateInterval: updateInterval,
+            Key.slowDownOnBattery: slowDownOnBattery,
+            Key.powerProfile: powerProfile.rawValue,
+            Key.temperatureUnit: temperatureUnit.rawValue,
+            Key.menuBarModules: menuBarModules.map(\.rawValue),
+            Key.cpuShowCores: cpuShowCores,
+            Key.cpuShowLoadAverage: cpuShowLoadAverage,
+            Key.cpuShowProcesses: cpuShowProcesses,
+            Key.ramShowProcesses: ramShowProcesses,
+            Key.gpuShowPower: gpuShowPower,
+            Key.sensorsStack: sensorsStack,
+            Key.networkPublicIP: networkPublicIP,
+            Key.networkLatency: networkLatency,
+            Key.clockPattern: clockPattern,
+            Key.clockZones: clockZones,
+        ]
+        let encoded = Dictionary(uniqueKeysWithValues: widgets.map { ($0.key.rawValue, $0.value) })
+        if let data = try? JSONEncoder().encode(encoded), let object = try? JSONSerialization.jsonObject(with: data) {
+            values[Key.widgets] = object
+        }
+        if let data = AlertRule.encode(alertRules), let object = try? JSONSerialization.jsonObject(with: data) {
+            values[Key.alertRules] = object
+        }
+        return values
+    }
+
+    func exportData() throws -> Data { try SettingsArchive.encode(exportValues()) }
+
+    /// What an import did, for the confirmation line.
+    struct ImportResult: Equatable {
+        var applied = 0
+        var ignored = 0
+    }
+
+    /// Applies the settings in `data`, key by key. A value of the wrong type or outside its
+    /// allowed set is skipped and counted; unknown keys are ignored. Throws only if the file
+    /// is not a Sistem settings file (SettingsArchive.Failure).
+    @discardableResult
+    func importData(_ data: Data) throws -> ImportResult {
+        let values = try SettingsArchive.decode(data)
+        var result = ImportResult()
+        func take<T>(_ key: String, _ convert: (Any) -> T?, _ assign: (T) -> Void) {
+            guard let raw = values[key] else { return }
+            if let value = convert(raw) { assign(value); result.applied += 1 } else { result.ignored += 1 }
+        }
+        func bool(_ raw: Any) -> Bool? { (raw as? NSNumber).flatMap { CFGetTypeID($0) == CFBooleanGetTypeID() ? $0.boolValue : nil } }
+        func strings(_ raw: Any) -> [String]? { raw as? [String] }
+
+        take(Key.appearance, { ($0 as? String).flatMap(Appearance.init) }) { appearance = $0; applyAppearance() }
+        take(Key.showInDock, bool) { showInDock = $0 }
+        take(Key.updateInterval, { ($0 as? Double).flatMap { Self.intervalChoices.contains($0) ? $0 : nil } }) { updateInterval = $0 }
+        take(Key.slowDownOnBattery, bool) { slowDownOnBattery = $0 }
+        take(Key.powerProfile, { ($0 as? String).flatMap(PowerProfile.init) }) { powerProfile = $0 }
+        take(Key.temperatureUnit, { ($0 as? String).flatMap(TemperatureUnit.init) }) { temperatureUnit = $0 }
+        take(Key.menuBarModules, { strings($0).map { $0.compactMap(ModuleID.init) } }) { chosen in
+            menuBarModules = ModuleID.allCases.filter(Set(chosen).contains)
+        }
+        take(Key.cpuShowCores, bool) { cpuShowCores = $0 }
+        take(Key.cpuShowLoadAverage, bool) { cpuShowLoadAverage = $0 }
+        take(Key.cpuShowProcesses, bool) { cpuShowProcesses = $0 }
+        take(Key.ramShowProcesses, bool) { ramShowProcesses = $0 }
+        take(Key.gpuShowPower, bool) { gpuShowPower = $0 }
+        take(Key.sensorsStack, bool) { sensorsStack = $0 }
+        take(Key.networkPublicIP, bool) { networkPublicIP = $0 }
+        take(Key.networkLatency, bool) { networkLatency = $0 }
+        take(Key.clockPattern, { ($0 as? String).map(ClockFormat.sanitized) }) { clockPattern = $0 }
+        take(Key.clockZones, { strings($0).map { Array($0.filter { TimeZone(identifier: $0) != nil }.prefix(Self.clockZoneLimit)) } }) { clockZones = $0 }
+        take(Key.widgets, { raw -> [ModuleID: WidgetConfig]? in
+            guard JSONSerialization.isValidJSONObject(raw), let data = try? JSONSerialization.data(withJSONObject: raw),
+                  let decoded = try? JSONDecoder().decode([String: WidgetConfig].self, from: data) else { return nil }
+            return Dictionary(uniqueKeysWithValues: decoded.compactMap { key, value in ModuleID(rawValue: key).map { ($0, value) } })
+        }) { widgets = $0 }
+        take(Key.alertRules, { raw -> [AlertRule]? in
+            guard JSONSerialization.isValidJSONObject(raw), let data = try? JSONSerialization.data(withJSONObject: raw) else { return nil }
+            return AlertRule.decode(data)
+        }) { alertRules = $0 }
+        return result
+    }
+
+    /// Back to the factory defaults. Notification rules go off too; the launch-at-login
+    /// registration belongs to the system and is left alone.
+    func resetToDefaults() {
+        appearance = .system
+        showInDock = false
+        updateInterval = 2
+        slowDownOnBattery = true
+        powerProfile = .automatic
+        temperatureUnit = .celsius
+        menuBarModules = ModuleID.defaultMenuBar
+        widgets = [:]
+        cpuShowCores = true
+        cpuShowLoadAverage = true
+        cpuShowProcesses = true
+        ramShowProcesses = true
+        gpuShowPower = true
+        sensorsStack = false
+        networkPublicIP = false
+        networkLatency = false
+        clockPattern = ""
+        clockZones = []
+        alertRules = AlertRule.defaults
+        applyAppearance()
     }
 }

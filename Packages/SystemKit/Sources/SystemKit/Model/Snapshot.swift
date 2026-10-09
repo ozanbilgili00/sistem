@@ -9,6 +9,8 @@ public struct Snapshot: Sendable {
     public var cpuFrequency: CPUFrequencySample?
     public var disk: DiskSample?
     public var diskHealth: DiskHealth?
+    /// The startup volume, read on its own for the disk-space notification rule.
+    public var bootVolume: DiskVolume?
     public var network: NetworkSample?
     public var networkInfo: NetworkInfoSample?
     /// The few temperatures the menu bar shows; also derived from every full read.
@@ -28,7 +30,8 @@ public struct Snapshot: Sendable {
                 temperature: TemperatureSample? = nil, sensors: SensorSample? = nil,
                 battery: BatteryStatus? = nil, bluetooth: BluetoothSample? = nil,
                 path: PathState? = nil, connectionEvents: [ConnectionEvent] = [],
-                publicIP: PublicIPState? = nil, latency: LatencyState? = nil) {
+                publicIP: PublicIPState? = nil, latency: LatencyState? = nil, bootVolume: DiskVolume? = nil) {
+        self.bootVolume = bootVolume
         self.cpu = cpu
         self.memory = memory
         self.processes = processes

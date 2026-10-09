@@ -41,6 +41,13 @@ public enum Metric: String, CaseIterable, Sendable {
     /// only while a Bluetooth page or popover is on screen, every 30th tick.
     case bluetooth
 
+    /// Capacity of the startup volume alone (one resource-value read). For the "disk
+    /// nearly full" notification rule; the Disk page gets the same figure from `.disk`.
+    case diskSpace
+    /// Connectivity from `NWPathMonitor` events. Reads nothing on a tick: it only keeps the
+    /// monitor running, so the sampler never wakes for it.
+    case connectivity
+
     /// How often it is read, in base ticks (PLAN.md §3-A): CPU and RAM every tick,
     /// sensors every 2nd, battery every 15th, Bluetooth every 30th.
     public var everyTicks: Int {
@@ -50,6 +57,11 @@ public enum Metric: String, CaseIterable, Sendable {
         case .temperature, .temperatureStack, .sensors: 2
         case .battery: 15
         case .diskHealth, .bluetooth: 30
+        case .diskSpace: 15
+        case .connectivity: 1
         }
     }
+
+    /// True for metrics that arrive as events: the sampler's timer has nothing to do for them.
+    public var isEventDriven: Bool { self == .connectivity }
 }

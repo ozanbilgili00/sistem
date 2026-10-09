@@ -15,6 +15,7 @@ public final class SamplingEngine {
     /// The user's interval in seconds, before the power multiplier.
     public var baseInterval: Double = 2 { didSet { update() } }
     public var slowDownOnBattery = true { didSet { update() } }
+    public var profile: PowerProfile = .automatic { didSet { update() } }
 
     /// What the sampler is currently told to do. For the diagnostics page.
     public private(set) var config = SamplerConfig(interval: 2, metrics: [], paused: true)
@@ -34,12 +35,16 @@ public final class SamplingEngine {
     }
 
     private func update(force: Bool = false) {
-        network.update(demanded: demand.active.contains(.network) || demand.active.contains(.networkInfo),
+        let wanted = demand.active
+        network.update(demanded: wanted.contains(.network) || wanted.contains(.networkInfo) || wanted.contains(.connectivity),
                        onBattery: power.state.onBattery, paused: !pauses.reasons.isEmpty)
+        let interval = baseInterval * profile.multiplier(for: power.state, slowDownOnBattery: slowDownOnBattery)
         let new = SamplerConfig(
-            interval: baseInterval * power.multiplier(slowDownOnBattery: slowDownOnBattery),
-            metrics: demand.active,
-            paused: !pauses.reasons.isEmpty
+            interval: interval,
+            // Event-driven metrics only keep a monitor alive; the timer has nothing to read for them.
+            metrics: wanted.filter { !$0.isEventDriven },
+            paused: !pauses.reasons.isEmpty,
+            ticks: demand.tickOverrides(interval: interval)
         )
         guard force || new != config else { return }
         config = new

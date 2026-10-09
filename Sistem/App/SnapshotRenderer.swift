@@ -16,6 +16,26 @@ enum SnapshotRenderer {
         let settings = SettingsStore(defaults: defaults)
         let feed = LiveFeed(store: syntheticStore(), engine: nil)
         feed.isActive = true
+        let notifier = AlertNotifier(previewing: .notDetermined)
+
+        // Notification rules in their three permission states, and the empty state above.
+        func variant(_ name: String, permission: AlertNotifier.Permission, rules: [AlertKind]) -> (SettingsStore, AlertNotifier) {
+            let defaults = UserDefaults(suiteName: "SistemSnapshot-\(name)")!
+            defaults.removePersistentDomain(forName: "SistemSnapshot-\(name)")
+            let store = SettingsStore(defaults: defaults)
+            store.alertRules = AlertRule.defaults.map { AlertRule(kind: $0.kind, enabled: rules.contains($0.kind)) }
+            store.powerProfile = .saver
+            return (store, AlertNotifier(previewing: permission))
+        }
+        let specs: [(String, AlertNotifier.Permission, [AlertKind])] = [
+            ("allowed", .allowed, [.cpuLoad, .cpuTemperature, .diskFree, .networkDown]),
+            ("denied", .denied, [.batteryLow]),
+            ("waiting", .notDetermined, [.memoryPressure]),
+        ]
+        let ruleVariants: [(String, SettingsStore, AlertNotifier)] = specs.map { name, permission, rules in
+            let made = variant(name, permission: permission, rules: rules)
+            return (name, made.0, made.1)
+        }
 
         let pages: [(String, Page)] = [
             ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)), ("gpu", .module(.gpu)), ("ram", .module(.ram)),
@@ -24,11 +44,15 @@ enum SnapshotRenderer {
         for (theme, name) in [("dark", NSAppearance.Name.darkAqua), ("light", .aqua)] {
             let appearance = NSAppearance(named: name)!
             func save<V: View>(_ view: V, _ label: String, _ size: CGSize) {
-                render(view.environment(feed), size: size, appearance: appearance,
+                render(view.environment(feed).environment(notifier), size: size, appearance: appearance,
                        to: directory.appending(path: "\(label)-\(theme).png"))
             }
             for (label, page) in pages {
-                save(MainView(settings: settings, pinnedPage: page), label, CGSize(width: 1000, height: 900))
+                save(MainView(settings: settings, pinnedPage: page), label, CGSize(width: 1000, height: page == .settings ? 1560 : 900))
+            }
+            for (name, store, notifier) in ruleVariants {
+                render(MainView(settings: store, pinnedPage: .settings).environment(feed).environment(notifier), size: CGSize(width: 1000, height: 1700),
+                       appearance: appearance, to: directory.appending(path: "settings-\(name)-\(theme).png"))
             }
             for (label, tab) in [("cpu-module", ModuleTab.module), ("cpu-widgets", .widgets)] {
                 save(CPUPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
