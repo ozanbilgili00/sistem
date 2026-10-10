@@ -19,6 +19,7 @@ struct ModulePage: View {
         case .battery: BatteryPage(settings: settings)
         case .bluetooth: BluetoothPage(settings: settings)
         case .clock: ClockPage(settings: settings)
+        case .keepAwake: KeepAwakePage(settings: settings)
         }
     }
 }

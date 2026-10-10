@@ -85,6 +85,18 @@ final class AlertNotifier: NSObject, UNUserNotificationCenterDelegate {
         Task { try? await center.add(request) }
     }
 
+    /// Tells the user Keep Awake let go because it was no longer safe. One slot: a newer one replaces the older.
+    func postKeepAwake(_ reason: ProtectionReason) {
+        guard permission != .denied else { return }
+        let content = UNMutableNotificationContent()
+        content.title = KeepAwakeText.protectionTitle(reason)
+        content.body = KeepAwakeText.protectionBody(reason)
+        content.threadIdentifier = "sistem.alerts"
+        content.userInfo = ["module": ModuleID.keepAwake.rawValue]
+        let request = UNNotificationRequest(identifier: "keepawake.protection", content: content, trigger: nil)
+        Task { try? await center.add(request) }
+    }
+
     // MARK: UNUserNotificationCenterDelegate
 
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {

@@ -53,6 +53,7 @@ public final class MetricStore {
     public private(set) var battery: BatteryStatus?
     public private(set) var bluetooth: BluetoothSample?
     public private(set) var path: PathState?
+    public private(set) var assertions: AssertionSample?
     /// Newest first, in memory only.
     public private(set) var connectionEvents: [ConnectionEvent] = []
     public static let connectionEventLimit = 50
@@ -130,6 +131,9 @@ public final class MetricStore {
         }
         if let sample = snapshot.bluetooth {
             bluetooth = sample
+        }
+        if let sample = snapshot.assertions {
+            assertions = sample
         }
         if let state = snapshot.path {
             path = state

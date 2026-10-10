@@ -6191,6 +6191,616 @@
           }
         }
       }
+    },
+    "%lld MB/sn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld MB/s"
+          }
+        }
+      }
+    },
+    "%lld dk kaldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min left"
+          }
+        }
+      }
+    },
+    "%lld sa %lld dk kaldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld h %lld min left"
+          }
+        }
+      }
+    },
+    "+%lld daha" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld more"
+          }
+        }
+      }
+    },
+    "1 dakikadan az kaldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Less than 1 minute left"
+          }
+        }
+      }
+    },
+    "1 sa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 h"
+          }
+        }
+      }
+    },
+    "1 saat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 hour"
+          }
+        }
+      }
+    },
+    "3 sa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3 h"
+          }
+        }
+      }
+    },
+    "3 saat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3 hours"
+          }
+        }
+      }
+    },
+    "30 dakika" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 minutes"
+          }
+        }
+      }
+    },
+    "30 dk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 min"
+          }
+        }
+      }
+    },
+    "8 sa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8 h"
+          }
+        }
+      }
+    },
+    "8 saat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8 hours"
+          }
+        }
+      }
+    },
+    "Bekleme süresi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grace period"
+          }
+        }
+      }
+    },
+    "Bekliyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting"
+          }
+        }
+      }
+    },
+    "Büyük ağ trafiği" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heavy network traffic"
+          }
+        }
+      }
+    },
+    "Derleme ve Docker" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Builds and Docker"
+          }
+        }
+      }
+    },
+    "Durdur" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
+          }
+        }
+      }
+    },
+    "Durumu göster" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show status"
+          }
+        }
+      }
+    },
+    "Ekran" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display"
+          }
+        }
+      }
+    },
+    "Ekranı da açık tut" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep the display on too"
+          }
+        }
+      }
+    },
+    "Elle başlatıldı, durdurulana kadar sürer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Started by hand; lasts until you stop it."
+          }
+        }
+      }
+    },
+    "En sıcak sensör 60 saniyedir 90 °C ve üstünde. Mac'in uyumasına izin verildi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The hottest sensor has been at 90 °C or above for 60 seconds. The Mac is allowed to sleep again."
+          }
+        }
+      }
+    },
+    "Etkin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active"
+          }
+        }
+      }
+    },
+    "Her zaman açık: pil yüzde 15 ve altına inerse (pildeyken), sistem ısınmayı ciddi olarak bildirirse ya da en sıcak sensör 60 saniye boyunca 90 °C ve üstünde kalırsa uyanık tutma bırakılır ve bildirim gelir. Sıcaklık 75 °C altına inene kadar yeniden başlatılamaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Always on: if the battery drops to 15 % or lower (on battery), the system reports serious thermal pressure, or the hottest sensor stays at 90 °C or above for 60 seconds, keeping awake is released and you get a notification. It cannot be restarted until the temperature is back under 75 °C."
+          }
+        }
+      }
+    },
+    "Hiçbir tetikleyici açık değil. Modül sekmesinden açabilirsiniz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No trigger is on. You can turn them on in the Module tab."
+          }
+        }
+      }
+    },
+    "Kapalıyken ekran sönebilir, sistem çalışmaya devam eder." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When off, the display may turn off while the system keeps running."
+          }
+        }
+      }
+    },
+    "Kapağı kapatınca Mac yine uyur; kapak kapalı modu bu sürümde yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Closing the lid still puts the Mac to sleep; lid-closed mode is not in this version."
+          }
+        }
+      }
+    },
+    "Koruma" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protection"
+          }
+        }
+      }
+    },
+    "Koruma devrede" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protection active"
+          }
+        }
+      }
+    },
+    "Liste, sistemin uyku engellerini (pmset -g assertions ile aynı kaynak) gösterir; yalnızca bu sayfa ya da açılır pencere görünürken birkaç saniyede bir okunur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The list shows the system's sleep blockers (the same source as pmset -g assertions); it is read every few seconds, only while this page or the popover is visible."
+          }
+        }
+      }
+    },
+    "Mac prize takılıyken." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While the Mac is plugged in."
+          }
+        }
+      }
+    },
+    "Mac uyanık tutuluyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac is being kept awake"
+          }
+        }
+      }
+    },
+    "Mac uyuyabilir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac may sleep"
+          }
+        }
+      }
+    },
+    "Mac çok ısındı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac got too hot"
+          }
+        }
+      }
+    },
+    "Mac çok ısındı: uyanık tutma durduruldu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac got too hot: keeping awake was stopped."
+          }
+        }
+      }
+    },
+    "Mac'in uykuya geçmesini engelle, neden uyanık olduğunu gör; pil ve sıcaklık korumalı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep the Mac from sleeping and see why it is awake; with battery and temperature protection."
+          }
+        }
+      }
+    },
+    "Menü çubuğuna bir fincan simgesi ekler. Kapalıyken hiçbir şey okunmaz ve tutulmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds a cup icon to the menu bar. While off, nothing is read or held."
+          }
+        }
+      }
+    },
+    "Modülü Modül sekmesinden açın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn the module on in the Module tab."
+          }
+        }
+      }
+    },
+    "Neden uyanık?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Why awake?"
+          }
+        }
+      }
+    },
+    "Pil yüzde 15 ve altında: uyanık tutma durduruldu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Battery at 15 % or lower: keeping awake was stopped."
+          }
+        }
+      }
+    },
+    "Sağ tık diğer süreleri gösterir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Right-click shows the other durations."
+          }
+        }
+      }
+    },
+    "Simgeye tıklayınca" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clicking the icon"
+          }
+        }
+      }
+    },
+    "Sistem ısınma durumunu ciddi olarak bildiriyor. Mac'in uyumasına izin verildi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The system reports serious thermal pressure. The Mac is allowed to sleep again."
+          }
+        }
+      }
+    },
+    "Süre seçerek başlatın ya da bir tetikleyici açın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start with a duration or turn on a trigger."
+          }
+        }
+      }
+    },
+    "Süresiz" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indefinitely"
+          }
+        }
+      }
+    },
+    "Sıcaklık 90 °C üstü: uyanık tutma durduruldu. 75 °C altına inince yeniden izin verilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperature above 90 °C: keeping awake was stopped. It is allowed again below 75 °C."
+          }
+        }
+      }
+    },
+    "Sıcaklık yüksek" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperature is high"
+          }
+        }
+      }
+    },
+    "Tetikleyiciler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triggers"
+          }
+        }
+      }
+    },
+    "Tetikleyiciler varsayılan olarak kapalıdır. Koşul bittikten 2 dakika sonra Mac'in uyumasına izin verilir; çalışan işlemler 30 saniyede bir ve uygulama açılınca taranır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triggers are off by default. The Mac may sleep 2 minutes after the condition ends; running processes are checked every 30 seconds and when an app launches."
+          }
+        }
+      }
+    },
+    "Uyanık Tut" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep Awake"
+          }
+        }
+      }
+    },
+    "Uyanık Tut kapalı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep Awake is off"
+          }
+        }
+      }
+    },
+    "Uyanık Tut sayfasını aç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the Keep Awake page"
+          }
+        }
+      }
+    },
+    "Uyanık Tut'u etkinleştir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Keep Awake"
+          }
+        }
+      }
+    },
+    "Yapay zekâ araçları" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI tools"
+          }
+        }
+      }
+    },
+    "claude, codex, cursor-agent veya ollama çalışırken." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While claude, codex, cursor-agent or ollama is running."
+          }
+        }
+      }
+    },
+    "xcodebuild, swift-build veya docker çalışırken." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While xcodebuild, swift-build or docker is running."
+          }
+        }
+      }
+    },
+    "İndirme ve yükleme toplamı eşiği aştığında." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When download plus upload exceeds the threshold."
+          }
+        }
+      }
+    },
+    "Şarj yüzde 15 ve altına indi. Mac'in uyumasına izin verildi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The charge dropped to 15 % or lower. The Mac is allowed to sleep again."
+          }
+        }
+      }
+    },
+    "Şarjdayken" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While charging"
+          }
+        }
+      }
+    },
+    "Şu an uykuyu engelleyen bir süreç yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing is preventing sleep right now."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

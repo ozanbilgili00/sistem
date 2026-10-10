@@ -47,6 +47,9 @@ public enum Metric: String, CaseIterable, Sendable {
     /// Connectivity from `NWPathMonitor` events. Reads nothing on a tick: it only keeps the
     /// monitor running, so the sampler never wakes for it.
     case connectivity
+    /// Who holds a sleep-preventing power assertion (`IOPMCopyAssertionsByProcess`). Only
+    /// the Keep Awake page and popover ask, so it is read only while one is on screen.
+    case assertions
 
     /// How often it is read, in base ticks (PLAN.md §3-A): CPU and RAM every tick,
     /// sensors every 2nd, battery every 15th, Bluetooth every 30th.
@@ -59,6 +62,7 @@ public enum Metric: String, CaseIterable, Sendable {
         case .diskHealth, .bluetooth: 30
         case .diskSpace: 15
         case .connectivity: 1
+        case .assertions: 3
         }
     }
 

@@ -17,6 +17,23 @@ enum SnapshotRenderer {
         let feed = LiveFeed(store: syntheticStore(), engine: nil)
         feed.isActive = true
         let notifier = AlertNotifier(previewing: .notDetermined)
+        // Keep Awake in three states, plus the module switched off.
+        let triggers: Set<AwakeTrigger> = [.aiTools, .charging, .network]
+        var holdingState = KeepAwakeState()
+        holdingState.isHolding = true
+        holdingState.manualActive = true
+        holdingState.manualEndsAt = Date().addingTimeInterval(47 * 60)
+        holdingState.holdingTriggers = [.aiTools]
+        holdingState.presentTriggers = [.aiTools]
+        var blockedState = KeepAwakeState()
+        blockedState.blocked = .temperature
+        let awakeModels: [(String, KeepAwakeModel)] = [
+            ("on", KeepAwakeModel(previewing: holdingState, config: KeepAwakeConfig(enabled: true, triggers: triggers))),
+            ("idle", KeepAwakeModel(previewing: KeepAwakeState(), config: KeepAwakeConfig(enabled: true, triggers: []))),
+            ("blocked", KeepAwakeModel(previewing: blockedState, config: KeepAwakeConfig(enabled: true, triggers: triggers))),
+            ("off", KeepAwakeModel(previewing: KeepAwakeState(), config: KeepAwakeConfig())),
+        ]
+        let awake = awakeModels[0].1
 
         // Notification rules in their three permission states, and the empty state above.
         func variant(_ name: String, permission: AlertNotifier.Permission, rules: [AlertKind]) -> (SettingsStore, AlertNotifier) {
@@ -39,19 +56,19 @@ enum SnapshotRenderer {
 
         let pages: [(String, Page)] = [
             ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)), ("gpu", .module(.gpu)), ("ram", .module(.ram)),
-            ("disk", .module(.disk)), ("network", .module(.network)), ("sensors", .module(.sensors)), ("battery", .module(.battery)), ("bluetooth", .module(.bluetooth)), ("clock", .module(.clock)), ("settings", .settings), ("diagnostics", .diagnostics),
+            ("disk", .module(.disk)), ("network", .module(.network)), ("sensors", .module(.sensors)), ("battery", .module(.battery)), ("bluetooth", .module(.bluetooth)), ("clock", .module(.clock)), ("keepawake", .module(.keepAwake)), ("settings", .settings), ("diagnostics", .diagnostics),
         ]
         for (theme, name) in [("dark", NSAppearance.Name.darkAqua), ("light", .aqua)] {
             let appearance = NSAppearance(named: name)!
             func save<V: View>(_ view: V, _ label: String, _ size: CGSize) {
-                render(view.environment(feed).environment(notifier), size: size, appearance: appearance,
+                render(view.environment(feed).environment(notifier).environment(awake), size: size, appearance: appearance,
                        to: directory.appending(path: "\(label)-\(theme).png"))
             }
             for (label, page) in pages {
                 save(MainView(settings: settings, pinnedPage: page), label, CGSize(width: 1000, height: page == .settings ? 1560 : 900))
             }
             for (name, store, notifier) in ruleVariants {
-                render(MainView(settings: store, pinnedPage: .settings).environment(feed).environment(notifier), size: CGSize(width: 1000, height: 1700),
+                render(MainView(settings: store, pinnedPage: .settings).environment(feed).environment(notifier).environment(awake), size: CGSize(width: 1000, height: 1700),
                        appearance: appearance, to: directory.appending(path: "settings-\(name)-\(theme).png"))
             }
             for (label, tab) in [("cpu-module", ModuleTab.module), ("cpu-widgets", .widgets)] {
@@ -93,6 +110,18 @@ enum SnapshotRenderer {
                 save(ClockPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
                         .background(Palette.background), label, CGSize(width: 760, height: 620))
             }
+            save(KeepAwakePage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
+                    .background(Palette.background), "keepawake-module", CGSize(width: 760, height: 760))
+            for (name, model) in awakeModels {
+                let shown = SettingsStore(defaults: UserDefaults(suiteName: "SistemSnapshot")!)
+                shown.keepAwakeEnabled = model.config.enabled
+                render(KeepAwakePopover(settings: shown, openWindow: {}).environment(feed).environment(model), size: CGSize(width: 440, height: 520),
+                       appearance: appearance, to: directory.appending(path: "popover-keepawake-\(name)-\(theme).png"))
+                render(MainView(settings: shown, pinnedPage: .module(.keepAwake)).environment(feed).environment(notifier).environment(model),
+                       size: CGSize(width: 1000, height: 640), appearance: appearance,
+                       to: directory.appending(path: "keepawake-\(name)-\(theme).png"))
+            }
+            renderCups(appearance: appearance, to: directory.appending(path: "menubar-keepawake-\(theme).png"))
             save(RAMPage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
                     .background(Palette.background), "ram-module", CGSize(width: 760, height: 360))
             save(PopoverView(openWindow: {}), "popover", CGSize(width: 300, height: 200))
@@ -139,6 +168,11 @@ enum SnapshotRenderer {
             store.ingest(Snapshot(power: PowerSample(
                 cpu: 5.4 + 3 * sin(t), gpu: 0.4 + device * 28, ane: 0, system: 17.2 + device * 30)))
         }
+        store.ingest(Snapshot(assertions: AssertionSample(holders: [
+            AwakeHolder(pid: 4_101, processName: "caffeinate", preventsDisplaySleep: false, reason: "caffeinate command-line tool"),
+            AwakeHolder(pid: 4_212, processName: "Safari", preventsDisplaySleep: true, reason: "Video playback"),
+            AwakeHolder(pid: 4_390, processName: "Sistem", preventsDisplaySleep: false, reason: "", isSelf: true),
+        ])))
         store.ingest(Snapshot(cpuFrequency: CPUFrequencySample(clusters: [
             .init(name: "Super", coreCount: 6, activeFraction: 0.31, performanceLevel: 0.78, averageMHz: 3_650, maxMHz: 4_608),
             .init(name: "Performance", coreCount: 12, activeFraction: 0.12, performanceLevel: 0.34, averageMHz: 2_010, maxMHz: 4_380),
@@ -303,6 +337,27 @@ enum SnapshotRenderer {
             x += view.intrinsicWidth + 14
         }
         strip.frame = NSRect(x: 0, y: 0, width: x, height: height)
+        strip.layer?.backgroundColor = (appearance.name == .darkAqua ? NSColor(white: 0.16, alpha: 1) : NSColor(white: 0.93, alpha: 1)).cgColor
+        let window = NSWindow(contentRect: strip.frame, styleMask: [.borderless], backing: .buffered, defer: false)
+        window.appearance = appearance
+        window.contentView = strip
+        strip.layoutSubtreeIfNeeded()
+        guard let rep = strip.bitmapImageRepForCachingDisplay(in: strip.bounds) else { return }
+        strip.cacheDisplay(in: strip.bounds, to: rep)
+        try? rep.representation(using: .png, properties: [:])?.write(to: url)
+    }
+
+    /// The cup in its three looks: off, holding, blocked by the protection.
+    private static func renderCups(appearance: NSAppearance, to url: URL) {
+        let height: CGFloat = 24
+        let strip = NSView(frame: NSRect(x: 0, y: 0, width: 3 * 34, height: height))
+        strip.wantsLayer = true
+        for (index, look) in [(false, false), (true, false), (false, true)].enumerated() {
+            let view = NSImageView(frame: NSRect(x: CGFloat(index) * 34 + 6, y: 2, width: 22, height: 20))
+            view.image = KeepAwakeStatusItem.image(holding: look.0, blocked: look.1)
+            view.contentTintColor = appearance.name == .darkAqua ? .white : .black
+            strip.addSubview(view)
+        }
         strip.layer?.backgroundColor = (appearance.name == .darkAqua ? NSColor(white: 0.16, alpha: 1) : NSColor(white: 0.93, alpha: 1)).cgColor
         let window = NSWindow(contentRect: strip.frame, styleMask: [.borderless], backing: .buffered, defer: false)
         window.appearance = appearance

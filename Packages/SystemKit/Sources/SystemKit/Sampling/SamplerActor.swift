@@ -169,7 +169,7 @@ public actor SamplerActor {
             deliver(Snapshot(battery: batteryReader.sample()))  // the widget shows a value at once
         case .bluetooth:
             break  // first read comes with the `due` tick
-        case .diskSpace, .connectivity:
+        case .diskSpace, .connectivity, .assertions:
             break  // stateless / event-driven
         }
     }
@@ -228,6 +228,8 @@ public actor SamplerActor {
                 snapshot.bootVolume = DiskReader.bootVolume()
             case .connectivity:
                 continue
+            case .assertions:
+                snapshot.assertions = AssertionReader.read()
             case .temperature:
                 // The full read already covers it, and so does the wider one.
                 if !config.metrics.contains(.sensors), !config.metrics.contains(.temperatureStack) {

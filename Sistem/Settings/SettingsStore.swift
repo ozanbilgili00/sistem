@@ -39,6 +39,11 @@ final class SettingsStore {
         static let clockZones = "clock.zones"
         static let powerProfile = "powerProfile"
         static let alertRules = "alertRules"
+        static let keepAwakeEnabled = "keepAwake.enabled"
+        static let keepAwakeDisplay = "keepAwake.keepDisplay"
+        static let keepAwakeTriggers = "keepAwake.triggers"
+        static let keepAwakeNetwork = "keepAwake.networkThreshold"
+        static let keepAwakeDuration = "keepAwake.defaultDuration"
     }
 
     /// Choices offered for the update interval, in seconds.
@@ -71,6 +76,33 @@ final class SettingsStore {
     var alertRules: [AlertRule] {
         didSet { defaults.set(AlertRule.encode(alertRules), forKey: Key.alertRules) }
     }
+
+    /// Keep Awake: the module, its cup icon and the smart triggers are all off until the user turns them on.
+    var keepAwakeEnabled: Bool {
+        didSet { defaults.set(keepAwakeEnabled, forKey: Key.keepAwakeEnabled) }
+    }
+    /// Also hold the display on. Off = the display may turn off while the Mac stays awake.
+    var keepAwakeDisplay: Bool {
+        didSet { defaults.set(keepAwakeDisplay, forKey: Key.keepAwakeDisplay) }
+    }
+    var keepAwakeTriggers: Set<AwakeTrigger> {
+        didSet { defaults.set(keepAwakeTriggers.map(\.rawValue).sorted(), forKey: Key.keepAwakeTriggers) }
+    }
+    /// Bytes per second that count as a big transfer.
+    var keepAwakeNetworkThreshold: Double {
+        didSet { defaults.set(keepAwakeNetworkThreshold, forKey: Key.keepAwakeNetwork) }
+    }
+    /// Seconds a click on the cup holds the Mac awake; 0 = until stopped.
+    var keepAwakeDuration: Double {
+        didSet { defaults.set(keepAwakeDuration, forKey: Key.keepAwakeDuration) }
+    }
+
+    var keepAwakeConfig: KeepAwakeConfig {
+        KeepAwakeConfig(enabled: keepAwakeEnabled, keepDisplayOn: keepAwakeDisplay, triggers: keepAwakeTriggers,
+                        networkThreshold: keepAwakeNetworkThreshold)
+    }
+
+    static let keepAwakeDurationChoices: [Double] = [1_800, 3_600, 10_800, 28_800, 0]
 
     /// Launch at login is the system's state, not ours: it is read from `SMAppService`, never stored or exported.
     @ObservationIgnored let loginItem = LoginItem()
@@ -175,6 +207,11 @@ final class SettingsStore {
         temperatureUnit = defaults.string(forKey: Key.temperatureUnit).flatMap(TemperatureUnit.init) ?? .celsius
         powerProfile = defaults.string(forKey: Key.powerProfile).flatMap(PowerProfile.init) ?? .automatic
         alertRules = AlertRule.decode(defaults.data(forKey: Key.alertRules))
+        keepAwakeEnabled = defaults.object(forKey: Key.keepAwakeEnabled) as? Bool ?? false
+        keepAwakeDisplay = defaults.object(forKey: Key.keepAwakeDisplay) as? Bool ?? false
+        keepAwakeTriggers = Set((defaults.stringArray(forKey: Key.keepAwakeTriggers) ?? []).compactMap(AwakeTrigger.init))
+        keepAwakeNetworkThreshold = Self.snapNetwork(defaults.object(forKey: Key.keepAwakeNetwork) as? Double)
+        keepAwakeDuration = Self.snapDuration(defaults.object(forKey: Key.keepAwakeDuration) as? Double)
         menuBarModules = (defaults.stringArray(forKey: Key.menuBarModules)?.compactMap(ModuleID.init))
             ?? ModuleID.defaultMenuBar
         let stored = defaults.data(forKey: Key.widgets)
@@ -192,6 +229,16 @@ final class SettingsStore {
         networkLatency = defaults.object(forKey: Key.networkLatency) as? Bool ?? false
         clockPattern = ClockFormat.sanitized(defaults.string(forKey: Key.clockPattern) ?? "")
         clockZones = Array((defaults.stringArray(forKey: Key.clockZones) ?? []).filter { TimeZone(identifier: $0) != nil }.prefix(Self.clockZoneLimit))
+    }
+
+    private static func snapNetwork(_ value: Double?) -> Double {
+        guard let value, value.isFinite else { return AwakeTrigger.defaultNetworkThreshold }
+        return AwakeTrigger.networkThresholdChoices.min { abs($0 - value) < abs($1 - value) } ?? AwakeTrigger.defaultNetworkThreshold
+    }
+
+    private static func snapDuration(_ value: Double?) -> Double {
+        guard let value, value.isFinite else { return 3_600 }
+        return keepAwakeDurationChoices.contains(value) ? value : 3_600
     }
 
     func applyAppearance() {
@@ -228,6 +275,11 @@ final class SettingsStore {
             Key.networkLatency: networkLatency,
             Key.clockPattern: clockPattern,
             Key.clockZones: clockZones,
+            Key.keepAwakeEnabled: keepAwakeEnabled,
+            Key.keepAwakeDisplay: keepAwakeDisplay,
+            Key.keepAwakeTriggers: keepAwakeTriggers.map(\.rawValue).sorted(),
+            Key.keepAwakeNetwork: keepAwakeNetworkThreshold,
+            Key.keepAwakeDuration: keepAwakeDuration,
         ]
         let encoded = Dictionary(uniqueKeysWithValues: widgets.map { ($0.key.rawValue, $0.value) })
         if let data = try? JSONEncoder().encode(encoded), let object = try? JSONSerialization.jsonObject(with: data) {
@@ -280,6 +332,11 @@ final class SettingsStore {
         take(Key.networkLatency, bool) { networkLatency = $0 }
         take(Key.clockPattern, { ($0 as? String).map(ClockFormat.sanitized) }) { clockPattern = $0 }
         take(Key.clockZones, { strings($0).map { Array($0.filter { TimeZone(identifier: $0) != nil }.prefix(Self.clockZoneLimit)) } }) { clockZones = $0 }
+        take(Key.keepAwakeEnabled, bool) { keepAwakeEnabled = $0 }
+        take(Key.keepAwakeDisplay, bool) { keepAwakeDisplay = $0 }
+        take(Key.keepAwakeTriggers, { strings($0).map { Set($0.compactMap(AwakeTrigger.init)) } }) { keepAwakeTriggers = $0 }
+        take(Key.keepAwakeNetwork, { ($0 as? Double).flatMap { AwakeTrigger.networkThresholdChoices.contains($0) ? $0 : nil } }) { keepAwakeNetworkThreshold = $0 }
+        take(Key.keepAwakeDuration, { ($0 as? Double).flatMap { Self.keepAwakeDurationChoices.contains($0) ? $0 : nil } }) { keepAwakeDuration = $0 }
         take(Key.widgets, { raw -> [ModuleID: WidgetConfig]? in
             guard JSONSerialization.isValidJSONObject(raw), let data = try? JSONSerialization.data(withJSONObject: raw),
                   let decoded = try? JSONDecoder().decode([String: WidgetConfig].self, from: data) else { return nil }
@@ -314,6 +371,11 @@ final class SettingsStore {
         clockPattern = ""
         clockZones = []
         alertRules = AlertRule.defaults
+        keepAwakeEnabled = false
+        keepAwakeDisplay = false
+        keepAwakeTriggers = []
+        keepAwakeNetworkThreshold = AwakeTrigger.defaultNetworkThreshold
+        keepAwakeDuration = 3_600
         applyAppearance()
     }
 }

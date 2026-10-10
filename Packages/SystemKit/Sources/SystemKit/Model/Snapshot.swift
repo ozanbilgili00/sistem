@@ -23,6 +23,7 @@ public struct Snapshot: Sendable {
     public var connectionEvents: [ConnectionEvent] = []
     public var publicIP: PublicIPState?
     public var latency: LatencyState?
+    public var assertions: AssertionSample?
 
     public init(cpu: CPUSample? = nil, memory: MemorySample? = nil, processes: ProcessSample? = nil,
                 gpu: GPUSample? = nil, power: PowerSample? = nil, cpuFrequency: CPUFrequencySample? = nil,
@@ -30,7 +31,9 @@ public struct Snapshot: Sendable {
                 temperature: TemperatureSample? = nil, sensors: SensorSample? = nil,
                 battery: BatteryStatus? = nil, bluetooth: BluetoothSample? = nil,
                 path: PathState? = nil, connectionEvents: [ConnectionEvent] = [],
-                publicIP: PublicIPState? = nil, latency: LatencyState? = nil, bootVolume: DiskVolume? = nil) {
+                publicIP: PublicIPState? = nil, latency: LatencyState? = nil, bootVolume: DiskVolume? = nil,
+                assertions: AssertionSample? = nil) {
+        self.assertions = assertions
         self.bootVolume = bootVolume
         self.cpu = cpu
         self.memory = memory

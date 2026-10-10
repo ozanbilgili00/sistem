@@ -355,7 +355,7 @@ Sonuç: `Alerts/` — `ThresholdMachine` (saf: histerezis, en az süre, soğuma,
 - **SMART düzeltmesi (Opus):** `SistemNVMeClose` eklentiyi yalnız `Release` ediyordu; özel (exclusive) kullanıcı istemcisi kapanmıyor, aynı/diğer süreç SMART'ı yeniden açamıyordu. Artık `IODestroyPlugInInterface`; örnekleyici SMART'ı yalnız `.diskHealth` istenirken açık tutar (Disk sayfası kapanınca DriveDx/smartctl gibi araçlar erişebilir). Test `samplerReleasesSMARTWhenNoLongerWanted`.
 - Gerçek bildirim/izin istemi ve imzalı kopyada oturum açınca başlat Ozan'da.
 
-### Faz 9 — Uyanık Tut modülü (LidRun'dan) · ~3 gün
+### Faz 9 — Uyanık Tut modülü (LidRun'dan) · ~3 gün · ✅ 2026-10-10
 Kaynak: `Araştırma/lidrun.md`. Ayrıcalıksız, ad-hoc imzayla.
 - **Neden uyanık paneli:** `IOPMCopyAssertionsByProcess` + `pmset -g assertions` eşdeğeri; hangi süreç hangi engeli tutuyor (ör. Claude Code'un `caffeinate`'leri). Olay tabanlı değil → yalnız görünürken 5 sn'de bir
 - **Uyanık tut:** `IOPMAssertionCreateWithName` (`PreventUserIdleSystemSleep`, istenirse `PreventUserIdleDisplaySleep`); süre 30 dk / 1 sa / 3 sa / 8 sa / süresiz; "ekran kapalı, sistem açık" modu
@@ -367,6 +367,10 @@ Kaynak: `Araştırma/lidrun.md`. Ayrıcalıksız, ad-hoc imzayla.
 
 Kapı: uygulama çökerse engel kalmıyor (IOPM assertion süreçle ölür — doğrula); koruma eşikleri birim testli; tetikleyici açıkken boşta < %0.3 CPU.
 **Kontrol kapısı:** J-06 N-09 K-08 + Özellik Bitti Tanımı
+
+Sonuç: `SystemKit/KeepAwake/` — `KeepAwakeGuard` (pil/termal/SMC için 3 `ThresholdMachine`), `AwakeSources` (IOPS pil, SMC sıcaklık, ağ sayacı, `proc_listallpids` + `proc_name`), `PowerAssertions` (IOPM + `AssertionReader`), `KeepAwakeController`. Sürekli zamanlayıcı yok: yalnız tetikleyici açıkken ya da engel tutulurken 30 sn'de bir uyanır ve örnekleyiciden bağımsızdır (örnekleyici ekran uykusunda durur, koruma durmamalı). "Neden uyanık" listesi yeni `Metric.assertions`, yalnız sayfa/popover görünürken. Ayrı fincan ikonu (`KeepAwakeStatusItem`) yalnız durum değişince çizilir. Tüm tetikleyiciler ve modül varsayılan kapalı. Çökme testi: `kill -9` sonrası 1.5 sn içinde assertion yok. Boşta A/C/B: kapalı %0.32, yalnız ikon %0.38, ikon + tetikleyici %0.29 (fark gürültü); `WINDOW=keepAwake` %0.30 / 35 MB / 3.0 uyanma. 157 test.
+- **Bulgu:** Claude Code'un `proc_name`'i sürüm dizini adıdır; sürüm gibi görünen adlarda `proc_pidpath` ile `<araç>/versions/` kalıbına bakılır.
+- Gerçek koruma bildirimi ve pilde %15 eşiği Ozan'da (elle).
 
 ### Faz 10 — Ekran modülü (BetterDisplay'den) · ~4 gün
 Kaynak: `Araştırma/betterdisplay.md`. Referans yalnız MIT projeler (m1ddc, MonitorControl); BetterDisplay kapalı kaynak, kodu alınmaz.

@@ -10,7 +10,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard let self else { return }
         notifier.post(event, unit: settings.temperatureUnit)
     }
-    private lazy var mainWindow = MainWindowController(settings: settings, engine: engine, notifier: notifier)
+    private let keepAwake = KeepAwakeModel()
+    private lazy var mainWindow = MainWindowController(settings: settings, engine: engine, notifier: notifier, keepAwake: keepAwake)
+    private var keepAwakeItem: KeepAwakeStatusItem?
     private var hadEnabledRules = false
     private var statusBar: StatusBarController?
 
@@ -22,12 +24,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         notifier.open = { [weak self] module in self?.mainWindow.show(page: .module(module)) }
         hadEnabledRules = settings.alertRules.contains(where: \.enabled)
         if hadEnabledRules { notifier.refresh() }
+        keepAwake.onProtection = { [weak self] event in
+            if case .protectionTripped(let reason) = event { self?.notifier.postKeepAwake(reason) }
+        }
         syncEngineSettings()
         // Launch silently into the menu bar; never pull a window to the front on
         // start, so the app doesn't steal focus from whatever the user is doing.
         statusBar = StatusBarController(settings: settings, engine: engine) { [weak self] page in
             self?.mainWindow.show(page: page)
         }
+        syncKeepAwake()
         let args = CommandLine.arguments
         if let i = args.firstIndex(of: "--measure-window") {
             let page = args.indices.contains(i + 1) ? Page(rawValue: args[i + 1]) : .module(.cpu)
@@ -50,6 +56,29 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return settings.updateInterval
         } onChange: { [weak self] in
             DispatchQueue.main.async { MainActor.assumeIsolated { self?.syncEngineSettings() } }
+        }
+    }
+
+    /// Keeps the Keep Awake controller and its menu bar item in step with the settings.
+    private func syncKeepAwake() {
+        let config = withObservationTracking {
+            settings.keepAwakeConfig
+        } onChange: { [weak self] in
+            DispatchQueue.main.async { MainActor.assumeIsolated { self?.syncKeepAwake() } }
+        }
+        keepAwake.apply(config)
+        syncKeepAwakeItem(enabled: config.enabled)
+    }
+
+    /// The cup exists only while the module is on.
+    private func syncKeepAwakeItem(enabled: Bool) {
+        if enabled, keepAwakeItem == nil {
+            keepAwakeItem = KeepAwakeStatusItem(model: keepAwake, settings: settings, engine: engine) { [weak self] page in
+                self?.mainWindow.show(page: page)
+            }
+        } else if !enabled, let item = keepAwakeItem {
+            item.remove()
+            keepAwakeItem = nil
         }
     }
 

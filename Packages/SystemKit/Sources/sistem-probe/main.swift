@@ -228,6 +228,10 @@ if args.count >= 2, args[1] == "--gpu-check" {
 // `sistem-probe --disk-check [MB]`, `--net-check [seconds]`, `--smart-check`: Faz 5 gate checks (IOChecks.swift).
 if args.count >= 2, args[1] == "--disk-check" { diskCheck(megabytes: args.count > 2 ? Int(args[2]) ?? 512 : 512); exit(0) }
 if args.count >= 2, args[1] == "--net-check" { netCheck(seconds: args.count > 2 ? Int(args[2]) ?? 10 : 10); exit(0) }
+if args.count >= 3, args[1] == "--awake-check" {
+    MainActor.assumeIsolated { awakeCheck(name: args[2], seconds: args.count > 3 ? Double(args[3]) ?? 20 : 20) }
+    exit(0)
+}
 if args.count == 2, args[1] == "--io-bench" { ioBench(); exit(0) }
 if args.count == 2, args[1] == "--smart-check" { smartCheck(); exit(0) }
 // `sistem-probe --sensors-check [loadSeconds]`: Faz 6 gate check (SensorChecks.swift).
