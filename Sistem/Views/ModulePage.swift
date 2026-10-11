@@ -21,6 +21,7 @@ struct ModulePage: View {
         case .clock: ClockPage(settings: settings)
         case .keepAwake: KeepAwakePage(settings: settings)
         case .display: DisplayPage(settings: settings)
+        case .servers: ServersPage(settings: settings)
         }
     }
 }

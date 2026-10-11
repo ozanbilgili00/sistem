@@ -36,6 +36,8 @@ enum SnapshotRenderer {
         let awake = awakeModels[0].1
         let displayModels = displayPreviews()
         let display = displayModels[0].1
+        let serverModels = serversPreviews()
+        let servers = serverModels[0].1
 
         // Notification rules in their three permission states, and the empty state above.
         func variant(_ name: String, permission: AlertNotifier.Permission, rules: [AlertKind]) -> (SettingsStore, AlertNotifier) {
@@ -58,12 +60,12 @@ enum SnapshotRenderer {
 
         let pages: [(String, Page)] = [
             ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)), ("gpu", .module(.gpu)), ("ram", .module(.ram)),
-            ("disk", .module(.disk)), ("network", .module(.network)), ("sensors", .module(.sensors)), ("battery", .module(.battery)), ("bluetooth", .module(.bluetooth)), ("clock", .module(.clock)), ("keepawake", .module(.keepAwake)), ("display", .module(.display)), ("settings", .settings), ("diagnostics", .diagnostics),
+            ("disk", .module(.disk)), ("network", .module(.network)), ("sensors", .module(.sensors)), ("battery", .module(.battery)), ("bluetooth", .module(.bluetooth)), ("clock", .module(.clock)), ("keepawake", .module(.keepAwake)), ("display", .module(.display)), ("servers", .module(.servers)), ("settings", .settings), ("diagnostics", .diagnostics),
         ]
         for (theme, name) in [("dark", NSAppearance.Name.darkAqua), ("light", .aqua)] {
             let appearance = NSAppearance(named: name)!
             func save<V: View>(_ view: V, _ label: String, _ size: CGSize) {
-                render(view.environment(feed).environment(notifier).environment(awake).environment(display), size: size, appearance: appearance,
+                render(view.environment(feed).environment(notifier).environment(awake).environment(display).environment(servers), size: size, appearance: appearance,
                        to: directory.appending(path: "\(label)-\(theme).png"))
             }
             for (label, page) in pages {
@@ -136,6 +138,31 @@ enum SnapshotRenderer {
                        size: CGSize(width: 1000, height: name == "empty" || name == "off" ? 480 : 1500), appearance: appearance,
                        to: directory.appending(path: "display-\(name)-\(theme).png"))
             }
+            let serverSettings = SettingsStore(defaults: UserDefaults(suiteName: "SistemSnapshot")!)
+            serverSettings.serversEnabled = true
+            serverSettings.servers = serversPreviewConfigs().0
+            save(ServersPage(settings: serverSettings, tab: .module).environment(servers).padding(24).frame(width: 760, alignment: .top)
+                    .background(Palette.background), "servers-module", CGSize(width: 760, height: 1000))
+            for (name, preview) in serverModels {
+                let shown = SettingsStore(defaults: UserDefaults(suiteName: "SistemSnapshot")!)
+                shown.serversEnabled = name != "off"
+                render(ServersPopover(openWindow: {}).environment(preview), size: CGSize(width: 440, height: 640),
+                       appearance: appearance, to: directory.appending(path: "popover-servers-\(name)-\(theme).png"))
+                render(MainView(settings: shown, pinnedPage: .module(.servers)).environment(feed).environment(notifier).environment(awake).environment(display).environment(preview),
+                       size: CGSize(width: 1000, height: name == "empty" || name == "off" ? 480 : 1700), appearance: appearance,
+                       to: directory.appending(path: "servers-\(name)-\(theme).png"))
+            }
+            let diagnostics: [(String, DiagnosticsModel.Phase)] = [
+                ("idle", .idle), ("ping", .done(.ping(PingResult(sent: 4, received: 4, minimum: 0.09, average: 0.11, maximum: 0.13)))),
+                ("dns", .done(.dns(DNSResult(addresses: ["127.0.0.1", "::1"])))),
+                ("port", .done(.port(PortResult(state: .refused, milliseconds: nil)))),
+                ("trace", .done(.traceroute(TraceResult(hops: [TraceHop(index: 1, address: "192.168.1.1", milliseconds: 1.4), TraceHop(index: 2, address: nil, milliseconds: nil), TraceHop(index: 3, address: "10.0.0.1", milliseconds: 11.8)])))),
+                ("error", .done(.failed(.invalidInput))), ("running", .running),
+            ]
+            for (name, phase) in diagnostics {
+                save(DiagnosticsCard(model: DiagnosticsModel(previewing: phase)).padding(24).frame(width: 760, alignment: .top)
+                        .background(Palette.background), "diagnostics-\(name)", CGSize(width: 760, height: name == "trace" ? 360 : 240))
+            }
             do {
                 // Input switch waiting for its confirmation.
                 let entry = displayModels[0].1.state.entries[1]
@@ -143,7 +170,7 @@ enum SnapshotRenderer {
                        size: CGSize(width: 640, height: 330), appearance: appearance,
                        to: directory.appending(path: "display-input-confirm-\(theme).png"))
             }
-            renderCups(appearance: appearance, to: directory.appending(path: "menubar-keepawake-\(theme).png"))
+            renderStrips(feed.store, appearance: appearance, theme: theme, into: directory)
             save(RAMPage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
                     .background(Palette.background), "ram-module", CGSize(width: 760, height: 360))
             save(PopoverView(openWindow: {}), "popover", CGSize(width: 300, height: 200))
@@ -161,6 +188,59 @@ enum SnapshotRenderer {
 
     /// The display module in four states: three displays (one with DDC, one without, the built-in
     /// panel), a mode trial waiting for its yes, the module switched off, and no display at all.
+    private static func serversPreviewConfigs() -> ([ServerConfig], [UUID: ServerMetrics]) {
+        let tunnels = [TunnelSpec(kind: .local, listenPort: 8080, targetHost: "db.internal", targetPort: 5432), TunnelSpec(kind: .dynamic, listenPort: 1080)]
+        let configs = [
+            ServerConfig(name: "Ev sunucusu", kind: .linux, host: "home.example.invalid", user: "ozan", tunnels: tunnels),
+            ServerConfig(name: "Mac mini", kind: .macOS, host: "mini.example.invalid"),
+            ServerConfig(name: "Konteynerler", kind: .docker, host: "docker.example.invalid"),
+        ]
+        return (configs, [:])
+    }
+
+    private static func serversPreviews() -> [(String, ServersModel)] {
+        let configs = serversPreviewConfigs().0
+        let now = Date()
+        func make(_ config: ServerConfig, _ phase: ServerPhase, metrics: ServerMetrics? = nil) -> ServerRuntime {
+            var runtime = ServerRuntime(config: config)
+            runtime.phase = phase
+            runtime.metrics = metrics
+            return runtime
+        }
+        let linux = ServerMetrics(cpu: 0.37, cores: 4, memoryUsed: 5_100_000_000, memoryTotal: 8_000_000_000, swapUsed: 200_000_000, swapTotal: 1_000_000_000,
+                                  load: [0.52, 0.41, 0.30], uptime: 12 * 86_400 + 5 * 3_600, diskUsed: 41_000_000_000, diskTotal: 100_000_000_000,
+                                  receiveRate: 125_000, sendRate: 48_000, containers: [], date: now)
+        let mac = ServerMetrics(cpu: 0.12, cores: 12, memoryUsed: 9_000_000_000, memoryTotal: 17_179_869_184, load: [1.5, 1.2, 1.0], uptime: 3 * 86_400,
+                                diskUsed: 300_000_000_000, diskTotal: 500_000_000_000, receiveRate: 2_000, sendRate: 900, containers: [], date: now)
+        let docker = ServerMetrics(containers: [ContainerReading(name: "web", cpuPercent: 1.5, memoryUsed: 52_000_000, memoryLimit: 2_000_000_000),
+                                                ContainerReading(name: "db", cpuPercent: 38, memoryUsed: 1_200_000_000, memoryLimit: 4_000_000_000)], date: now)
+        var first = make(configs[0], .online, metrics: linux)
+        first.tunnels = [configs[0].tunnels[0].id: TunnelStatus(phase: .running), configs[0].tunnels[1].id: TunnelStatus(phase: .waiting(now.addingTimeInterval(8)), attempt: 2)]
+        var online = ServersState()
+        online.enabled = true
+        online.servers = [first, make(configs[1], .online, metrics: mac), make(configs[2], .online, metrics: docker)]
+        func broken(_ failures: [RemoteFailure], connecting: Bool = false) -> ServersState {
+            var state = ServersState()
+            state.enabled = true
+            // The same names and kinds as in the online fixture, so one server looks the same in every image.
+            let fleet: [(String, ServerKind)] = [("Ev sunucusu", .linux), ("Mac mini", .macOS), ("Konteynerler", .docker),
+                                                 ("Yedek", .linux), ("Test", .linux), ("Ofis", .linux)]
+            state.servers = failures.enumerated().map { index, failure in
+                make(ServerConfig(name: fleet[index].0, kind: fleet[index].1, host: "h\(index).example.invalid"), .failed(failure))
+            }
+            if connecting { state.servers.append(make(ServerConfig(name: "Yeni", kind: .linux, host: "new.example.invalid"), .connecting)) }
+            return state
+        }
+        var empty = ServersState()
+        empty.enabled = true
+        return [
+            ("online", ServersModel(previewing: online, aliases: ["prod-web", "staging", "nas"])),
+            ("failures", ServersModel(previewing: broken([.hostKeyUnknown, .authRejected, .timedOut, .hostKeyChanged, .unreachable, .badOutput], connecting: true))),
+            ("empty", ServersModel(previewing: empty)),
+            ("off", ServersModel(previewing: ServersState())),
+        ]
+    }
+
     private static func displayPreviews() -> [(String, DisplayModel)] {
         let builtMode = DisplayMode(id: 1, width: 1728, height: 1117, pixelWidth: 3456, pixelHeight: 2234, refreshRate: 120)
         let monitorMode = DisplayMode(id: 20, width: 2560, height: 1440, refreshRate: 200)
@@ -373,7 +453,35 @@ enum SnapshotRenderer {
             ]))
     }
 
-    /// The menu bar widget configurations side by side on a menu-bar-coloured strip.
+    /// Sections joined into the single menu bar strip, drawn on a menu-bar-coloured background with margins.
+    private static func renderStrip(_ sections: [any StripSection], appearance: NSAppearance, to url: URL) {
+        let height = NSStatusBar.system.thickness
+        let margin: CGFloat = 8
+        let strip = StripView(frame: NSRect(x: margin, y: 0, width: 10, height: height))
+        strip.setSections(sections)
+        strip.setFrameSize(NSSize(width: strip.layoutModel.totalWidth, height: height))
+        let background = NSView(frame: NSRect(x: 0, y: 0, width: strip.layoutModel.totalWidth + 2 * margin, height: height))
+        background.wantsLayer = true
+        background.appearance = appearance
+        background.layer?.backgroundColor = (appearance.name == .darkAqua ? NSColor(white: 0.16, alpha: 1) : NSColor(white: 0.93, alpha: 1)).cgColor
+        background.addSubview(strip)
+        let window = NSWindow(contentRect: background.frame, styleMask: [.borderless], backing: .buffered, defer: false)
+        window.appearance = appearance
+        window.contentView = background
+        background.layoutSubtreeIfNeeded()
+        guard let rep = background.bitmapImageRepForCachingDisplay(in: background.bounds) else { return }
+        background.cacheDisplay(in: background.bounds, to: rep)
+        try? rep.representation(using: .png, properties: [:])?.write(to: url)
+        sections.forEach { $0.remove() }
+    }
+
+    private static func widget(_ module: ModuleID, _ store: MetricStore, config: WidgetConfig = .default, sensors: SensorsDisplay = SensorsDisplay(),
+                               clock: ClockDisplay = ClockDisplay(pattern: "EEE HH:mm")) -> any StripSection {
+        if module == .bluetooth { return IconSection(kind: .module(.bluetooth), symbol: ModuleID.bluetooth.symbol, title: "Bluetooth") }
+        return WidgetSection(module: module, config: config, sensors: sensors, clock: clock, source: .fixed(store))
+    }
+
+    /// One module's widget configurations side by side in a strip.
     private static func renderWidgets(_ store: MetricStore, module: ModuleID, sensors: SensorsDisplay = SensorsDisplay(), clock: ClockDisplay? = nil, appearance: NSAppearance, to url: URL) {
         let configs: [WidgetConfig] = [
             .default,
@@ -382,51 +490,29 @@ enum SnapshotRenderer {
             WidgetConfig(kinds: [.ring], showLabel: false),
             WidgetConfig(kinds: [.text, .chart, .ring], showLabel: true),
         ]
-        let height = NSStatusBar.system.thickness
-        let strip = NSView(frame: .zero)
-        strip.wantsLayer = true
-        strip.appearance = appearance
-        var x: CGFloat = 8
-        for config in configs {
-            let view = WidgetView(frame: NSRect(x: x, y: 0, width: 200, height: height))
-            view.widestText = WidgetModel.widestText(for: module, sensors: sensors, clock: clock)
-            view.reservesGlyph = module == .battery
-            if module == .clock { view.widestLabel = clock?.widestLabel }
-            view.update(.make(module, store: store, sensors: sensors, clock: clock), config: config)
-            view.setFrameSize(NSSize(width: view.intrinsicWidth, height: height))
-            strip.addSubview(view)
-            x += view.intrinsicWidth + 14
-        }
-        strip.frame = NSRect(x: 0, y: 0, width: x, height: height)
-        strip.layer?.backgroundColor = (appearance.name == .darkAqua ? NSColor(white: 0.16, alpha: 1) : NSColor(white: 0.93, alpha: 1)).cgColor
-        let window = NSWindow(contentRect: strip.frame, styleMask: [.borderless], backing: .buffered, defer: false)
-        window.appearance = appearance
-        window.contentView = strip
-        strip.layoutSubtreeIfNeeded()
-        guard let rep = strip.bitmapImageRepForCachingDisplay(in: strip.bounds) else { return }
-        strip.cacheDisplay(in: strip.bounds, to: rep)
-        try? rep.representation(using: .png, properties: [:])?.write(to: url)
+        renderStrip(configs.map { widget(module, store, config: $0, sensors: sensors, clock: clock ?? ClockDisplay(pattern: "EEE HH:mm")) },
+                    appearance: appearance, to: url)
     }
 
-    /// The cup in its three looks: off, holding, blocked by the protection.
-    private static func renderCups(appearance: NSAppearance, to url: URL) {
-        let height: CGFloat = 24
-        let strip = NSView(frame: NSRect(x: 0, y: 0, width: 3 * 34, height: height))
-        strip.wantsLayer = true
-        for (index, look) in [(false, false), (true, false), (false, true)].enumerated() {
-            let view = NSImageView(frame: NSRect(x: CGFloat(index) * 34 + 6, y: 2, width: 22, height: 20))
-            view.image = KeepAwakeStatusItem.image(holding: look.0, blocked: look.1)
-            view.contentTintColor = appearance.name == .darkAqua ? .white : .black
-            strip.addSubview(view)
+    /// The whole strip in its typical shapes: the default three, everything on, a single section, and the cup in its three looks.
+    private static func renderStrips(_ store: MetricStore, appearance: NSAppearance, theme: String, into directory: URL) {
+        func cup(holding: Bool, blocked: Bool) -> any StripSection {
+            IconSection(kind: .keepAwake, symbol: IconSection.cupSymbol(holding: holding, blocked: blocked), title: "Uyanık Tut")
         }
-        strip.layer?.backgroundColor = (appearance.name == .darkAqua ? NSColor(white: 0.16, alpha: 1) : NSColor(white: 0.93, alpha: 1)).cgColor
-        let window = NSWindow(contentRect: strip.frame, styleMask: [.borderless], backing: .buffered, defer: false)
-        window.appearance = appearance
-        window.contentView = strip
-        strip.layoutSubtreeIfNeeded()
-        guard let rep = strip.bitmapImageRepForCachingDisplay(in: strip.bounds) else { return }
-        strip.cacheDisplay(in: strip.bounds, to: rep)
-        try? rep.representation(using: .png, properties: [:])?.write(to: url)
+        func icon(_ kind: StripKind, _ symbol: String) -> any StripSection { IconSection(kind: kind, symbol: symbol, title: symbol) }
+        let plain = WidgetConfig.plain
+        renderStrip([widget(.cpu, store), widget(.ram, store), widget(.sensors, store)], appearance: appearance,
+                    to: directory.appending(path: "menubar-strip-default-\(theme).png"))
+        var everything: [any StripSection] = ModuleID.menuBarCandidates.map { widget($0, store, config: $0 == .battery || $0 == .clock ? plain : .default) }
+        everything += [cup(holding: true, blocked: false), icon(.display, "display"), icon(.servers, "server.rack")]
+        renderStrip(everything, appearance: appearance, to: directory.appending(path: "menubar-strip-all-\(theme).png"))
+        renderStrip([widget(.cpu, store)], appearance: appearance, to: directory.appending(path: "menubar-strip-single-\(theme).png"))
+        renderStrip([widget(.cpu, store), widget(.ram, store), cup(holding: false, blocked: false)], appearance: appearance,
+                    to: directory.appending(path: "menubar-strip-cup-off-\(theme).png"))
+        renderStrip([widget(.cpu, store), widget(.ram, store), cup(holding: true, blocked: false)], appearance: appearance,
+                    to: directory.appending(path: "menubar-strip-cup-on-\(theme).png"))
+        renderStrip([widget(.cpu, store), widget(.ram, store), cup(holding: false, blocked: true)], appearance: appearance,
+                    to: directory.appending(path: "menubar-strip-cup-warning-\(theme).png"))
     }
 
     private static func render<V: View>(_ view: V, size: CGSize, appearance: NSAppearance, to url: URL) {

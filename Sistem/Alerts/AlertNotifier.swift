@@ -97,6 +97,18 @@ final class AlertNotifier: NSObject, UNUserNotificationCenterDelegate {
         Task { try? await center.add(request) }
     }
 
+    /// A server has been unreachable for two minutes. One slot per app: a newer one replaces the older.
+    func postServerDown(name: String) {
+        guard permission != .denied else { return }
+        let content = UNMutableNotificationContent()
+        content.title = String(localized: "Sunucu yanıt vermiyor")
+        content.body = String(localized: "\(name) iki dakikadır erişilemiyor.")
+        content.threadIdentifier = "sistem.alerts"
+        content.userInfo = ["module": ModuleID.servers.rawValue]
+        let request = UNNotificationRequest(identifier: "servers.down", content: content, trigger: nil)
+        Task { try? await center.add(request) }
+    }
+
     // MARK: UNUserNotificationCenterDelegate
 
     nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {

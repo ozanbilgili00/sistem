@@ -81,6 +81,8 @@ private struct NetworkOverview: View {
                 }
             }
 
+            DiagnosticsCard()
+
             Card {
                 VStack(alignment: .leading, spacing: 14) {
                     SectionLabel("Bağlantı geçmişi")

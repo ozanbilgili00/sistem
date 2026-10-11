@@ -87,6 +87,23 @@
           }
         }
       }
+    },
+    "NSLocalNetworkUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Servers module asks for this permission to reach the local network when it connects to a server you added or to an address on the local network. It is asked only when you add a server and connect, or run the network diagnostics tool; nothing is used for any other purpose."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunucular modülü, eklediğiniz bir sunucuya ya da yerel ağdaki bir adrese bağlanırken yerel ağa erişmek için bu izni ister. İzin yalnızca siz bir sunucu ekleyip bağlandığınızda ya da ağ tanılama aracını çalıştırdığınızda sorulur; hiçbir bilgi başka bir amaçla kullanılmaz."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

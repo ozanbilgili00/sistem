@@ -3,256 +3,290 @@ import Observation
 import SwiftUI
 import SystemKit
 
-/// Owns the menu bar: one status item per live module the user chose, each with
-/// its own popover; a plain icon when none is chosen, so the app stays reachable.
+/// Owns the menu bar: ONE status item that holds every Sistem part side by side as sections (the widgets of the chosen
+/// modules, then the cup, the display and the server icons, only those that are on). macOS stores the position of every
+/// status item separately and offers no way to keep several together, so the parts live in one item that can be
+/// moved with ⌘-drag as a whole. A plain icon item stays when there is no section, so the app remains reachable.
 ///
-/// Popover content is built on open and dropped on close, so a closed popover
-/// holds no SwiftUI hierarchy and no metric demand (PLAN.md §3-D).
+/// A click is mapped to a section by its x position (``StripLayout/index(at:)``) and opens that section's popover,
+/// anchored under it. Popover content is built on open and dropped on close, so a closed popover holds no SwiftUI
+/// hierarchy and no metric demand (PLAN.md §3-D).
 final class StatusBarController: NSObject, NSPopoverDelegate {
+    private static let autosaveName = "Sistem.menuBar"
+
     private let settings: SettingsStore
     private let engine: SamplingEngine
+    private let keepAwake: KeepAwakeModel
+    private let display: DisplayModel
+    private let servers: ServersModel
     private let openWindow: (Page?) -> Void
 
-    private var items: [ModuleItem] = []
+    private var item: NSStatusItem?
+    private let strip = StripView()
     private var fallback: NSStatusItem?
     private let popover = NSPopover()
     private var popoverFeed: LiveFeed?
-    private var popoverModule: ModuleID?
+    private var popoverKind: StripKind?
+    private var cup: IconSection?
 
-    init(settings: SettingsStore, engine: SamplingEngine, openWindow: @escaping (Page?) -> Void) {
+    init(settings: SettingsStore, engine: SamplingEngine, keepAwake: KeepAwakeModel, display: DisplayModel, servers: ServersModel,
+         openWindow: @escaping (Page?) -> Void) {
         self.settings = settings
         self.engine = engine
+        self.keepAwake = keepAwake
+        self.display = display
+        self.servers = servers
         self.openWindow = openWindow
         super.init()
         popover.behavior = .transient
         popover.delegate = self
+        strip.onTotalWidthChange = { [weak self] width in self?.item?.length = width }
+        strip.onPress = { [weak self] index in self?.activate(index: index, fromClick: false) }
         trackSettings()
     }
 
-    // MARK: Items
+    // MARK: Sections
+
+    /// The sections that are on, in order: widgets as the Settings page lists them, then cup, display, servers.
+    static func wantedKinds(modules: [ModuleID], keepAwake: Bool, display: Bool, servers: Bool) -> [StripKind] {
+        var kinds = ModuleID.menuBarCandidates.filter { modules.contains($0) && $0.hasMenuBarItem }.map(StripKind.module)
+        if keepAwake { kinds.append(.keepAwake) }
+        if display { kinds.append(.display) }
+        if servers { kinds.append(.servers) }
+        return kinds
+    }
 
     /// Re-reads the menu bar settings whenever they change.
     private func trackSettings() {
-        let (wanted, sensors, clock) = withObservationTracking {
-            (settings.menuBarModules.filter(\.hasMenuBarItem).map { ($0, settings.widget(for: $0)) }, settings.sensorsDisplay, settings.clockDisplay)
+        struct Snapshot {
+            var kinds: [StripKind]
+            var widgets: [ModuleID: WidgetConfig]
+            var sensors: SensorsDisplay
+            var clock: ClockDisplay
+        }
+        let snapshot = withObservationTracking {
+            let kinds = Self.wantedKinds(modules: settings.menuBarModules, keepAwake: settings.keepAwakeEnabled,
+                                         display: settings.displayEnabled && settings.displayMenuBar,
+                                         servers: settings.serversEnabled && settings.serversMenuBar)
+            var widgets: [ModuleID: WidgetConfig] = [:]
+            for case .module(let module) in kinds { widgets[module] = settings.widget(for: module) }
+            return Snapshot(kinds: kinds, widgets: widgets, sensors: settings.sensorsDisplay, clock: settings.clockDisplay)
         } onChange: { [weak self] in
             // Fires on willSet; read the new values on the next turn.
             DispatchQueue.main.async { MainActor.assumeIsolated { self?.trackSettings() } }
         }
-        apply(wanted, sensors: sensors, clock: clock)
+        apply(snapshot.kinds, widgets: snapshot.widgets, sensors: snapshot.sensors, clock: snapshot.clock)
     }
 
-    private func apply(_ wanted: [(ModuleID, WidgetConfig)], sensors: SensorsDisplay, clock: ClockDisplay) {
-        if wanted.map(\.0) != items.map(\.module) {
+    private func apply(_ kinds: [StripKind], widgets: [ModuleID: WidgetConfig], sensors: SensorsDisplay, clock: ClockDisplay) {
+        if kinds != strip.sections.map(\.kind) {
             if popover.isShown { popover.performClose(nil) }
-            items.forEach { $0.remove() }
-            // A new status item lands left of the existing ones; build right to left.
-            items = wanted.reversed().map { module, config in
-                ModuleItem(module: module, config: config, sensors: sensors, clock: clock, engine: engine, target: self, action: #selector(clicked(_:)))
-            }.reversed()
+            strip.sections.forEach { $0.remove() }
+            keepAwake.onVisibleChange = nil
+            cup = nil
+            let source = WidgetSource.live(engine)
+            let sections: [any StripSection] = kinds.map { kind in
+                switch kind {
+                case .module(.bluetooth):
+                    IconSection(kind: kind, symbol: ModuleID.bluetooth.symbol, title: "Bluetooth")
+                case .module(let module):
+                    WidgetSection(module: module, config: widgets[module] ?? .default, sensors: sensors, clock: clock, source: source)
+                case .keepAwake:
+                    makeCup()
+                case .display:
+                    IconSection(kind: kind, symbol: "display", title: String(localized: "Ekran"))
+                case .servers:
+                    IconSection(kind: kind, symbol: "server.rack", title: String(localized: "Sunucular"))
+                }
+            }
+            strip.setSections(sections)
         } else {
-            for (item, (_, config)) in zip(items, wanted) { item.config = config }
-            for item in items where item.module == .sensors { item.sensors = sensors }
-            for item in items where item.module == .clock { item.clock = clock }
+            for case let section as WidgetSection in strip.sections {
+                if let config = widgets[section.module] { section.config = config }
+                if section.module == .sensors { section.sensors = sensors }
+                if section.module == .clock { section.clock = clock }
+            }
         }
-        updateFallback()
+        syncItems(empty: kinds.isEmpty)
     }
 
-    private func updateFallback() {
-        if items.isEmpty, fallback == nil {
-            let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-            item.autosaveName = "SistemStatusItem"
-            let image = NSImage(systemSymbolName: "gauge.with.dots.needle.50percent", accessibilityDescription: "Sistem")
-            image?.isTemplate = true
-            item.button?.image = image
-            item.button?.target = self
-            item.button?.action = #selector(clicked(_:))
-            fallback = item
-        } else if !items.isEmpty, let item = fallback {
-            NSStatusBar.system.removeStatusItem(item)
-            fallback = nil
+    /// The cup redraws only when what it shows changes (holding or not, blocked or not), never on a timer or tick.
+    private func makeCup() -> IconSection {
+        let section = IconSection(kind: .keepAwake, symbol: "cup.and.saucer", title: String(localized: "Uyanık Tut"))
+        cup = section
+        keepAwake.onVisibleChange = { [weak self] in self?.updateCup() }
+        updateCup()
+        return section
+    }
+
+    private func updateCup() {
+        guard let cup else { return }
+        let state = keepAwake.state
+        cup.update(symbol: IconSection.cupSymbol(holding: state.isHolding, blocked: state.blocked != nil),
+                   value: String(localized: state.isHolding ? "Açık" : "Kapalı"))
+    }
+
+    private func syncItems(empty: Bool) {
+        if !empty {
+            if item == nil {
+                let created = NSStatusBar.system.statusItem(withLength: strip.layoutModel.totalWidth)
+                created.autosaveName = Self.autosaveName
+                if let button = created.button {
+                    button.target = self
+                    button.action = #selector(clicked(_:))
+                    button.sendAction(on: [.leftMouseUp, .rightMouseUp])
+                    strip.frame = button.bounds
+                    strip.autoresizingMask = [.width, .height]
+                    button.addSubview(strip)
+                    button.setAccessibilityLabel("Sistem")
+                    button.setAccessibilityRole(.group)
+                    button.setAccessibilityChildren(strip.accessibilityElements)
+                }
+                item = created
+            } else {
+                item?.button?.setAccessibilityChildren(strip.accessibilityElements)
+            }
+            item?.length = strip.layoutModel.totalWidth
+            if let item = fallback {
+                NSStatusBar.system.removeStatusItem(item)
+                fallback = nil
+            }
+        } else {
+            if let item {
+                strip.removeFromSuperview()
+                NSStatusBar.system.removeStatusItem(item)
+                self.item = nil
+            }
+            if fallback == nil {
+                let created = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+                created.autosaveName = "SistemStatusItem"
+                let image = NSImage(systemSymbolName: "gauge.with.dots.needle.50percent", accessibilityDescription: "Sistem")
+                image?.isTemplate = true
+                created.button?.image = image
+                created.button?.target = self
+                created.button?.action = #selector(clicked(_:))
+                fallback = created
+            }
         }
     }
 
-    // MARK: Popover
+    // MARK: Clicks
 
     @objc private func clicked(_ sender: NSStatusBarButton) {
-        let module = items.first { $0.item.button === sender }?.module
-        if popover.isShown {
-            let same = module == popoverModule
-            popover.performClose(sender)
-            if same { return }
+        guard sender === item?.button, !strip.sections.isEmpty else {
+            togglePopover(nil, rect: sender.bounds, in: sender)
+            return
         }
-        show(module, from: sender)
+        let location = NSApp.currentEvent.map { sender.convert($0.locationInWindow, from: nil).x } ?? 0
+        guard let index = strip.layoutModel.index(at: location) else { return }
+        activate(index: index, fromClick: true)
     }
 
-    private func show(_ module: ModuleID?, from button: NSStatusBarButton) {
+    private func activate(index: Int, fromClick: Bool) {
+        guard strip.sections.indices.contains(index), let button = item?.button else { return }
+        let kind = strip.sections[index].kind
+        let rect = strip.rect(of: index)
+        if kind == .keepAwake {
+            if fromClick, NSApp.currentEvent?.type == .rightMouseUp {
+                showCupMenu(rect: rect, in: button)
+            } else if popover.isShown {
+                popover.performClose(button)
+            } else {
+                keepAwake.toggle(defaultDuration: settings.keepAwakeDuration)
+            }
+            return
+        }
+        togglePopover(kind, rect: rect, in: button)
+    }
+
+    private func togglePopover(_ kind: StripKind?, rect: NSRect, in button: NSStatusBarButton) {
+        if popover.isShown {
+            let same = kind == popoverKind
+            popover.performClose(button)
+            if same { return }
+        }
+        show(kind, rect: rect, in: button)
+    }
+
+    private func show(_ kind: StripKind?, rect: NSRect, in button: NSStatusBarButton) {
         let feed = LiveFeed(engine: engine)
         let close: () -> Void = { [weak self] in self?.popover.performClose(nil) }
         let open: (Page?) -> Void = { [weak self] page in
             self?.popover.performClose(nil)
             self?.openWindow(page)
         }
-        let content: AnyView = switch module {
-        case .cpu: AnyView(CPUPopover(settings: settings, openWindow: { open(.module(.cpu)) }, close: close))
-        case .gpu: AnyView(GPUPopover(settings: settings, openWindow: { open(.module(.gpu)) }))
-        case .ram: AnyView(RAMPopover(settings: settings, openWindow: { open(.module(.ram)) }))
-        case .disk: AnyView(DiskPopover(settings: settings, openWindow: { open(.module(.disk)) }))
-        case .network: AnyView(NetworkPopover(settings: settings, openWindow: { open(.module(.network)) }))
-        case .sensors: AnyView(SensorsPopover(settings: settings, openWindow: { open(.module(.sensors)) }))
-        case .battery: AnyView(BatteryPopover(settings: settings, openWindow: { open(.module(.battery)) }))
-        case .clock: AnyView(ClockPopover(settings: settings, openWindow: { open(.module(.clock)) }))
-        case .bluetooth: AnyView(BluetoothPopover(openWindow: { open(.module(.bluetooth)) }))
+        let content: AnyView = switch kind {
+        case .module(.cpu): AnyView(CPUPopover(settings: settings, openWindow: { open(.module(.cpu)) }, close: close))
+        case .module(.gpu): AnyView(GPUPopover(settings: settings, openWindow: { open(.module(.gpu)) }))
+        case .module(.ram): AnyView(RAMPopover(settings: settings, openWindow: { open(.module(.ram)) }))
+        case .module(.disk): AnyView(DiskPopover(settings: settings, openWindow: { open(.module(.disk)) }))
+        case .module(.network): AnyView(NetworkPopover(settings: settings, openWindow: { open(.module(.network)) }))
+        case .module(.sensors): AnyView(SensorsPopover(settings: settings, openWindow: { open(.module(.sensors)) }))
+        case .module(.battery): AnyView(BatteryPopover(settings: settings, openWindow: { open(.module(.battery)) }))
+        case .module(.clock): AnyView(ClockPopover(settings: settings, openWindow: { open(.module(.clock)) }))
+        case .module(.bluetooth): AnyView(BluetoothPopover(openWindow: { open(.module(.bluetooth)) }))
+        case .keepAwake:
+            AnyView(KeepAwakePopover(settings: settings, openWindow: { open(.module(.keepAwake)) }).environment(keepAwake))
+        case .display: AnyView(DisplayPopover(openWindow: { open(.module(.display)) }).environment(display))
+        case .servers: AnyView(ServersPopover(openWindow: { open(.module(.servers)) }).environment(servers))
         default: AnyView(PopoverView(openWindow: { open(nil) }))
         }
         let host = NSHostingController(rootView: content.environment(feed))
         host.sizingOptions = .preferredContentSize
         popover.contentViewController = host
         popoverFeed = feed
-        popoverModule = module
+        popoverKind = kind
         feed.isActive = true
-        popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        popover.show(relativeTo: rect, of: button, preferredEdge: .minY)
     }
 
     func popoverDidClose(_ notification: Notification) {
         popoverFeed?.isActive = false
         popoverFeed = nil
-        popoverModule = nil
+        popoverKind = nil
         popover.contentViewController = nil
     }
-}
 
-/// One module's status item: holds demand for its metric while it exists and
-/// redraws its widget after each tick.
-private final class ModuleItem {
-    let module: ModuleID
-    let item: NSStatusItem
-    private let view = WidgetView()
-    private let engine: SamplingEngine
-    private var token: ObservationToken?
-    private var shown: DisplayHysteresis
-    private var shownRates = RateHysteresis()
-    /// The GPU line of the stacked sensors item, with its own hysteresis.
-    private var shownGPU = DisplayHysteresis.for(.sensors)
-    /// The metric this item holds demand for: the sensors item reads more keys when stacked.
-    private var demanded: Metric?
+    // MARK: Cup menu
 
-    var config: WidgetConfig {
-        didSet { if config != oldValue { refresh() } }
+    /// Right click on the cup: durations, stop, status. The menu is the item's own for the moment of the click.
+    private func showCupMenu(rect: NSRect, in button: NSStatusBarButton) {
+        let menu = NSMenu()
+        for seconds in SettingsStore.keepAwakeDurationChoices {
+            let entry = NSMenuItem(title: KeepAwakeText.durationMenuTitle(seconds), action: #selector(startFromMenu(_:)), keyEquivalent: "")
+            entry.target = self
+            entry.representedObject = seconds
+            menu.addItem(entry)
+        }
+        if keepAwake.state.manualActive {
+            menu.addItem(.separator())
+            let stop = NSMenuItem(title: String(localized: "Durdur"), action: #selector(stopFromMenu), keyEquivalent: "")
+            stop.target = self
+            menu.addItem(stop)
+        }
+        menu.addItem(.separator())
+        let details = NSMenuItem(title: String(localized: "Durumu göster"), action: #selector(showCupPopover), keyEquivalent: "")
+        details.target = self
+        menu.addItem(details)
+        let page = NSMenuItem(title: String(localized: "Uyanık Tut sayfasını aç"), action: #selector(openCupPage), keyEquivalent: "")
+        page.target = self
+        menu.addItem(page)
+        item?.menu = menu
+        button.performClick(nil)
+        item?.menu = nil
     }
 
-    var clock: ClockDisplay {
-        didSet {
-            guard clock != oldValue else { return }
-            view.widestText = WidgetModel.widestText(for: module, sensors: sensors, clock: clock)
-            ticker?.start(pattern: clock.pattern)
-            refresh()
-        }
+    @objc private func startFromMenu(_ sender: NSMenuItem) {
+        let seconds = sender.representedObject as? Double ?? 0
+        keepAwake.start(duration: seconds > 0 ? seconds : nil)
     }
 
-    /// Only the clock has one: it redraws at its own boundary, not on the sampler's tick.
-    private var ticker: ClockTicker?
+    @objc private func stopFromMenu() { keepAwake.stop() }
+    @objc private func openCupPage() { openWindow(.module(.keepAwake)) }
 
-    var sensors: SensorsDisplay {
-        didSet {
-            guard sensors != oldValue else { return }
-            syncDemand()
-            view.widestText = WidgetModel.widestText(for: module, sensors: sensors)
-            if sensors.stacked != oldValue.stacked { shown = DisplayHysteresis.for(module); shownGPU = DisplayHysteresis.for(.sensors) }
-            refresh()
-        }
-    }
-
-    private func syncDemand() {
-        let wanted: Metric? = module == .sensors && sensors.stacked ? .temperatureStack : module.metric
-        guard wanted != demanded else { return }
-        if let wanted { engine.demand.retain(wanted) }  // take the new one first: no gap in demand
-        if let demanded { engine.demand.release(demanded) }
-        demanded = wanted
-    }
-
-    init(module: ModuleID, config: WidgetConfig, sensors: SensorsDisplay, clock: ClockDisplay, engine: SamplingEngine, target: AnyObject, action: Selector) {
-        self.module = module
-        self.config = config
-        self.sensors = sensors
-        self.clock = clock
-        self.engine = engine
-        shown = DisplayHysteresis.for(module)
-        item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        item.autosaveName = "Sistem.\(module.rawValue)"
-        if let button = item.button {
-            button.target = target
-            button.action = action
-            button.setAccessibilityLabel(String(localized: module.menuBarTitle))
-            view.frame = button.bounds
-            view.autoresizingMask = [.width, .height]
-            button.addSubview(view)
-        }
-        if module == .bluetooth {
-            // A fixed icon: nothing to redraw, no metric demanded while the popover is closed.
-            item.length = NSStatusItem.squareLength
-            let image = NSImage(systemSymbolName: ModuleID.bluetooth.symbol, accessibilityDescription: "Bluetooth")
-            image?.isTemplate = true
-            item.button?.image = image
-            view.removeFromSuperview()
-            return
-        }
-        view.widestText = WidgetModel.widestText(for: module, sensors: sensors, clock: clock)
-        view.reservesGlyph = module == .battery
-        if module == .clock { view.widestLabel = clock.widestLabel }
-        view.onWidthChange = { [weak self] width in self?.item.length = width }
-        syncDemand()
-        if module == .clock {
-            let ticker = ClockTicker { [weak self] in self?.refresh() }
-            self.ticker = ticker
-            ticker.start(pattern: clock.pattern)
-        } else {
-            token = engine.store.observe { [weak self] in self?.refresh() }
-        }
-        refresh()
-    }
-
-    private func refresh() {
-        var model = WidgetModel.make(module, store: engine.store, sensors: sensors, clock: clock)
-        if module == .clock {
-            // Text only changes at the ticker's boundary; nothing to filter.
-        } else if module == .battery {
-            // The system reports whole percents on its own events; the hysteresis only passes 1-point steps.
-            model.value = shown.filter(model.value)
-            if let value = model.value { model.text = Format.percent(value) }
-        } else if module == .sensors {
-            // A whole degree at a time (see DisplayHysteresis.for), shown in the user's unit.
-            model.value = shown.filter(model.value)
-            let cpu = Format.temperature(model.value.map(SensorScale.celsius), unit: sensors.unit)
-            if sensors.stacked {
-                model.gpuValue = shownGPU.filter(model.gpuValue)
-                model.label = "CPU \(cpu)"
-                model.text = "GPU \(Format.temperature(model.gpuValue.map(SensorScale.celsius), unit: sensors.unit))"
-            } else {
-                model.text = cpu
-            }
-        } else if let top = model.topRate, let bottom = model.bottomRate {
-            // Speeds: two lines, shown through the rate hysteresis. The disk's ring
-            // (capacity) moves slowly enough to go straight through.
-            let (a, b) = shownRates.filter(top, bottom)
-            model.label = WidgetModel.pairLine(module, top: true, rate: a)
-            model.text = WidgetModel.pairLine(module, top: false, rate: b)
-        } else {
-            model.value = shown.filter(model.value)
-            model.text = Format.percent(model.value)
-        }
-        if view.update(model, config: config) {
-            item.button?.setAccessibilityValue(model.text)
-            MenuBarStats.redraws += 1
-        }
-    }
-
-    func remove() {
-        token = nil
-        ticker?.stop()
-        ticker = nil
-        if let demanded { engine.demand.release(demanded) }
-        demanded = nil
-        NSStatusBar.system.removeStatusItem(item)
+    @objc private func showCupPopover() {
+        guard let button = item?.button, let index = strip.sections.firstIndex(where: { $0.kind == .keepAwake }) else { return }
+        if popover.isShown { popover.performClose(nil) }
+        show(.keepAwake, rect: strip.rect(of: index), in: button)
     }
 }

@@ -10,7 +10,7 @@ public final class PauseMonitor {
     }
 
     public private(set) var reasons: Set<Reason> = []
-    var onChange: (() -> Void)?
+    public var onChange: (() -> Void)?
 
     private var tokens: [(NotificationCenter, NSObjectProtocol)] = []
 

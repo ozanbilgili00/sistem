@@ -12,10 +12,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     private let keepAwake = KeepAwakeModel()
     private let display = DisplayModel()
-    private lazy var mainWindow = MainWindowController(settings: settings, engine: engine, notifier: notifier, keepAwake: keepAwake, display: display)
-    private var keepAwakeItem: KeepAwakeStatusItem?
-    private var displayItem: DisplayStatusItem?
+    private let servers = ServersModel()
+    private lazy var mainWindow = MainWindowController(settings: settings, engine: engine, notifier: notifier, keepAwake: keepAwake, display: display, servers: servers)
     private var hadEnabledRules = false
+    private var hadReachability = false
     private var statusBar: StatusBarController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -32,11 +32,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         syncEngineSettings()
         // Launch silently into the menu bar; never pull a window to the front on
         // start, so the app doesn't steal focus from whatever the user is doing.
-        statusBar = StatusBarController(settings: settings, engine: engine) { [weak self] page in
+        statusBar = StatusBarController(settings: settings, engine: engine, keepAwake: keepAwake, display: display, servers: servers) { [weak self] page in
             self?.mainWindow.show(page: page)
         }
         syncKeepAwake()
         syncDisplay()
+        servers.onServerDown = { [weak self] server in self?.notifier.postServerDown(name: server.name) }
+        syncServers()
         let args = CommandLine.arguments
         if let i = args.firstIndex(of: "--measure-window") {
             let page = args.indices.contains(i + 1) ? Page(rawValue: args[i + 1]) : .module(.cpu)
@@ -70,37 +72,43 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             DispatchQueue.main.async { MainActor.assumeIsolated { self?.syncKeepAwake() } }
         }
         keepAwake.apply(config)
-        syncKeepAwakeItem(enabled: config.enabled)
-    }
-
-    /// The cup exists only while the module is on.
-    private func syncKeepAwakeItem(enabled: Bool) {
-        if enabled, keepAwakeItem == nil {
-            keepAwakeItem = KeepAwakeStatusItem(model: keepAwake, settings: settings, engine: engine) { [weak self] page in
-                self?.mainWindow.show(page: page)
-            }
-        } else if !enabled, let item = keepAwakeItem {
-            item.remove()
-            keepAwakeItem = nil
-        }
     }
 
     /// Keeps the display model and its optional menu bar icon in step with the settings.
     private func syncDisplay() {
-        let (enabled, menuBar) = withObservationTracking {
-            (settings.displayEnabled, settings.displayMenuBar)
+        let enabled = withObservationTracking {
+            settings.displayEnabled
         } onChange: { [weak self] in
             DispatchQueue.main.async { MainActor.assumeIsolated { self?.syncDisplay() } }
         }
         display.apply(enabled: enabled)
-        if enabled, menuBar, displayItem == nil {
-            displayItem = DisplayStatusItem(model: display) { [weak self] page in
-                self?.mainWindow.show(page: page)
-            }
-        } else if !(enabled && menuBar), let item = displayItem {
-            item.remove()
-            displayItem = nil
+    }
+
+    /// Keeps the servers model and its optional menu bar icon in step with the settings.
+    private func syncServers() {
+        let config = withObservationTracking {
+            settings.serversConfig
+        } onChange: { [weak self] in
+            DispatchQueue.main.async { MainActor.assumeIsolated { self?.syncServers() } }
         }
+        if config.reachabilityCheck, !hadReachability { notifier.requestIfNeeded() }
+        hadReachability = config.reachabilityCheck
+        servers.apply(config)
+    }
+
+    /// Quitting ends tunnels and shared ssh connections first, but never waits more than three seconds for it.
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        guard settings.serversEnabled, !settings.servers.isEmpty else { return .terminateNow }
+        let done = ServersModel.TerminationGate()
+        Task { @MainActor in
+            await self.servers.shutdown()
+            if done.fire() { NSApp.reply(toApplicationShouldTerminate: true) }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            ProcessRegistry.shared.terminateAll(grace: 0.2)
+            if done.fire() { NSApp.reply(toApplicationShouldTerminate: true) }
+        }
+        return .terminateLater
     }
 
     /// A clean quit gives the screens back: a mode trial is reverted, dimming and night tone are released.

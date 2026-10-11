@@ -390,7 +390,7 @@ Sonuç: `SystemKit/Display/` — `DisplayController` (zamanlayıcısız: yalnız
 - **Açık:** pencere ölçümlerinde aralıklı sıçrama (bir koşuda %1.5 / 141 MB / 13 uyanma; `WINDOW=cpu`'da da %2.8 / 17.7) — modüle özgü değil, bilinen pencere grafik belleği konusuyla birlikte ayrı görev. Kestirmeler / URL şeması yapılmadı.
 - Gerçek ekranda hiçbir yazma denenmedi: DDC kaydırıcıları, giriş seçimi, karartma/gece tonu, mod değişimi + 15 sn geri alma, deneme sırasında `kill -9` Ozan'da (elle).
 
-### Faz 11 — Sunucular modülü + ağ araçları (mXterm'den) · ~4 gün
+### Faz 11 — Sunucular modülü + ağ araçları (mXterm'den) · ~4 gün · ✅ 2026-10-12
 Kaynak: `Araştırma/mxterm.md`.
 - **Uzak izleme:** Linux (`/proc`), macOS (`vm_stat`, `top -l`, `sysctl`), Docker (`docker stats --no-stream`, yerel veya uzak). Sistem `/usr/bin/ssh` + ControlMaster (tek kalıcı bağlantı), tek betik çağrısı → JSON benzeri çıktı → sayaç farkı. Ayrı `RemoteActor` (ağ I/O `SamplerActor`'u bloklamaz). Yalnız popover/sayfa görünürken 3–5 sn; arka planda yalnız "erişilebilir mi" kontrolü 60 sn (isteğe bağlı) + Faz 8 bildirimi
 - **SSH tünel yöneticisi:** `-L/-R/-D` tünelleri menüden aç/kapa, düşerse geri çekilmeli yeniden bağlanma
@@ -401,6 +401,12 @@ Kaynak: `Araştırma/mxterm.md`.
 
 Kapı: bağlantı koptuğunda UI donmuyor, zaman aşımı ≤ 10 sn; sunucu ekli ama popover kapalıyken ek maliyet ≈ 0 (erişilebilirlik kontrolü kapalıyken).
 **Kontrol kapısı:** K-01 F-03 L-02 G-03 (yerel ağ izni) + Özellik Bitti Tanımı
+
+Sonuç: `SystemKit/Servers/` — `ServerInput` (dar alfabe, uzunluk sınırı, `-` ile başlayan ret), `SSHCommand` (saf argüman listeleri; host her zaman `--` sonrasında), `ServerScripts` (sabit betikler, `sh -s`'e standart girdiden), `ServerReadingParser` (64 KB sınırı, aralık denetimi, 3000 turluk bozuk girdi testi), `ProcessRunner` (mutlak yol, sınırlı çıktı, süreç zaman aşımı), `RemoteActor` (10 sn üst sınır, ControlMaster soketi `~/Library/Caches/com.ozan.sistem/ssh` 0700), `ServersController`, `QuickConnect`. Ağ tanılama `Network/NetworkDiagnostics.swift` (ping, DNS, port, traceroute; yalnız kullanıcı başlatınca). Kimlik yalnız anahtar/agent: `BatchMode=yes`, parola yolları kapalı, `StrictHostKeyChecking=yes`, `UpdateHostKeys=no`; ssh ortamında `SSH_ASKPASS` yok. Tüneller yalnız 127.0.0.1'e bağlanır. Hızlı bağlan, özel dizinde sabit içerikli `.command` dosyasıyla (AppleScript ve `ssh://` bilerek seçilmedi). Sunucu ekli ama sayfa kapalıyken zamanlayıcı ve alt süreç yok; boşta A/B (0 ↔ 3 sunucu) fark gürültü içinde; `WINDOW=servers` %0.19–0.36 / 32 MB / 1.4–2.6 uyanma. 289 test (9'u `TunnelReaper`).
+- **Uçtan uca:** kullanıcı düzeyi `sshd` (127.0.0.1:49222, geçici anahtar ve `known_hosts`) ile `ServerEndToEndTests.fullFlowAgainstLocalSshd`: bilinmeyen ana makine anahtarı → hata ve dosyaya yazılmadı, tek ControlMaster, `-L` tüneli açılıp kapandı, yanlış anahtar → ret. `SISTEM_E2E_DIR` yoksa atlanır.
+- **Artık tüneller:** uygulama `kill -9` ile ölürse tünelin `ssh` süreci kalır; `TunnelReaper` açılışta yalnız yol `/usr/bin/ssh` + kayıtlı başlangıç anı + aynı kullanıcı üçü de tutan süreçlere SIGTERM gönderir.
+- **Birleşik menü çubuğu (Ozan'ın isteği, aynı commit):** ayrı `NSStatusItem`'lar araya başka uygulamaların simgeleri girdiği için dağınık duruyordu; tüm parçalar artık tek öğede (`Sistem.menuBar`) yan yana bölümler (`StripSections`, `StripView`, saf `StripLayout.index(at:)`). Bölüm başına yeniden çizim ve histerezis korunur. Boşta A/B 4 tur: önce %0.199 / 1.88 uyanma / 20.0 MB, sonra %0.211 / 1.61 / 16.9 MB.
+- **Açık / Ozan'da (elle):** gerçek menü çubuğunda şerit (tıklama konumu, ⌘-sürükle, Uyanık Tut sağ tık menüsünün yeri, VoiceOver); Terminal'de Hızlı bağlan; Yerel Ağ izin istemi; gerçek bildirim; çökme sonrası tünel temizliği uçtan uca; Docker yalnız sahte çıktıyla sınandı; modül kapalıyken popover "Henüz sunucu eklenmedi" diyor (ayrı metin gerek).
 
 ### Faz 12 — Widget seti ve kombine modüller · ~2 gün
 - Bar grafik, batarya, ağ okları, hız grafiği widget'ları; hizalama, sabit genişlik, eşit aralıklı font

@@ -7321,6 +7321,1136 @@
           }
         }
       }
+    },
+    "Linux" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linux"
+          }
+        }
+      }
+    },
+    "macOS" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS"
+          }
+        }
+      }
+    },
+    "Docker (uzak)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Docker (remote)"
+          }
+        }
+      }
+    },
+    "Docker (bu Mac)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Docker (this Mac)"
+          }
+        }
+      }
+    },
+    "Bağlanıyor…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecting…"
+          }
+        }
+      }
+    },
+    "Erişilebilir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reachable"
+          }
+        }
+      }
+    },
+    "Çevrimiçi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Online"
+          }
+        }
+      }
+    },
+    "Erişilemiyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unreachable"
+          }
+        }
+      }
+    },
+    "Bağlantı reddedildi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection refused"
+          }
+        }
+      }
+    },
+    "Ad çözülemedi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name not resolved"
+          }
+        }
+      }
+    },
+    "Zaman aşımı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Timed out"
+          }
+        }
+      }
+    },
+    "Anahtar reddedildi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Key rejected"
+          }
+        }
+      }
+    },
+    "Ana makine anahtarı bilinmiyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host key unknown"
+          }
+        }
+      }
+    },
+    "Ana makine anahtarı değişmiş" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host key changed"
+          }
+        }
+      }
+    },
+    "Bozuk çıktı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Malformed output"
+          }
+        }
+      }
+    },
+    "Uzak komut başarısız" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remote command failed"
+          }
+        }
+      }
+    },
+    "Docker bulunamadı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Docker not found"
+          }
+        }
+      }
+    },
+    "ssh başlatılamadı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not start ssh"
+          }
+        }
+      }
+    },
+    "Port yönlendirilemedi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port could not be forwarded"
+          }
+        }
+      }
+    },
+    "Sunucuya ulaşılamadı. Ağ bağlantısını kontrol edin; yerel ağdaki bir sunucu için Sistem Ayarları'nda Yerel Ağ izni verilmiş olmalı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server could not be reached. Check the network connection; for a server on the local network, Local Network access must be allowed in System Settings."
+          }
+        }
+      }
+    },
+    "Sunucu bağlantıyı reddetti. SSH hizmeti çalışmıyor ya da port yanlış olabilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server refused the connection. The SSH service may not be running or the port may be wrong."
+          }
+        }
+      }
+    },
+    "Sunucu adı çözülemedi. Adı ya da ~/.ssh/config takma adını kontrol edin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server name could not be resolved. Check the name or the ~/.ssh/config alias."
+          }
+        }
+      }
+    },
+    "Sunucu 10 saniye içinde yanıt vermedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server did not answer within 10 seconds."
+          }
+        }
+      }
+    },
+    "Sunucu anahtarınızı kabul etmedi. Yalnızca anahtar ve ssh-agent ile giriş yapılır; parola sorulmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server did not accept your key. Sign-in uses keys and ssh-agent only; no password is ever asked."
+          }
+        }
+      }
+    },
+    "Bu sunucu daha önce hiç doğrulanmamış. Önce Terminal'de bir kez bağlanıp anahtarı onaylayın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This server has never been verified. Connect once in Terminal first and confirm its key."
+          }
+        }
+      }
+    },
+    "Sunucunun anahtarı kayıtlı olandan farklı. Sunucuyu değiştirmediyseniz bağlanmayın; ~/.ssh/known_hosts kaydını kendiniz inceleyin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server's key differs from the recorded one. Do not connect unless you changed the server; inspect ~/.ssh/known_hosts yourself."
+          }
+        }
+      }
+    },
+    "Sunucudan beklenen biçimde yanıt gelmedi; veri gösterilmiyor." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server did not answer in the expected format; no data is shown."
+          }
+        }
+      }
+    },
+    "Uzak komut hata ile bitti." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The remote command ended with an error."
+          }
+        }
+      }
+    },
+    "Docker bu makinede bulunamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Docker was not found on this machine."
+          }
+        }
+      }
+    },
+    "ssh programı başlatılamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The ssh program could not be started."
+          }
+        }
+      }
+    },
+    "Yerel port kullanımda ya da sunucu yönlendirmeyi kabul etmedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The local port is in use or the server did not accept the forwarding."
+          }
+        }
+      }
+    },
+    "Yerel (-L)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local (-L)"
+          }
+        }
+      }
+    },
+    "Uzak (-R)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remote (-R)"
+          }
+        }
+      }
+    },
+    "SOCKS (-D)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SOCKS (-D)"
+          }
+        }
+      }
+    },
+    "Açılıyor…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opening…"
+          }
+        }
+      }
+    },
+    "Yeniden bağlanılıyor…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reconnecting…"
+          }
+        }
+      }
+    },
+    "%lld g %lld sa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld d %lld h"
+          }
+        }
+      }
+    },
+    "Ad boş olmamalı (en çok 40 karakter)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The name must not be empty (40 characters at most)."
+          }
+        }
+      }
+    },
+    "Ana makine adı, IP adresi ya da ~/.ssh/config takma adı olmalı; harf, rakam, nokta, tire ve alt çizgi kullanın, tire ile başlamayın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a host name, an IP address or a ~/.ssh/config alias; use letters, digits, dots, hyphens and underscores, and do not start with a hyphen."
+          }
+        }
+      }
+    },
+    "Kullanıcı adı geçersiz (harf, rakam, nokta, tire, alt çizgi; en çok 32)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The user name is not valid (letters, digits, dots, hyphens, underscores; 32 at most)."
+          }
+        }
+      }
+    },
+    "Port 1 ile 65535 arasında olmalı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The port must be between 1 and 65535."
+          }
+        }
+      }
+    },
+    "En çok 20 sunucu eklenebilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At most 20 servers can be added."
+          }
+        }
+      }
+    },
+    "Yerel port 1024-65535 arasında olmalı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The local port must be between 1024 and 65535."
+          }
+        }
+      }
+    },
+    "Hedef ana makine geçersiz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The target host is not valid."
+          }
+        }
+      }
+    },
+    "Hedef port 1-65535 arasında olmalı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The target port must be between 1 and 65535."
+          }
+        }
+      }
+    },
+    "Bir sunucuya en çok 10 tünel eklenebilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At most 10 tunnels can be added to a server."
+          }
+        }
+      }
+    },
+    "Sunucu yanıt veriyor. Ayrıntılar bu sayfa açıkken okunur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server is answering. Details are read while this page is open."
+          }
+        }
+      }
+    },
+    "Ayrıntılar bu sayfa ya da açılır pencere açıkken okunur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details are read while this page or the popover is open."
+          }
+        }
+      }
+    },
+    "Kapalı bildirildi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reported down"
+          }
+        }
+      }
+    },
+    "Terminal'de bağlan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect in Terminal"
+          }
+        }
+      }
+    },
+    "Yük" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Load"
+          }
+        }
+      }
+    },
+    "Çalışan konteyner yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No running containers."
+          }
+        }
+      }
+    },
+    "Tüneller" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tunnels"
+          }
+        }
+      }
+    },
+    "Kapat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
+    "Aç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open"
+          }
+        }
+      }
+    },
+    "Sunucular modülü kapalı. Modül sekmesinden açabilirsiniz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Servers module is off. You can turn it on in the Module tab."
+          }
+        }
+      }
+    },
+    "Henüz sunucu eklenmedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No servers added yet."
+          }
+        }
+      }
+    },
+    "Modül sekmesinden bir sunucu ekleyin. Giriş yalnızca anahtar ya da ssh-agent ile yapılır; parola sorulmaz ve saklanmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a server in the Module tab. Sign-in uses keys or ssh-agent only; no password is asked or stored."
+          }
+        }
+      }
+    },
+    "Sunucular yalnızca bu sayfa ya da açılır pencere görünürken, her 4 saniyede bir tek ssh bağlantısı üzerinden okunur. Arka plan kontrolü kapalıysa sayfa kapanınca hiçbir bağlantı kurulmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servers are read only while this page or the popover is visible, every 4 seconds over a single ssh connection. With the background check off, no connection is made once the page is closed."
+          }
+        }
+      }
+    },
+    "Hızlı bağlan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick connect"
+          }
+        }
+      }
+    },
+    "Listeyi yenile" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh list"
+          }
+        }
+      }
+    },
+    "~/.ssh/config içindeki Host takma adları burada listelenir. Dosya yalnızca okunur; yalnızca takma adlar alınır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host aliases from ~/.ssh/config are listed here. The file is only read, and only the aliases are taken."
+          }
+        }
+      }
+    },
+    "%lld takma ad" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld aliases"
+          }
+        }
+      }
+    },
+    "Terminal açılamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminal could not be opened."
+          }
+        }
+      }
+    },
+    "Sunucular modülünü etkinleştir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable the Servers module"
+          }
+        }
+      }
+    },
+    "Kapalıyken hiçbir bağlantı kurulmaz ve tüneller kapanır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While off, no connection is made and tunnels are closed."
+          }
+        }
+      }
+    },
+    "Arka planda erişilebilirlik kontrolü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Background reachability check"
+          }
+        }
+      }
+    },
+    "Her 60 saniyede bir sunucunun yanıt verip vermediğine bakar ve iki dakika kapalı kalırsa bildirim gönderir. Kapalıyken sayfa kapanınca hiçbir şey çalışmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every 60 seconds it checks whether the server answers and sends a notification if it stays down for two minutes. While off, nothing runs once the page is closed."
+          }
+        }
+      }
+    },
+    "Sunucu simgesi ekler; tıklayınca sunucuların özeti açılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds a server icon; clicking it opens a summary of the servers."
+          }
+        }
+      }
+    },
+    "Güvenlik" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security"
+          }
+        }
+      }
+    },
+    "Giriş yalnızca anahtar ya da ssh-agent iledir; parola istenmez, saklanmaz. Özel anahtar dosyalarına dokunulmaz. Ana makine anahtarı doğrulaması her zaman açıktır: bilinmeyen bir sunucuya önce Terminal'den bir kez bağlanmalısınız. Yerel ağdaki sunucular için macOS ilk bağlantıda Yerel Ağ izni sorabilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign-in uses keys or ssh-agent only; no password is asked or stored. Private key files are never touched. Host key verification is always on: for an unknown server you must connect once from Terminal first. For servers on the local network macOS may ask for Local Network access on the first connection."
+          }
+        }
+      }
+    },
+    "Sunucular" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servers"
+          }
+        }
+      }
+    },
+    "Henüz sunucu yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No servers yet."
+          }
+        }
+      }
+    },
+    "Sunucu ekle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add server"
+          }
+        }
+      }
+    },
+    "Tür" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
+    },
+    "Ana makine ya da takma ad" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host or alias"
+          }
+        }
+      }
+    },
+    "Kullanıcı (isteğe bağlı)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User (optional)"
+          }
+        }
+      }
+    },
+    "Port" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        }
+      }
+    },
+    "Ekle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
+          }
+        }
+      }
+    },
+    "Tünel ekle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add tunnel"
+          }
+        }
+      }
+    },
+    "Sil" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "Sunucudaki port" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port on the server"
+          }
+        }
+      }
+    },
+    "Yerel port" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local port"
+          }
+        }
+      }
+    },
+    "Hedef ana makine" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Target host"
+          }
+        }
+      }
+    },
+    "Hedef port" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Target port"
+          }
+        }
+      }
+    },
+    "Tüneli kaydet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save tunnel"
+          }
+        }
+      }
+    },
+    "Yerel dinleme yalnızca 127.0.0.1 üzerindedir. Tüneller elle açılır; uygulama açılışında kendiliğinden başlamaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local listening is on 127.0.0.1 only. Tunnels are opened by hand and never start on their own when the app launches."
+          }
+        }
+      }
+    },
+    "Bu Mac" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Mac"
+          }
+        }
+      }
+    },
+    "Araç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tool"
+          }
+        }
+      }
+    },
+    "Ping" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ping"
+          }
+        }
+      }
+    },
+    "DNS sorgusu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DNS lookup"
+          }
+        }
+      }
+    },
+    "Port kontrolü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port check"
+          }
+        }
+      }
+    },
+    "Traceroute" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traceroute"
+          }
+        }
+      }
+    },
+    "Ana makine ya da IP" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host or IP"
+          }
+        }
+      }
+    },
+    "İptal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "Başlat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
+          }
+        }
+      }
+    },
+    "Araçlar yalnızca Başlat'a bastığınızda çalışır; arka planda hiçbir sınama yapılmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The tools run only when you press Start; nothing is tested in the background."
+          }
+        }
+      }
+    },
+    "Çalışıyor…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running…"
+          }
+        }
+      }
+    },
+    "Gönderilen / alınan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sent / received"
+          }
+        }
+      }
+    },
+    "Kayıp" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loss"
+          }
+        }
+      }
+    },
+    "En az / ortalama / en çok" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min / average / max"
+          }
+        }
+      }
+    },
+    "Yanıt gelmedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No reply."
+          }
+        }
+      }
+    },
+    "Bağlantı süresi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect time"
+          }
+        }
+      }
+    },
+    "Kapalı ya da reddedildi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Closed or refused"
+          }
+        }
+      }
+    },
+    "Girdi geçersiz. Ana makine adı ya da IP adresi (ve port için 1-65535) yazın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The input is not valid. Enter a host name or IP address (and 1-65535 for the port)."
+          }
+        }
+      }
+    },
+    "İşlem zaman aşımına uğradı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The operation timed out."
+          }
+        }
+      }
+    },
+    "Sistem aracı başlatılamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The system tool could not be started."
+          }
+        }
+      }
+    },
+    "Yanıt alınamadı ya da ad çözülemedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No answer, or the name could not be resolved."
+          }
+        }
+      }
+    },
+    "İptal edildi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelled."
+          }
+        }
+      }
+    },
+    "Araç beklenen çıktıyı vermedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The tool did not produce the expected output."
+          }
+        }
+      }
+    },
+    "Sunucu yanıt vermiyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server is not responding"
+          }
+        }
+      }
+    },
+    "%@ iki dakikadır erişilemiyor." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ has been unreachable for two minutes."
+          }
+        }
+      }
+    },
+    "Uzak sunucuların CPU, RAM, disk ve ağ durumu, SSH tünelleri ve ~/.ssh/config bağlantıları." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU, RAM, disk and network of remote servers, SSH tunnels and ~/.ssh/config connections."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

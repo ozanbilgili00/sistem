@@ -73,7 +73,7 @@ public struct SettingRow<Control: View>: View {
             VStack(alignment: .leading, spacing: 2) {
                 title.font(.system(size: 13, weight: .medium)).foregroundStyle(Palette.ink)
                 if let detail {
-                    detail.font(.sistemCaption).foregroundStyle(Palette.inkSecondary)
+                    detail.font(.sistemCaption).foregroundStyle(Palette.inkSecondary).fixedSize(horizontal: false, vertical: true)
                 }
             }
             Spacer(minLength: 0)

@@ -16,6 +16,7 @@ extension ModuleID {
         case .clock: "Saat"
         case .keepAwake: "Uyanık Tut"
         case .display: "Ekran"
+        case .servers: "Sunucular"
         }
     }
 
@@ -33,6 +34,7 @@ extension ModuleID {
         case .clock: "clock"
         case .keepAwake: "cup.and.saucer"
         case .display: "display.2"
+        case .servers: "server.rack"
         }
     }
 
@@ -52,7 +54,7 @@ extension ModuleID {
 
     /// True once the module has a real page. Clock and Bluetooth have no menu bar metric: the clock is
     /// driven by its own timer, and Bluetooth reads only while its page or popover is open.
-    var isLive: Bool { metric != nil || self == .clock || self == .bluetooth || self == .keepAwake || self == .display }
+    var isLive: Bool { metric != nil || self == .clock || self == .bluetooth || self == .keepAwake || self == .display || self == .servers }
 
     /// Whether the menu bar can hold an item for it.
     var hasMenuBarItem: Bool { ModuleID.menuBarCandidates.contains(self) && isLive }
@@ -68,6 +70,7 @@ extension ModuleID {
         case .battery, .bluetooth, .clock: 7
         case .keepAwake: 9
         case .display: 10
+        case .servers: 11
         case .dashboard: 8
         }
     }
@@ -86,6 +89,7 @@ extension ModuleID {
         case .clock: "Birden çok saat dilimi ve takvim."
         case .keepAwake: "Mac'in uykuya geçmesini engelle, neden uyanık olduğunu gör; pil ve sıcaklık korumalı."
         case .display: "Bağlı ekranlar, çözünürlük ve yenileme hızı, harici monitörde parlaklık ve ses, yazılımsal karartma ve gece tonu."
+        case .servers: "Uzak sunucuların CPU, RAM, disk ve ağ durumu, SSH tünelleri ve ~/.ssh/config bağlantıları."
         }
     }
 

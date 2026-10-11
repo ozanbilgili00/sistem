@@ -46,6 +46,10 @@ final class SettingsStore {
         static let keepAwakeDuration = "keepAwake.defaultDuration"
         static let displayEnabled = "display.enabled"
         static let displayMenuBar = "display.menuBar"
+        static let serversEnabled = "servers.enabled"
+        static let serversMenuBar = "servers.menuBar"
+        static let serversReachability = "servers.reachability"
+        static let serversList = "servers.list"
     }
 
     /// Choices offered for the update interval, in seconds.
@@ -111,6 +115,31 @@ final class SettingsStore {
     /// The monitor icon in the menu bar; off until the user turns it on.
     var displayMenuBar: Bool {
         didSet { defaults.set(displayMenuBar, forKey: Key.displayMenuBar) }
+    }
+
+    /// Servers module: off until the user turns it on. With it off, or with no server listed, nothing runs.
+    var serversEnabled: Bool {
+        didSet { defaults.set(serversEnabled, forKey: Key.serversEnabled) }
+    }
+    var serversMenuBar: Bool {
+        didSet { defaults.set(serversMenuBar, forKey: Key.serversMenuBar) }
+    }
+    /// Background "is it up" check (60 s) and a notification when a server stays down. Off by default.
+    var serversReachability: Bool {
+        didSet { defaults.set(serversReachability, forKey: Key.serversReachability) }
+    }
+    /// The server list as JSON text: host, user, port, kind and tunnels, never a secret.
+    var serversList: String {
+        didSet { defaults.set(serversList, forKey: Key.serversList) }
+    }
+
+    var servers: [ServerConfig] {
+        get { ServerConfig.decode(serversList).servers }
+        set { serversList = ServerConfig.encode(newValue) }
+    }
+
+    var serversConfig: ServersConfig {
+        ServersConfig(enabled: serversEnabled, servers: servers, reachabilityCheck: serversReachability)
     }
 
     static let keepAwakeDurationChoices: [Double] = [1_800, 3_600, 10_800, 28_800, 0]
@@ -225,6 +254,11 @@ final class SettingsStore {
         keepAwakeDuration = Self.snapDuration(defaults.object(forKey: Key.keepAwakeDuration) as? Double)
         displayEnabled = defaults.object(forKey: Key.displayEnabled) as? Bool ?? true
         displayMenuBar = defaults.object(forKey: Key.displayMenuBar) as? Bool ?? false
+        serversEnabled = defaults.object(forKey: Key.serversEnabled) as? Bool ?? false
+        serversMenuBar = defaults.object(forKey: Key.serversMenuBar) as? Bool ?? false
+        serversReachability = defaults.object(forKey: Key.serversReachability) as? Bool ?? false
+        // A list is accepted only if it decodes; the stored text is rewritten from the validated servers.
+        serversList = ServerConfig.encode(ServerConfig.decode(defaults.string(forKey: Key.serversList)).servers)
         menuBarModules = (defaults.stringArray(forKey: Key.menuBarModules)?.compactMap(ModuleID.init))
             ?? ModuleID.defaultMenuBar
         let stored = defaults.data(forKey: Key.widgets)
@@ -295,6 +329,10 @@ final class SettingsStore {
             Key.keepAwakeDuration: keepAwakeDuration,
             Key.displayEnabled: displayEnabled,
             Key.displayMenuBar: displayMenuBar,
+            Key.serversEnabled: serversEnabled,
+            Key.serversMenuBar: serversMenuBar,
+            Key.serversReachability: serversReachability,
+            Key.serversList: serversList,
         ]
         let encoded = Dictionary(uniqueKeysWithValues: widgets.map { ($0.key.rawValue, $0.value) })
         if let data = try? JSONEncoder().encode(encoded), let object = try? JSONSerialization.jsonObject(with: data) {
@@ -354,6 +392,16 @@ final class SettingsStore {
         take(Key.keepAwakeDuration, { ($0 as? Double).flatMap { Self.keepAwakeDurationChoices.contains($0) ? $0 : nil } }) { keepAwakeDuration = $0 }
         take(Key.displayEnabled, bool) { displayEnabled = $0 }
         take(Key.displayMenuBar, bool) { displayMenuBar = $0 }
+        take(Key.serversEnabled, bool) { serversEnabled = $0 }
+        take(Key.serversMenuBar, bool) { serversMenuBar = $0 }
+        take(Key.serversReachability, bool) { serversReachability = $0 }
+        // Each server is checked like a typed one; what fails is skipped and counted, not repaired.
+        take(Key.serversList, { raw -> String? in
+            guard let text = raw as? String else { return nil }
+            let decoded = ServerConfig.decode(text)
+            result.ignored += decoded.dropped
+            return ServerConfig.encode(decoded.servers)
+        }) { serversList = $0 }
         take(Key.widgets, { raw -> [ModuleID: WidgetConfig]? in
             guard JSONSerialization.isValidJSONObject(raw), let data = try? JSONSerialization.data(withJSONObject: raw),
                   let decoded = try? JSONDecoder().decode([String: WidgetConfig].self, from: data) else { return nil }
@@ -395,6 +443,10 @@ final class SettingsStore {
         keepAwakeDuration = 3_600
         displayEnabled = true
         displayMenuBar = false
+        serversEnabled = false
+        serversMenuBar = false
+        serversReachability = false
+        serversList = "[]"
         applyAppearance()
     }
 }
