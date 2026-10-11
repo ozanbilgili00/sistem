@@ -12,14 +12,16 @@ final class MainWindowController: NSObject, NSWindowDelegate {
     private let engine: SamplingEngine
     private let notifier: AlertNotifier
     private let keepAwake: KeepAwakeModel
+    private let display: DisplayModel
     private var window: NSWindow?
     private var feed: LiveFeed?
 
-    init(settings: SettingsStore, engine: SamplingEngine, notifier: AlertNotifier, keepAwake: KeepAwakeModel) {
+    init(settings: SettingsStore, engine: SamplingEngine, notifier: AlertNotifier, keepAwake: KeepAwakeModel, display: DisplayModel) {
         self.settings = settings
         self.engine = engine
         self.notifier = notifier
         self.keepAwake = keepAwake
+        self.display = display
         super.init()
     }
 
@@ -41,7 +43,7 @@ final class MainWindowController: NSObject, NSWindowDelegate {
         )
         let feed = LiveFeed(engine: engine)
         self.feed = feed
-        let host = NSHostingController(rootView: MainView(settings: settings).environment(feed).environment(notifier).environment(keepAwake))
+        let host = NSHostingController(rootView: MainView(settings: settings).environment(feed).environment(notifier).environment(keepAwake).environment(display))
         host.sizingOptions = []
         window.contentViewController = host
         window.setContentSize(NSSize(width: 1000, height: 660))

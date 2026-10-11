@@ -11,8 +11,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         notifier.post(event, unit: settings.temperatureUnit)
     }
     private let keepAwake = KeepAwakeModel()
-    private lazy var mainWindow = MainWindowController(settings: settings, engine: engine, notifier: notifier, keepAwake: keepAwake)
+    private let display = DisplayModel()
+    private lazy var mainWindow = MainWindowController(settings: settings, engine: engine, notifier: notifier, keepAwake: keepAwake, display: display)
     private var keepAwakeItem: KeepAwakeStatusItem?
+    private var displayItem: DisplayStatusItem?
     private var hadEnabledRules = false
     private var statusBar: StatusBarController?
 
@@ -34,6 +36,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self?.mainWindow.show(page: page)
         }
         syncKeepAwake()
+        syncDisplay()
         let args = CommandLine.arguments
         if let i = args.firstIndex(of: "--measure-window") {
             let page = args.indices.contains(i + 1) ? Page(rawValue: args[i + 1]) : .module(.cpu)
@@ -80,6 +83,30 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             item.remove()
             keepAwakeItem = nil
         }
+    }
+
+    /// Keeps the display model and its optional menu bar icon in step with the settings.
+    private func syncDisplay() {
+        let (enabled, menuBar) = withObservationTracking {
+            (settings.displayEnabled, settings.displayMenuBar)
+        } onChange: { [weak self] in
+            DispatchQueue.main.async { MainActor.assumeIsolated { self?.syncDisplay() } }
+        }
+        display.apply(enabled: enabled)
+        if enabled, menuBar, displayItem == nil {
+            displayItem = DisplayStatusItem(model: display) { [weak self] page in
+                self?.mainWindow.show(page: page)
+            }
+        } else if !(enabled && menuBar), let item = displayItem {
+            item.remove()
+            displayItem = nil
+        }
+    }
+
+    /// A clean quit gives the screens back: a mode trial is reverted, dimming and night tone are released.
+    /// If the process dies instead, the system does the same (see DisplayController).
+    func applicationWillTerminate(_ notification: Notification) {
+        display.shutdown()
     }
 
     /// Clicking the Dock icon (when "Dock'ta göster" is on) reopens the window.

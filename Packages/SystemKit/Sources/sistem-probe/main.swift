@@ -232,6 +232,8 @@ if args.count >= 3, args[1] == "--awake-check" {
     MainActor.assumeIsolated { awakeCheck(name: args[2], seconds: args.count > 3 ? Double(args[3]) ?? 20 : 20) }
     exit(0)
 }
+// `sistem-probe --display-check`: Phase 10 read-only look at displays and DDC (DisplayChecks.swift).
+if args.count == 2, args[1] == "--display-check" { MainActor.assumeIsolated { displayCheck() }; exit(0) }
 if args.count == 2, args[1] == "--io-bench" { ioBench(); exit(0) }
 if args.count == 2, args[1] == "--smart-check" { smartCheck(); exit(0) }
 // `sistem-probe --sensors-check [loadSeconds]`: Faz 6 gate check (SensorChecks.swift).

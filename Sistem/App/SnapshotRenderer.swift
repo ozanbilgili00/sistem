@@ -34,6 +34,8 @@ enum SnapshotRenderer {
             ("off", KeepAwakeModel(previewing: KeepAwakeState(), config: KeepAwakeConfig())),
         ]
         let awake = awakeModels[0].1
+        let displayModels = displayPreviews()
+        let display = displayModels[0].1
 
         // Notification rules in their three permission states, and the empty state above.
         func variant(_ name: String, permission: AlertNotifier.Permission, rules: [AlertKind]) -> (SettingsStore, AlertNotifier) {
@@ -56,12 +58,12 @@ enum SnapshotRenderer {
 
         let pages: [(String, Page)] = [
             ("dashboard", .module(.dashboard)), ("cpu", .module(.cpu)), ("gpu", .module(.gpu)), ("ram", .module(.ram)),
-            ("disk", .module(.disk)), ("network", .module(.network)), ("sensors", .module(.sensors)), ("battery", .module(.battery)), ("bluetooth", .module(.bluetooth)), ("clock", .module(.clock)), ("keepawake", .module(.keepAwake)), ("settings", .settings), ("diagnostics", .diagnostics),
+            ("disk", .module(.disk)), ("network", .module(.network)), ("sensors", .module(.sensors)), ("battery", .module(.battery)), ("bluetooth", .module(.bluetooth)), ("clock", .module(.clock)), ("keepawake", .module(.keepAwake)), ("display", .module(.display)), ("settings", .settings), ("diagnostics", .diagnostics),
         ]
         for (theme, name) in [("dark", NSAppearance.Name.darkAqua), ("light", .aqua)] {
             let appearance = NSAppearance(named: name)!
             func save<V: View>(_ view: V, _ label: String, _ size: CGSize) {
-                render(view.environment(feed).environment(notifier).environment(awake), size: size, appearance: appearance,
+                render(view.environment(feed).environment(notifier).environment(awake).environment(display), size: size, appearance: appearance,
                        to: directory.appending(path: "\(label)-\(theme).png"))
             }
             for (label, page) in pages {
@@ -121,6 +123,26 @@ enum SnapshotRenderer {
                        size: CGSize(width: 1000, height: 640), appearance: appearance,
                        to: directory.appending(path: "keepawake-\(name)-\(theme).png"))
             }
+            save(DisplayPage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
+                    .background(Palette.background), "display-module", CGSize(width: 760, height: 460))
+            for (name, preview) in displayModels {
+                // The trial's deadline is relative to now; rebuild it right before drawing so it reads about 12 s.
+                let model = name == "pending" ? displayPreviews()[1].1 : preview
+                let shown = SettingsStore(defaults: UserDefaults(suiteName: "SistemSnapshot")!)
+                shown.displayEnabled = name != "off"
+                render(DisplayPopover(openWindow: {}).environment(model), size: CGSize(width: 440, height: 640),
+                       appearance: appearance, to: directory.appending(path: "popover-display-\(name)-\(theme).png"))
+                render(MainView(settings: shown, pinnedPage: .module(.display)).environment(feed).environment(notifier).environment(awake).environment(model),
+                       size: CGSize(width: 1000, height: name == "empty" || name == "off" ? 480 : 1500), appearance: appearance,
+                       to: directory.appending(path: "display-\(name)-\(theme).png"))
+            }
+            do {
+                // Input switch waiting for its confirmation.
+                let entry = displayModels[0].1.state.entries[1]
+                render(Card { DisplayHardwareControls(entry: entry, model: display, pendingInput: 17) }.padding(16).frame(width: 640).background(Palette.background),
+                       size: CGSize(width: 640, height: 330), appearance: appearance,
+                       to: directory.appending(path: "display-input-confirm-\(theme).png"))
+            }
             renderCups(appearance: appearance, to: directory.appending(path: "menubar-keepawake-\(theme).png"))
             save(RAMPage(settings: settings, tab: .module).padding(24).frame(width: 760, alignment: .top)
                     .background(Palette.background), "ram-module", CGSize(width: 760, height: 360))
@@ -135,6 +157,45 @@ enum SnapshotRenderer {
             renderWidgets(feed.store, module: .sensors, sensors: SensorsDisplay(unit: .fahrenheit, stacked: true), appearance: appearance,
                           to: directory.appending(path: "menubar-sensors-stack-\(theme).png"))
         }
+    }
+
+    /// The display module in four states: three displays (one with DDC, one without, the built-in
+    /// panel), a mode trial waiting for its yes, the module switched off, and no display at all.
+    private static func displayPreviews() -> [(String, DisplayModel)] {
+        let builtMode = DisplayMode(id: 1, width: 1728, height: 1117, pixelWidth: 3456, pixelHeight: 2234, refreshRate: 120)
+        let monitorMode = DisplayMode(id: 20, width: 2560, height: 1440, refreshRate: 200)
+        let builtModes = [builtMode, DisplayMode(id: 2, width: 1728, height: 1117, pixelWidth: 3456, pixelHeight: 2234, refreshRate: 60),
+                          DisplayMode(id: 3, width: 1512, height: 982, pixelWidth: 3024, pixelHeight: 1964, refreshRate: 120)]
+        let monitorModes = [monitorMode, DisplayMode(id: 21, width: 2560, height: 1440, refreshRate: 144), DisplayMode(id: 22, width: 2560, height: 1440, refreshRate: 60),
+                            DisplayMode(id: 23, width: 1920, height: 1080, refreshRate: 120)]
+        var builtIn = DisplayEntry(info: DisplayInfo(id: 1, name: "Built-in Liquid Retina XDR Display", isBuiltIn: true, isMain: true, mode: builtMode,
+                                                     edrCurrent: 1.2, edrPotential: 16, brightness: 0.62))
+        builtIn.modes = builtModes
+        builtIn.ddc = .unsupported(.builtIn)
+        var monitor = DisplayEntry(info: DisplayInfo(id: 4, name: "LS27FG53x", vendor: 0x4C2D, model: 0x79CF, mode: monitorMode))
+        monitor.modes = monitorModes
+        monitor.ddc = .supported
+        monitor.controls = [.brightness: VCPValue(current: 70, maximum: 100), .contrast: VCPValue(current: 79, maximum: 100),
+                            .volume: VCPValue(current: 63, maximum: 100), .inputSource: VCPValue(current: 15, maximum: 14)]
+        monitor.dim = 0.8
+        monitor.warmth = 0.25
+        var sidecar = DisplayEntry(info: DisplayInfo(id: 6, name: "iPad", isMirrored: true,
+                                                     mode: DisplayMode(id: 30, width: 1180, height: 820, pixelWidth: 2360, pixelHeight: 1640, refreshRate: 60)))
+        sidecar.modes = [sidecar.info.mode!]
+        sidecar.ddc = .unsupported(.noChannel)
+        let now = Date()
+        var state = DisplayState()
+        state.entries = [builtIn, monitor, sidecar]
+        state.events = [
+            DisplayEvent(id: 3, date: now.addingTimeInterval(-120), kind: .modeChanged, name: "LS27FG53x", detail: "2560 × 1440 · 200 Hz"),
+            DisplayEvent(id: 2, date: now.addingTimeInterval(-3_000), kind: .connected, name: "iPad", detail: "1180 × 820 · 60 Hz"),
+            DisplayEvent(id: 1, date: now.addingTimeInterval(-3_100), kind: .disconnected, name: "iPad"),
+        ]
+        var trial = state
+        trial.pending = PendingModeChange(display: 4, from: monitorMode, to: monitorModes[2], deadline: now.addingTimeInterval(12))
+        trial.entries[1].info.mode = monitorModes[2]
+        return [("on", DisplayModel(previewing: state)), ("pending", DisplayModel(previewing: trial)),
+                ("off", DisplayModel(previewing: DisplayState())), ("empty", DisplayModel(previewing: DisplayState()))]
     }
 
     /// Ten minutes of plausible-looking load: a slow wave with bursts.

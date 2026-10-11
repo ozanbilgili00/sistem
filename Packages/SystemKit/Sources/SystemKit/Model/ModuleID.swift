@@ -1,6 +1,6 @@
-/// The eleven modules, in sidebar order.
+/// The twelve modules, in sidebar order.
 public enum ModuleID: String, CaseIterable, Codable, Identifiable, Sendable {
-    case dashboard, cpu, gpu, ram, disk, sensors, network, battery, bluetooth, clock, keepAwake
+    case dashboard, cpu, gpu, ram, disk, sensors, network, battery, bluetooth, clock, keepAwake, display
 
     public var id: String { rawValue }
 

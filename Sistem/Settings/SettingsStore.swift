@@ -44,6 +44,8 @@ final class SettingsStore {
         static let keepAwakeTriggers = "keepAwake.triggers"
         static let keepAwakeNetwork = "keepAwake.networkThreshold"
         static let keepAwakeDuration = "keepAwake.defaultDuration"
+        static let displayEnabled = "display.enabled"
+        static let displayMenuBar = "display.menuBar"
     }
 
     /// Choices offered for the update interval, in seconds.
@@ -100,6 +102,15 @@ final class SettingsStore {
     var keepAwakeConfig: KeepAwakeConfig {
         KeepAwakeConfig(enabled: keepAwakeEnabled, keepDisplayOn: keepAwakeDisplay, triggers: keepAwakeTriggers,
                         networkThreshold: keepAwakeNetworkThreshold)
+    }
+
+    /// Display module: watching and controlling the displays. Reading is event driven and free, so it starts on.
+    var displayEnabled: Bool {
+        didSet { defaults.set(displayEnabled, forKey: Key.displayEnabled) }
+    }
+    /// The monitor icon in the menu bar; off until the user turns it on.
+    var displayMenuBar: Bool {
+        didSet { defaults.set(displayMenuBar, forKey: Key.displayMenuBar) }
     }
 
     static let keepAwakeDurationChoices: [Double] = [1_800, 3_600, 10_800, 28_800, 0]
@@ -212,6 +223,8 @@ final class SettingsStore {
         keepAwakeTriggers = Set((defaults.stringArray(forKey: Key.keepAwakeTriggers) ?? []).compactMap(AwakeTrigger.init))
         keepAwakeNetworkThreshold = Self.snapNetwork(defaults.object(forKey: Key.keepAwakeNetwork) as? Double)
         keepAwakeDuration = Self.snapDuration(defaults.object(forKey: Key.keepAwakeDuration) as? Double)
+        displayEnabled = defaults.object(forKey: Key.displayEnabled) as? Bool ?? true
+        displayMenuBar = defaults.object(forKey: Key.displayMenuBar) as? Bool ?? false
         menuBarModules = (defaults.stringArray(forKey: Key.menuBarModules)?.compactMap(ModuleID.init))
             ?? ModuleID.defaultMenuBar
         let stored = defaults.data(forKey: Key.widgets)
@@ -280,6 +293,8 @@ final class SettingsStore {
             Key.keepAwakeTriggers: keepAwakeTriggers.map(\.rawValue).sorted(),
             Key.keepAwakeNetwork: keepAwakeNetworkThreshold,
             Key.keepAwakeDuration: keepAwakeDuration,
+            Key.displayEnabled: displayEnabled,
+            Key.displayMenuBar: displayMenuBar,
         ]
         let encoded = Dictionary(uniqueKeysWithValues: widgets.map { ($0.key.rawValue, $0.value) })
         if let data = try? JSONEncoder().encode(encoded), let object = try? JSONSerialization.jsonObject(with: data) {
@@ -337,6 +352,8 @@ final class SettingsStore {
         take(Key.keepAwakeTriggers, { strings($0).map { Set($0.compactMap(AwakeTrigger.init)) } }) { keepAwakeTriggers = $0 }
         take(Key.keepAwakeNetwork, { ($0 as? Double).flatMap { AwakeTrigger.networkThresholdChoices.contains($0) ? $0 : nil } }) { keepAwakeNetworkThreshold = $0 }
         take(Key.keepAwakeDuration, { ($0 as? Double).flatMap { Self.keepAwakeDurationChoices.contains($0) ? $0 : nil } }) { keepAwakeDuration = $0 }
+        take(Key.displayEnabled, bool) { displayEnabled = $0 }
+        take(Key.displayMenuBar, bool) { displayMenuBar = $0 }
         take(Key.widgets, { raw -> [ModuleID: WidgetConfig]? in
             guard JSONSerialization.isValidJSONObject(raw), let data = try? JSONSerialization.data(withJSONObject: raw),
                   let decoded = try? JSONDecoder().decode([String: WidgetConfig].self, from: data) else { return nil }
@@ -376,6 +393,8 @@ final class SettingsStore {
         keepAwakeTriggers = []
         keepAwakeNetworkThreshold = AwakeTrigger.defaultNetworkThreshold
         keepAwakeDuration = 3_600
+        displayEnabled = true
+        displayMenuBar = false
         applyAppearance()
     }
 }

@@ -372,7 +372,7 @@ Sonuç: `SystemKit/KeepAwake/` — `KeepAwakeGuard` (pil/termal/SMC için 3 `Thr
 - **Bulgu:** Claude Code'un `proc_name`'i sürüm dizini adıdır; sürüm gibi görünen adlarda `proc_pidpath` ile `<araç>/versions/` kalıbına bakılır.
 - Gerçek koruma bildirimi ve pilde %15 eşiği Ozan'da (elle).
 
-### Faz 10 — Ekran modülü (BetterDisplay'den) · ~4 gün
+### Faz 10 — Ekran modülü (BetterDisplay'den) · ~4 gün · ✅ 2026-10-11
 Kaynak: `Araştırma/betterdisplay.md`. Referans yalnız MIT projeler (m1ddc, MonitorControl); BetterDisplay kapalı kaynak, kodu alınmaz.
 - **E1 izleme (olay tabanlı, tick yok):** ekran listesi, çözünürlük / ölçek / yenileme hızı, HDR/EDR durumu, iç ekran parlaklığı (`DisplayServices`, özel), bağlantı/kopma günlüğü (`CGDisplayRegisterReconfigurationCallback`)
 - **E2 DDC/CI:** harici monitör parlaklık, kontrast, ses, giriş seçimi; Apple Silicon `IOAVService` (özel, root gerekmez — bu Mac'te Samsung LS27FG53x VCP 0x10 okuması doğrulandı). DDC yazmaları birleştirilir (kaydırıcı sürüklerken ≤ 10/sn), okuma yalnız popover açıkken
@@ -383,6 +383,12 @@ Kaynak: `Araştırma/betterdisplay.md`. Referans yalnız MIT projeler (m1ddc, Mo
 
 Kapı: DDC desteklemeyen ekranda temiz geri düşme; mod değişikliği onaysız 15 sn'de geri dönüyor; Ekran modülü açıkken boşta ek maliyet ≈ 0 (olay tabanlı).
 **Kontrol kapısı:** N-09 J-06 N-03 + Özellik Bitti Tanımı
+
+Sonuç: `SystemKit/Display/` — `DisplayController` (zamanlayıcısız: yalnız yeniden yapılandırma geri çağrısı, 0.3 sn'de tek yeniden yükleme), `DDCProtocol` (çerçeve + yanıt sağlama toplamı), `GammaCurve`, protokollü arka uçlar, `LiveDisplay` (CG / `IOAVService`); özel API `CPrivate/Display.c` (iç ekran parlaklığı yalnız okunur). `SamplerActor`/`Metric` kullanılmadı: izleme olay tabanlı, DDC yalnız sayfa/popover görünür olunca bir kez ve ayrı kuyrukta okunur. Yazmalar kontrol başına ≤ 10/sn, son değer kazanır. Mod değişimi önce yalnız uygulama kapsamında denenir, 15 sn'de onaylanmazsa geri alınır; süreç ölürse sistem geri alır. Karartma/gece tonu gamma tablosu, çıkışta `CGDisplayRestoreColorSyncSettings`. Menü çubuğu öğesi varsayılan kapalı. Boşta A/B (`display.enabled` NO/YES) fark gürültü içinde; sayaçlar ölçüm sırasında denetleyicide hiç iş göstermiyor. `WINDOW=display` %0.25–0.32 / 48 MB / 2.2–2.8 uyanma. 184 test.
+- **Denetim düzeltmeleri (Opus buldu):** giriş seçimi (VCP 0x60) bildirilen maksimuma kırpılıyordu (max 14, DisplayPort 15 / HDMI 17 → 14 yazılırdı); artık yalnız `DDCInput.known` değerleri, kırpmasız ve onay adımıyla yazılır. Yanıt sağlama toplamı doğrulanır (`0x50 ^ bayt 0…9 == bayt 10`, LS27FG53x'te salt-okuma ile sınandı).
+- **Bulgu:** `CGDisplayCreateUUID` EDID UUID'siyle eşleşmez; kanal (üretici, model) çiftiyle ve `dispextN` önekiyle bağlanır. Aynı model iki monitör varsa ikisine de DDC verilmez.
+- **Açık:** pencere ölçümlerinde aralıklı sıçrama (bir koşuda %1.5 / 141 MB / 13 uyanma; `WINDOW=cpu`'da da %2.8 / 17.7) — modüle özgü değil, bilinen pencere grafik belleği konusuyla birlikte ayrı görev. Kestirmeler / URL şeması yapılmadı.
+- Gerçek ekranda hiçbir yazma denenmedi: DDC kaydırıcıları, giriş seçimi, karartma/gece tonu, mod değişimi + 15 sn geri alma, deneme sırasında `kill -9` Ozan'da (elle).
 
 ### Faz 11 — Sunucular modülü + ağ araçları (mXterm'den) · ~4 gün
 Kaynak: `Araştırma/mxterm.md`.

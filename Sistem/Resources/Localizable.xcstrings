@@ -6801,6 +6801,526 @@
           }
         }
       }
+    },
+    "Ana ekran" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Main display"
+          }
+        }
+      }
+    },
+    "Bağlantı günlüğü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection log"
+          }
+        }
+      }
+    },
+    "Bağlı ekran bulunamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No connected display found."
+          }
+        }
+      }
+    },
+    "Bağlı ekranlar, çözünürlük ve yenileme hızı, harici monitörde parlaklık ve ses, yazılımsal karartma ve gece tonu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connected displays, resolution and refresh rate, brightness and volume on external monitors, software dimming and night tone."
+          }
+        }
+      }
+    },
+    "Bu ekran için donanım denetimi (DDC) bulunamadı. Sidecar, DisplayLink, bazı yuva ve HDMI bağlantıları DDC iletmez. Yazılımsal karartma yine çalışır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hardware control (DDC) was found for this display. Sidecar, DisplayLink and some docks and HDMI connections do not pass DDC. Software dimming still works."
+          }
+        }
+      }
+    },
+    "Bu modu koruyalım mı?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep this mode?"
+          }
+        }
+      }
+    },
+    "Dahili ekran" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Built-in display"
+          }
+        }
+      }
+    },
+    "Harici ekran" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "External display"
+          }
+        }
+      }
+    },
+    "Dahili ekranın parlaklığı sistem tarafından yönetilir; buradan yalnızca okunur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The built-in display's brightness is managed by the system; it is read-only here."
+          }
+        }
+      }
+    },
+    "Desteklemiyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not supported"
+          }
+        }
+      }
+    },
+    "Destekliyor, şu an kapalı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supported, currently off"
+          }
+        }
+      }
+    },
+    "Donanım" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hardware"
+          }
+        }
+      }
+    },
+    "Düzen değişti" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Layout changed"
+          }
+        }
+      }
+    },
+    "Ekran bilgisi sistem değişiklik bildirdiğinde güncellenir; zamanlayıcı yoktur. Donanım değerleri (DDC) yalnızca bu sayfa ya da açılır pencere görünürken bir kez okunur. Günlük yalnızca bellekte tutulur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display information updates when the system reports a change; there is no timer. Hardware values (DDC) are read once, only while this page or the popover is visible. The log is kept in memory only."
+          }
+        }
+      }
+    },
+    "Ekran modülü kapalı. Modül sekmesinden açabilirsiniz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Display module is off. You can turn it on in the Module tab."
+          }
+        }
+      }
+    },
+    "Ekran modülünü etkinleştir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable the Display module"
+          }
+        }
+      }
+    },
+    "Eski moda dönüldü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverted to the old mode"
+          }
+        }
+      }
+    },
+    "Etkin, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active, %@"
+          }
+        }
+      }
+    },
+    "Gece tonu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Night tone"
+          }
+        }
+      }
+    },
+    "Geri al" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undo"
+          }
+        }
+      }
+    },
+    "Geri alma" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverting"
+          }
+        }
+      }
+    },
+    "Giriş" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Input"
+          }
+        }
+      }
+    },
+    "Henüz bir değişiklik olmadı. Ekran takıldığında ya da çıkarıldığında burada görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing has changed yet. Plugging in or removing a display shows up here."
+          }
+        }
+      }
+    },
+    "Karartma" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dimming"
+          }
+        }
+      }
+    },
+    "Kontrast" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrast"
+          }
+        }
+      }
+    },
+    "Koru" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep"
+          }
+        }
+      }
+    },
+    "Mod değişti" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode changed"
+          }
+        }
+      }
+    },
+    "Monitör DDC isteklerine yanıt vermiyor. DDC/CI monitörün menüsünde kapalı olabilir. Yazılımsal karartma yine çalışır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The monitor does not answer DDC requests. DDC/CI may be turned off in the monitor's menu. Software dimming still works."
+          }
+        }
+      }
+    },
+    "Monitör son değişikliği kabul etmedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The monitor did not accept the last change."
+          }
+        }
+      }
+    },
+    "Parlaklık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brightness"
+          }
+        }
+      }
+    },
+    "Parlaklık tuşlarıyla harici monitörü yönetmek bu sürümde yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controlling the external monitor with the brightness keys is not in this version."
+          }
+        }
+      }
+    },
+    "Ses" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume"
+          }
+        }
+      }
+    },
+    "Sistem bu modu kabul etmedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The system did not accept this mode."
+          }
+        }
+      }
+    },
+    "Uygula" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply"
+          }
+        }
+      }
+    },
+    "Yansıtılmış" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mirrored"
+          }
+        }
+      }
+    },
+    "Yazılımsal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Software"
+          }
+        }
+      }
+    },
+    "Yeni mod önce deneme olarak uygulanır; 15 saniye içinde onaylamazsanız eski moda dönülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The new mode is applied as a trial first; if you do not confirm within 15 seconds the old mode comes back."
+          }
+        }
+      }
+    },
+    "Yenileme hızı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh rate"
+          }
+        }
+      }
+    },
+    "%@ uygulandı. %lld saniye içinde onaylanmazsa eski moda dönülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ applied. It reverts to the old mode if not confirmed within %lld seconds."
+          }
+        }
+      }
+    },
+    "Çözünürlük" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resolution"
+          }
+        }
+      }
+    },
+    "Çözünürlük ve yenileme hızı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resolution and refresh rate"
+          }
+        }
+      }
+    },
+    "Çözünürlük ve yenileme hızı değişikliği deneme olarak uygulanır ve yalnızca bu uygulama için geçerlidir; 15 saniye içinde onaylanmazsa ya da Sistem kapanırsa eski mod geri gelir. Karartma ve gece tonu da uygulama kapanınca (çökse bile) sistem tarafından bırakılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A resolution or refresh rate change is applied as a trial and only for this app; if it is not confirmed within 15 seconds, or Sistem quits, the old mode returns. Dimming and night tone are also released by the system when the app ends (even if it crashes)."
+          }
+        }
+      }
+    },
+    "Çıkarıldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Removed"
+          }
+        }
+      }
+    },
+    "Piksel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pixels"
+          }
+        }
+      }
+    },
+    "Ölçek" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scale"
+          }
+        }
+      }
+    },
+    "Yön" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rotation"
+          }
+        }
+      }
+    },
+    "HDR" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HDR"
+          }
+        }
+      }
+    },
+    "Kapalıyken sistemden hiçbir bildirim alınmaz; karartma ve gece tonu da bırakılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While off, no notification is taken from the system; dimming and night tone are released too."
+          }
+        }
+      }
+    },
+    "Ekran simgesi ekler; tıklayınca ekran başına kaydırıcılar açılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds a display icon; clicking it opens the sliders for each display."
+          }
+        }
+      }
+    },
+    "%@ girişine geçilsin mi?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch to the %@ input?"
+          }
+        }
+      }
+    },
+    "Bu girişte sinyal yoksa görüntü kaybolur; geri dönmek için monitörün kendi düğmelerini kullanın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If this input has no signal the picture goes away; use the monitor's own buttons to switch back."
+          }
+        }
+      }
+    },
+    "Geç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

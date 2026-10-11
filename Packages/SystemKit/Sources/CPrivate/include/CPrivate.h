@@ -93,4 +93,37 @@ void *_Nullable SistemNVMeOpen(void);
 int SistemNVMeRead(void *_Nonnull handle, SistemNVMeHealth *_Nonnull out);
 void SistemNVMeClose(void *_Nullable handle);
 
+
+// MARK: - Display: DDC over IOAVService, internal brightness (private, Apple Silicon)
+
+/// One external display port's DDC channel: the registry ID of its `DCPAVServiceProxy` and the
+/// `dispextN` endpoint it hangs under (the key that ties it to a display).
+typedef struct {
+    uint64_t registryID;
+    char port[16];
+} SistemAVProxy;
+
+/// What a connected external display told the system about itself: the `dispextN` port, and
+/// the manufacturer / product numbers from its EDID UUID (the same numbers CoreGraphics reports
+/// as vendor and model). No serial number is read.
+typedef struct {
+    char port[16];
+    uint16_t vendor, product;
+} SistemAVHint;
+
+/// Both listings return the number of entries written (at most `capacity`). Read-only.
+int SistemAVProxies(SistemAVProxy *_Nonnull out, int capacity);
+int SistemAVHints(SistemAVHint *_Nonnull out, int capacity);
+
+/// Opens the IOAVService for a proxy registry ID. NULL when it is gone or refuses. Close with `SistemAVClose`.
+void *_Nullable SistemAVOpen(uint64_t registryID);
+void SistemAVClose(void *_Nullable handle);
+/// 0 on success. Plain I2C transfers; the caller frames DDC/CI.
+int SistemAVRead(void *_Nonnull handle, uint32_t chip, uint32_t offset, uint8_t *_Nonnull buffer, uint32_t length);
+int SistemAVWrite(void *_Nonnull handle, uint32_t chip, uint32_t offset, const uint8_t *_Nonnull buffer, uint32_t length);
+
+/// Brightness of the built-in display (0...1) through DisplayServices. Returns 0 on success,
+/// non-zero for displays that have no such control. Read-only: nothing here ever sets it.
+int SistemInternalBrightness(uint32_t displayID, float *_Nonnull out);
+
 #endif
