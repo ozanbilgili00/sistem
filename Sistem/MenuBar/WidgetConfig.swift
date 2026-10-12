@@ -1,36 +1,29 @@
 import Foundation
+import SystemKit
 
-/// The ways a module can draw itself in the menu bar. A module can combine them;
-/// they appear left to right in `allCases` order.
-enum WidgetKind: String, CaseIterable, Codable, Identifiable {
-    case text, chart, ring
-    var id: Self { self }
-
-    var title: LocalizedStringResource {
+/// Names for the Settings page. Which kinds a module supports lives in SystemKit (``WidgetKind/supported(by:)``).
+extension WidgetKind {
+    func title(for module: ModuleID) -> LocalizedStringResource {
         switch self {
         case .text: "Değer"
         case .chart: "Mini grafik"
         case .ring: "Halka"
+        case .bars: module == .cpu ? "Çekirdek çubukları" : "Çubuklar"
+        case .sparkline: "Çizgi grafik"
+        case .battery: "Pil simgesi"
+        case .arrows: module == .disk ? "Okuma ve yazma okları" : "Ağ okları"
         }
     }
 
-    var detail: LocalizedStringResource {
+    func detail(for module: ModuleID) -> LocalizedStringResource {
         switch self {
         case .text: "Yüzde ya da derece olarak sayı."
-        case .chart: "Son bir dakikanın çizgisi."
+        case .chart: "Son bir dakikanın dolu grafiği."
         case .ring: "Doluluk halkası."
+        case .bars: module == .cpu ? "Her çekirdek için bir çubuk." : "Uygulama, bağlı ve sıkıştırılmış bellek için üç çubuk."
+        case .sparkline: "Son bir dakikanın ince çizgisi."
+        case .battery: "Dolum düzeyi ve şarj göstergesi."
+        case .arrows: module == .disk ? "Okuma ve yazma hızı, iki satır." : "İndirme ve yükleme hızı, iki satır."
         }
     }
-}
-
-struct WidgetConfig: Codable, Equatable {
-    var kinds: Set<WidgetKind>
-    /// Small module name above the value ("CPU").
-    var showLabel: Bool
-
-    static let `default` = WidgetConfig(kinds: [.text], showLabel: true)
-    /// Battery and clock: the value alone, since the glyph or the digits say what it is.
-    static let plain = WidgetConfig(kinds: [.text], showLabel: false)
-
-    var orderedKinds: [WidgetKind] { WidgetKind.allCases.filter(kinds.contains) }
 }

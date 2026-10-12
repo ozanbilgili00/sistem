@@ -40,7 +40,7 @@ private struct HardwareSummary: View {
                     }
                     Grid(alignment: .leading, horizontalSpacing: 28, verticalSpacing: 6) {
                         GridRow {
-                            fact("Çekirdekler", info.clusters.map { "\($0.count) \($0.name)" }.joined(separator: " · "))
+                            fact("Çekirdekler", info.clusters.map { "\($0.count) \($0.displayName)" }.joined(separator: " · "))
                             fact("Bellek", info.memoryBytes.formatted(.byteCount(style: .memory)))
                         }
                         GridRow {

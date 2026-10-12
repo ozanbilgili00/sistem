@@ -27,6 +27,7 @@ final class SettingsStore {
         static let temperatureUnit = "temperatureUnit"
         static let menuBarModules = "menuBarModules"
         static let widgets = "menuBarWidgets"
+        static let menuBarOrder = MenuBarOrder.defaultsKey
         static let cpuShowCores = "cpu.showCores"
         static let cpuShowLoadAverage = "cpu.showLoadAverage"
         static let cpuShowProcesses = "cpu.showProcesses"
@@ -56,6 +57,10 @@ final class SettingsStore {
     static let intervalChoices: [Double] = [1, 2, 3, 5]
 
     @ObservationIgnored private let defaults: UserDefaults
+    #if DEBUG
+    /// For the Debug self-check, which reopens a store on the same defaults.
+    var defaultsForCheck: UserDefaults { defaults }
+    #endif
 
     var appearance: Appearance {
         didSet { defaults.set(appearance.rawValue, forKey: Key.appearance); applyAppearance() }
@@ -150,8 +155,13 @@ final class SettingsStore {
         didSet { defaults.set(menuBarModules.map(\.rawValue), forKey: Key.menuBarModules) }
     }
 
+    /// Where each section sits in the menu bar strip, left to right: every section, shown or not (see ``MenuBarOrder``).
+    var menuBarOrder: [ModuleID] {
+        didSet { MenuBarOrder.save(menuBarOrder, to: defaults) }
+    }
+
     /// Which widgets each module draws in the menu bar. Modules not in the map use
-    /// ``WidgetConfig/default``.
+    /// ``WidgetConfig/initial(for:)``.
     var widgets: [ModuleID: WidgetConfig] {
         didSet {
             let encoded = Dictionary(uniqueKeysWithValues: widgets.map { ($0.key.rawValue, $0.value) })
@@ -224,10 +234,29 @@ final class SettingsStore {
     var sensorsDisplay: SensorsDisplay { SensorsDisplay(unit: temperatureUnit, stacked: sensorsStack) }
 
     func widget(for module: ModuleID) -> WidgetConfig {
-        widgets[module] ?? (module == .battery || module == .clock ? .plain : .default)
+        widgets[module]?.sanitized(for: module) ?? .initial(for: module)
     }
 
-    func setWidget(_ config: WidgetConfig, for module: ModuleID) { widgets[module] = config }
+    /// Stores only what the module supports (see ``WidgetKind/supported(by:)``).
+    func setWidget(_ config: WidgetConfig, for module: ModuleID) { widgets[module] = config.sanitized(for: module) }
+
+    /// The sections that are on, in strip order: what the Settings list shows and the strip draws.
+    static func sections(modules: [ModuleID], order: [ModuleID], keepAwake: Bool, display: Bool, servers: Bool) -> [ModuleID] {
+        var visible = ModuleID.menuBarCandidates.filter { modules.contains($0) && $0.hasMenuBarItem }
+        if keepAwake { visible.append(.keepAwake) }
+        if display { visible.append(.display) }
+        if servers { visible.append(.servers) }
+        return MenuBarOrder.arranged(visible, by: order)
+    }
+
+    var shownSections: [ModuleID] {
+        Self.sections(modules: menuBarModules, order: menuBarOrder, keepAwake: keepAwakeEnabled,
+                      display: displayEnabled && displayMenuBar, servers: serversEnabled && serversMenuBar)
+    }
+
+    func moveSection(_ section: ModuleID, up: Bool) {
+        menuBarOrder = MenuBarOrder.moved(section, up: up, in: menuBarOrder, visible: shownSections)
+    }
 
     func isInMenuBar(_ module: ModuleID) -> Bool { menuBarModules.contains(module) }
 
@@ -261,11 +290,10 @@ final class SettingsStore {
         serversList = ServerConfig.encode(ServerConfig.decode(defaults.string(forKey: Key.serversList)).servers)
         menuBarModules = (defaults.stringArray(forKey: Key.menuBarModules)?.compactMap(ModuleID.init))
             ?? ModuleID.defaultMenuBar
-        let stored = defaults.data(forKey: Key.widgets)
-            .flatMap { try? JSONDecoder().decode([String: WidgetConfig].self, from: $0) } ?? [:]
-        widgets = Dictionary(uniqueKeysWithValues: stored.compactMap { key, value in
-            ModuleID(rawValue: key).map { ($0, value) }
-        })
+        menuBarOrder = MenuBarOrder.load(from: defaults)
+        // Stored as JSON bytes; a command line argument (`-menuBarWidgets '{…}'`, used by measurements) arrives as text.
+        let storedWidgets = defaults.data(forKey: Key.widgets) ?? defaults.string(forKey: Key.widgets)?.data(using: .utf8)
+        widgets = storedWidgets.flatMap(WidgetConfig.decodeMap) ?? [:]
         cpuShowCores = defaults.object(forKey: Key.cpuShowCores) as? Bool ?? true
         cpuShowLoadAverage = defaults.object(forKey: Key.cpuShowLoadAverage) as? Bool ?? true
         cpuShowProcesses = defaults.object(forKey: Key.cpuShowProcesses) as? Bool ?? true
@@ -312,6 +340,7 @@ final class SettingsStore {
             Key.powerProfile: powerProfile.rawValue,
             Key.temperatureUnit: temperatureUnit.rawValue,
             Key.menuBarModules: menuBarModules.map(\.rawValue),
+            Key.menuBarOrder: menuBarOrder.map(\.rawValue),
             Key.cpuShowCores: cpuShowCores,
             Key.cpuShowLoadAverage: cpuShowLoadAverage,
             Key.cpuShowProcesses: cpuShowProcesses,
@@ -375,6 +404,8 @@ final class SettingsStore {
         take(Key.menuBarModules, { strings($0).map { $0.compactMap(ModuleID.init) } }) { chosen in
             menuBarModules = ModuleID.allCases.filter(Set(chosen).contains)
         }
+        // Unknown and repeated names are dropped, missing sections are added (MenuBarOrder.sanitized).
+        take(Key.menuBarOrder, { strings($0).map(MenuBarOrder.sanitized) }) { menuBarOrder = $0 }
         take(Key.cpuShowCores, bool) { cpuShowCores = $0 }
         take(Key.cpuShowLoadAverage, bool) { cpuShowLoadAverage = $0 }
         take(Key.cpuShowProcesses, bool) { cpuShowProcesses = $0 }
@@ -403,9 +434,8 @@ final class SettingsStore {
             return ServerConfig.encode(decoded.servers)
         }) { serversList = $0 }
         take(Key.widgets, { raw -> [ModuleID: WidgetConfig]? in
-            guard JSONSerialization.isValidJSONObject(raw), let data = try? JSONSerialization.data(withJSONObject: raw),
-                  let decoded = try? JSONDecoder().decode([String: WidgetConfig].self, from: data) else { return nil }
-            return Dictionary(uniqueKeysWithValues: decoded.compactMap { key, value in ModuleID(rawValue: key).map { ($0, value) } })
+            guard JSONSerialization.isValidJSONObject(raw), let data = try? JSONSerialization.data(withJSONObject: raw) else { return nil }
+            return WidgetConfig.decodeMap(data)
         }) { widgets = $0 }
         take(Key.alertRules, { raw -> [AlertRule]? in
             guard JSONSerialization.isValidJSONObject(raw), let data = try? JSONSerialization.data(withJSONObject: raw) else { return nil }
@@ -424,6 +454,7 @@ final class SettingsStore {
         powerProfile = .automatic
         temperatureUnit = .celsius
         menuBarModules = ModuleID.defaultMenuBar
+        menuBarOrder = MenuBarOrder.allSections
         widgets = [:]
         cpuShowCores = true
         cpuShowLoadAverage = true

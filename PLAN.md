@@ -408,13 +408,17 @@ Sonuç: `SystemKit/Servers/` — `ServerInput` (dar alfabe, uzunluk sınırı, `
 - **Birleşik menü çubuğu (Ozan'ın isteği, aynı commit):** ayrı `NSStatusItem`'lar araya başka uygulamaların simgeleri girdiği için dağınık duruyordu; tüm parçalar artık tek öğede (`Sistem.menuBar`) yan yana bölümler (`StripSections`, `StripView`, saf `StripLayout.index(at:)`). Bölüm başına yeniden çizim ve histerezis korunur. Boşta A/B 4 tur: önce %0.199 / 1.88 uyanma / 20.0 MB, sonra %0.211 / 1.61 / 16.9 MB.
 - **Açık / Ozan'da (elle):** gerçek menü çubuğunda şerit (tıklama konumu, ⌘-sürükle, Uyanık Tut sağ tık menüsünün yeri, VoiceOver); Terminal'de Hızlı bağlan; Yerel Ağ izin istemi; gerçek bildirim; çökme sonrası tünel temizliği uçtan uca; Docker yalnız sahte çıktıyla sınandı; modül kapalıyken popover "Henüz sunucu eklenmedi" diyor (ayrı metin gerek).
 
-### Faz 12 — Widget seti ve kombine modüller · ~2 gün
+### Faz 12 — Widget seti ve kombine modüller · ~2 gün · ✅ 2026-10-12
 - Bar grafik, batarya, ağ okları, hız grafiği widget'ları; hizalama, sabit genişlik, eşit aralıklı font
 - Kombine modüller (tek NSStatusItem'da birden fazla modül — daha az status item = daha az çizim; Faz 3 bulgusu: her çizim ≈ 6 ms + 4 uyanma / 3 ekran)
 - Öğe konumunun korunması
 
 Kapı: yeniden başlatmada sıra korunuyor; 6 widget açıkken boşta < %0.5.
 **Kontrol kapısı:** N-05 N-06 + Özellik Bitti Tanımı
+
+Sonuç: kombine öğe ve konum korunması Faz 11'de yapılmıştı (tek `NSStatusItem`); bu faz üstüne kurdu. `SystemKit/Model/WidgetConfig.swift`: 7 widget türü ve hangi modülün hangisini desteklediğini söyleyen tek matris (`supported(by:)`); desteklenmeyen seçim ayıklanır. `MenuBarOrder.swift`: bölüm sırası ayrı `menuBarOrder` anahtarında, bilinmeyen/yinelenen kimlik atılır, yeni bölüm varsayılan komşusunun yanına girer; Ayarlar'da yukarı/aşağı (`StripOrderCard`), dışa/içe aktar/sıfırla dahil. `LevelHysteresis.swift`: bar ve mini grafik yalnız görünür değişiklikte çizilir. `WidgetView`: bar, mini geçmiş grafiği, batarya, ağ okları (↓ ↑); genişlik en geniş olası metinden, değer sağa hizalı. Debug `--selfcheck` (7193 denetim: genişlik taraması + `SettingsStore` kaydet/yeniden yükle/içe aktar turu). Boşta A/B (Release, 60 sn × 3 dönüşümlü): 3 widget %0.05–0.16 / 14.5 MB / 0.3–1.3 uyanma; 6 widget %0.21–0.27 / 15.8 MB / 1.9–2.2 uyanma (kapı < %0.5). 305 test, katalog 669.
+- Cila: gösterge panelinde çekirdek sınıfı adları katalogdan (Süper / Performans); Sunucular kapalıyken popover kendi metnini gösterir.
+- **Açık:** A/B'de widget türleri varsayılandı (6 modül açık); bar/mini grafik türleriyle boşta ölçüm yapılmadı. CPU widget sekmesinde başlık açıklaması kırpılıyor; disk yükleme oku ağ okundan farklı glif; sıra kartında uçtaki düğmelerin devre dışı hali belirsiz (Faz 14). Gerçek menü çubuğunda görünüm Ozan'da (elle).
 
 ### Faz 13 — Ayrıcalıklı yardımcı (Developer hesabından sonra) · ~4 gün
 Tek imzalı `SMAppService.daemon` + XPC, en az yetki; üç özellik paylaşır:

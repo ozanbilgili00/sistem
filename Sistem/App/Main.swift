@@ -12,6 +12,9 @@ enum SistemMain {
             SnapshotRenderer.run(into: URL(filePath: args[i + 1]))
             return
         }
+        if args.contains("--selfcheck") {
+            exit(MainActor.assumeIsolated { SelfCheck.run() })
+        }
         #endif
         let delegate = AppDelegate()
         app.delegate = delegate

@@ -13,6 +13,7 @@ enum SnapshotRenderer {
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let defaults = UserDefaults(suiteName: "SistemSnapshot")!
         defaults.removePersistentDomain(forName: "SistemSnapshot")
+        UserDefaults(suiteName: "SistemSnapshot-six")?.removePersistentDomain(forName: "SistemSnapshot-six")
         let settings = SettingsStore(defaults: defaults)
         let feed = LiveFeed(store: syntheticStore(), engine: nil)
         feed.isActive = true
@@ -86,6 +87,13 @@ enum SnapshotRenderer {
                 save(GPUPage(settings: settings, tab: tab).padding(24).frame(width: 760, alignment: .top)
                         .background(Palette.background), label, CGSize(width: 760, height: 520))
             }
+            save(RAMPage(settings: settings, tab: .widgets).padding(24).frame(width: 760, alignment: .top)
+                    .background(Palette.background), "ram-widgets", CGSize(width: 760, height: 620))
+            let sixSettings = SettingsStore(defaults: UserDefaults(suiteName: "SistemSnapshot-six")!)
+            sixSettings.menuBarModules = sixWidgets.map(\.module)
+            sixSettings.menuBarOrder = MenuBarOrder.sanitized(["network", "battery", "cpu"])
+            save(StripOrderCard(settings: sixSettings).padding(24).frame(width: 760, alignment: .top)
+                    .background(Palette.background), "settings-order", CGSize(width: 760, height: 520))
             save(DiskPopover(settings: settings, openWindow: {}), "popover-disk", CGSize(width: 300, height: 640))
             save(NetworkPopover(settings: settings, openWindow: {}), "popover-network", CGSize(width: 300, height: 640))
             for (label, tab) in [("disk-module", ModuleTab.module), ("disk-widgets", .widgets)] {
@@ -454,6 +462,16 @@ enum SnapshotRenderer {
     }
 
     /// Sections joined into the single menu bar strip, drawn on a menu-bar-coloured background with margins.
+    /// The six-widget set of the idle measurement, as arguments: `-menuBarModules` and `-menuBarWidgets` (see the report).
+    static let sixWidgets: [(module: ModuleID, config: WidgetConfig)] = [
+        (.cpu, WidgetConfig(kinds: [.text, .bars], showLabel: true)),
+        (.ram, WidgetConfig(kinds: [.text, .sparkline], showLabel: true)),
+        (.gpu, WidgetConfig(kinds: [.text, .ring], showLabel: true)),
+        (.network, WidgetConfig(kinds: [.arrows, .sparkline], showLabel: false)),
+        (.sensors, WidgetConfig(kinds: [.text, .chart], showLabel: true)),
+        (.battery, WidgetConfig(kinds: [.battery, .text], showLabel: false)),
+    ]
+
     private static func renderStrip(_ sections: [any StripSection], appearance: NSAppearance, to url: URL) {
         let height = NSStatusBar.system.thickness
         let margin: CGFloat = 8
@@ -483,13 +501,11 @@ enum SnapshotRenderer {
 
     /// One module's widget configurations side by side in a strip.
     private static func renderWidgets(_ store: MetricStore, module: ModuleID, sensors: SensorsDisplay = SensorsDisplay(), clock: ClockDisplay? = nil, appearance: NSAppearance, to url: URL) {
-        let configs: [WidgetConfig] = [
-            .default,
-            WidgetConfig(kinds: [.text], showLabel: false),
-            WidgetConfig(kinds: [.chart], showLabel: false),
-            WidgetConfig(kinds: [.ring], showLabel: false),
-            WidgetConfig(kinds: [.text, .chart, .ring], showLabel: true),
-        ]
+        // The module's own default, each kind it supports alone, and all of them together.
+        let supported = WidgetKind.supported(by: module)
+        var configs: [WidgetConfig] = [.initial(for: module)]
+        configs += supported.map { WidgetConfig(kinds: [$0], showLabel: false) }
+        if module != .clock { configs.append(WidgetConfig(kinds: Set(supported), showLabel: true)) }
         renderStrip(configs.map { widget(module, store, config: $0, sensors: sensors, clock: clock ?? ClockDisplay(pattern: "EEE HH:mm")) },
                     appearance: appearance, to: url)
     }
@@ -500,13 +516,23 @@ enum SnapshotRenderer {
             IconSection(kind: .keepAwake, symbol: IconSection.cupSymbol(holding: holding, blocked: blocked), title: "Uyanık Tut")
         }
         func icon(_ kind: StripKind, _ symbol: String) -> any StripSection { IconSection(kind: kind, symbol: symbol, title: symbol) }
-        let plain = WidgetConfig.plain
         renderStrip([widget(.cpu, store), widget(.ram, store), widget(.sensors, store)], appearance: appearance,
                     to: directory.appending(path: "menubar-strip-default-\(theme).png"))
-        var everything: [any StripSection] = ModuleID.menuBarCandidates.map { widget($0, store, config: $0 == .battery || $0 == .clock ? plain : .default) }
+        var everything: [any StripSection] = ModuleID.menuBarCandidates.map { widget($0, store, config: .initial(for: $0)) }
         everything += [cup(holding: true, blocked: false), icon(.display, "display"), icon(.servers, "server.rack")]
         renderStrip(everything, appearance: appearance, to: directory.appending(path: "menubar-strip-all-\(theme).png"))
         renderStrip([widget(.cpu, store)], appearance: appearance, to: directory.appending(path: "menubar-strip-single-\(theme).png"))
+        // Six widgets, each in a different new kind: the strip the idle measurement runs with.
+        renderStrip(sixWidgets.map { widget($0.module, store, config: $0.config) }, appearance: appearance,
+                    to: directory.appending(path: "menubar-strip-six-\(theme).png"))
+        // One section per kind a module can draw, on a single strip.
+        let kindSections: [any StripSection] = ModuleID.menuBarCandidates.flatMap { module in
+            WidgetKind.supported(by: module).map { widget(module, store, config: WidgetConfig(kinds: [$0], showLabel: false)) }
+        }
+        renderStrip(kindSections, appearance: appearance, to: directory.appending(path: "menubar-strip-kinds-\(theme).png"))
+        // The same sections in the user's order: network first, the cup last.
+        renderStrip([widget(.network, store, config: .initial(for: .network)), widget(.cpu, store), widget(.ram, store), cup(holding: true, blocked: false)],
+                    appearance: appearance, to: directory.appending(path: "menubar-strip-reordered-\(theme).png"))
         renderStrip([widget(.cpu, store), widget(.ram, store), cup(holding: false, blocked: false)], appearance: appearance,
                     to: directory.appending(path: "menubar-strip-cup-off-\(theme).png"))
         renderStrip([widget(.cpu, store), widget(.ram, store), cup(holding: true, blocked: false)], appearance: appearance,

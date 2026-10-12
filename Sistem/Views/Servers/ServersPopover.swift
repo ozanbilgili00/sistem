@@ -13,7 +13,10 @@ struct ServersPopover: View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    if state.servers.isEmpty {
+                    if !state.enabled {
+                        // Off is not the same as empty: nothing is read, and adding a server alone would not change that.
+                        Text("Sunucular modülü kapalı. Modül sekmesinden açabilirsiniz.").font(.sistemBody).foregroundStyle(Palette.inkSecondary)
+                    } else if state.servers.isEmpty {
                         Text("Henüz sunucu eklenmedi.").font(.sistemBody).foregroundStyle(Palette.inkSecondary)
                     }
                     ForEach(state.servers) { runtime in ServerCard(runtime: runtime, model: model, compact: true) }

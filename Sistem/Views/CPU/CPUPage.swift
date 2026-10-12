@@ -47,7 +47,7 @@ private struct CPUOverview: View {
                         HStack {
                             Text("Çekirdekler").font(.sistemBody).foregroundStyle(Palette.inkSecondary)
                             Spacer()
-                            Text(verbatim: hardware.clusters.map { "\($0.count) \($0.name)" }.joined(separator: " · "))
+                            Text(verbatim: hardware.clusters.map { "\($0.count) \($0.displayName)" }.joined(separator: " · "))
                                 .font(.sistemValue).foregroundStyle(Palette.ink)
                         }
                     }

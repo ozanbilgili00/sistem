@@ -8,15 +8,8 @@ struct WidgetSettings: View {
     let module: ModuleID
     @Bindable var settings: SettingsStore
 
-    /// A speed has no fraction to fill a ring with (the disk uses its capacity); the battery
-    /// changes on system events, so there is no minute of history to chart.
-    private var kinds: [WidgetKind] {
-        switch module {
-        case .network: WidgetKind.allCases.filter { $0 != .ring }
-        case .battery: WidgetKind.allCases.filter { $0 != .chart }
-        default: WidgetKind.allCases
-        }
-    }
+    /// Exactly what the module supports (``WidgetKind/supported(by:)``): an unsupported combination cannot be chosen.
+    private var kinds: [WidgetKind] { WidgetKind.supported(by: module) }
 
     var body: some View {
         let config = settings.widget(for: module)
@@ -34,19 +27,21 @@ struct WidgetSettings: View {
                 VStack(spacing: 0) {
                     ForEach(kinds) { kind in
                         if kind != kinds.first { RowDivider() }
-                        SettingRow(Text(kind.title), detail: Text(kind.detail)) {
-                            Toggle(String(localized: kind.title), isOn: binding(kind, config))
+                        SettingRow(Text(kind.title(for: module)), detail: Text(kind.detail(for: module))) {
+                            Toggle(String(localized: kind.title(for: module)), isOn: binding(kind, config))
                                 .labelsHidden().toggleStyle(.switch)
                                 // Keep at least one widget, or the item would be empty.
                                 .disabled(config.kinds == [kind])
                         }
                     }
-                    RowDivider()
-                    SettingRow("Etiketi göster", detail: "Değerin üstünde küçük modül adı.") {
-                        Toggle("Etiketi göster", isOn: Binding(
-                            get: { config.showLabel },
-                            set: { var new = config; new.showLabel = $0; settings.setWidget(new, for: module) }
-                        )).labelsHidden().toggleStyle(.switch)
+                    if kinds.contains(.text) {
+                        RowDivider()
+                        SettingRow("Etiketi göster", detail: "Değerin üstünde küçük modül adı.") {
+                            Toggle("Etiketi göster", isOn: Binding(
+                                get: { config.showLabel },
+                                set: { var new = config; new.showLabel = $0; settings.setWidget(new, for: module) }
+                            )).labelsHidden().toggleStyle(.switch)
+                        }
                     }
                 }
             }
@@ -97,8 +92,9 @@ private struct WidgetRepresentable: NSViewRepresentable {
     }
 
     private static func configure(_ view: WidgetView, module: ModuleID, sensors: SensorsDisplay, clock: ClockDisplay?) {
-        view.widestText = WidgetModel.widestText(for: module, sensors: sensors, clock: clock)
+        view.widestTexts = WidgetModel.widestTexts(for: module, sensors: sensors, clock: clock)
         view.reservesGlyph = module == .battery
+        view.barCount = WidgetModel.barCount(for: module)
         if module == .clock { view.widestLabel = clock?.widestLabel }
     }
 

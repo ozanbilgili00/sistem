@@ -110,3 +110,16 @@ extension ModuleID {
         }
     }
 }
+
+extension HardwareInfo.CoreCluster {
+    /// The core class the way the user's language writes it. The system reports Apple's English names ("Super",
+    /// "Performance", "Efficiency"); a name this build does not know is shown as reported.
+    var displayName: String {
+        switch name {
+        case "Super": String(localized: "cekirdek.super")
+        case "Performance": String(localized: "cekirdek.performance")
+        case "Efficiency": String(localized: "cekirdek.efficiency")
+        default: name
+        }
+    }
+}

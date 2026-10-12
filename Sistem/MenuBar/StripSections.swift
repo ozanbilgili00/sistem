@@ -128,6 +128,9 @@ final class WidgetSection: StripSection {
     private var shownGPU = DisplayHysteresis.for(.sensors)
     /// The metric this section holds demand for: the sensors widget reads more keys when stacked.
     private var demanded: Metric?
+    /// Bars and the line pass through their own hysteresis: a graph redraws when its levels visibly change, not per tick.
+    private var shownBars = LevelHysteresis()
+    private var shownSpark = LevelHysteresis()
     private var lastText = ""
     var onLayoutChange: (() -> Void)?
     var onValueChange: (() -> Void)?
@@ -143,7 +146,7 @@ final class WidgetSection: StripSection {
     var clock: ClockDisplay {
         didSet {
             guard clock != oldValue else { return }
-            widget.widestText = WidgetModel.widestText(for: module, sensors: sensors, clock: clock)
+            widget.widestTexts = WidgetModel.widestTexts(for: module, sensors: sensors, clock: clock)
             ticker?.start(pattern: clock.pattern)
             refresh()
         }
@@ -156,7 +159,7 @@ final class WidgetSection: StripSection {
         didSet {
             guard sensors != oldValue else { return }
             syncDemand()
-            widget.widestText = WidgetModel.widestText(for: module, sensors: sensors)
+            widget.widestTexts = WidgetModel.widestTexts(for: module, sensors: sensors)
             if sensors.stacked != oldValue.stacked { shown = DisplayHysteresis.for(module); shownGPU = DisplayHysteresis.for(.sensors) }
             refresh()
         }
@@ -178,8 +181,9 @@ final class WidgetSection: StripSection {
         self.source = source
         view = widget
         shown = DisplayHysteresis.for(module)
-        widget.widestText = WidgetModel.widestText(for: module, sensors: sensors, clock: clock)
+        widget.widestTexts = WidgetModel.widestTexts(for: module, sensors: sensors, clock: clock)
         widget.reservesGlyph = module == .battery
+        widget.barCount = WidgetModel.barCount(for: module)
         if module == .clock { widget.widestLabel = clock.widestLabel }
         widget.onWidthChange = { [weak self] _ in self?.onLayoutChange?() }
         syncDemand()
@@ -216,16 +220,22 @@ final class WidgetSection: StripSection {
             // Speeds: two lines, shown through the rate hysteresis. The disk's ring
             // (capacity) moves slowly enough to go straight through.
             let (a, b) = shownRates.filter(top, bottom)
-            model.label = WidgetModel.pairLine(module, top: true, rate: a)
-            model.text = WidgetModel.pairLine(module, top: false, rate: b)
+            model.topRate = a
+            model.bottomRate = b
+            model.label = Format.rate(a)
+            model.text = Format.rate(b)
         } else {
             model.value = shown.filter(model.value)
             model.text = Format.percent(model.value)
         }
-        if widget.update(model, config: config) {
-            lastText = model.text
+        if config.kinds.contains(.bars) { model.barLevels = shownBars.filter(model.barLevels) }
+        if config.kinds.contains(.sparkline) { model.sparkLevels = shownSpark.filter(model.sparkLevels) }
+        if widget.update(model, config: config) { MenuBarStats.redraws += 1 }
+        // VoiceOver hears a change when the words change, which follows what is shown, drawn or not.
+        let summary = WidgetModel.summary(module, model)
+        if summary != lastText {
+            lastText = summary
             onValueChange?()
-            MenuBarStats.redraws += 1
         }
     }
 

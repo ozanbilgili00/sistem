@@ -111,6 +111,8 @@ struct SettingsView: View {
                 .font(.sistemCaption)
                 .foregroundStyle(Palette.inkTertiary)
 
+            StripOrderCard(settings: settings)
+
             SectionLabel("Ayarları yönet")
             Card(padding: 0) {
                 VStack(spacing: 0) {
@@ -321,6 +323,42 @@ private struct RuleRow: View {
         HStack(spacing: 8) {
             title.font(.sistemCaption).foregroundStyle(Palette.inkSecondary)
             picker().labelsHidden().fixedSize()
+        }
+    }
+}
+
+/// The sections that are on in the menu bar, left to right, with buttons to move each one. The order is kept across
+/// restarts and goes into the exported file.
+struct StripOrderCard: View {
+    @Bindable var settings: SettingsStore
+
+    var body: some View {
+        let shown = settings.shownSections
+        if shown.count > 1 {
+            VStack(alignment: .leading, spacing: 8) {
+                SectionLabel("Şerit sırası")
+                Card(padding: 0) {
+                    VStack(spacing: 0) {
+                        ForEach(Array(shown.enumerated()), id: \.element) { index, section in
+                            if index > 0 { RowDivider() }
+                            SettingRow(Text(section.menuBarTitle)) {
+                                HStack(spacing: 6) {
+                                    Button { settings.moveSection(section, up: true) } label: { Image(systemName: "chevron.up") }
+                                        .disabled(index == 0)
+                                        .accessibilityLabel(Text("\(String(localized: section.menuBarTitle)): \(String(localized: "Sola taşı"))"))
+                                    Button { settings.moveSection(section, up: false) } label: { Image(systemName: "chevron.down") }
+                                        .disabled(index == shown.count - 1)
+                                        .accessibilityLabel(Text("\(String(localized: section.menuBarTitle)): \(String(localized: "Sağa taşı"))"))
+                                }
+                                .buttonStyle(QuietButtonStyle())
+                            }
+                        }
+                    }
+                }
+                Text("Yukarıdaki sıra menü çubuğunda soldan sağa dizilir.")
+                    .font(.sistemCaption)
+                    .foregroundStyle(Palette.inkTertiary)
+            }
         }
     }
 }

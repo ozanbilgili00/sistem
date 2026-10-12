@@ -47,13 +47,16 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
 
     // MARK: Sections
 
-    /// The sections that are on, in order: widgets as the Settings page lists them, then cup, display, servers.
-    static func wantedKinds(modules: [ModuleID], keepAwake: Bool, display: Bool, servers: Bool) -> [StripKind] {
-        var kinds = ModuleID.menuBarCandidates.filter { modules.contains($0) && $0.hasMenuBarItem }.map(StripKind.module)
-        if keepAwake { kinds.append(.keepAwake) }
-        if display { kinds.append(.display) }
-        if servers { kinds.append(.servers) }
-        return kinds
+    /// The sections that are on, in the user's order (``MenuBarOrder``; by default the widgets, then cup, display, servers).
+    static func wantedKinds(modules: [ModuleID], order: [ModuleID], keepAwake: Bool, display: Bool, servers: Bool) -> [StripKind] {
+        SettingsStore.sections(modules: modules, order: order, keepAwake: keepAwake, display: display, servers: servers).map { section in
+            switch section {
+            case .keepAwake: StripKind.keepAwake
+            case .display: .display
+            case .servers: .servers
+            default: .module(section)
+            }
+        }
     }
 
     /// Re-reads the menu bar settings whenever they change.
@@ -65,7 +68,7 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
             var clock: ClockDisplay
         }
         let snapshot = withObservationTracking {
-            let kinds = Self.wantedKinds(modules: settings.menuBarModules, keepAwake: settings.keepAwakeEnabled,
+            let kinds = Self.wantedKinds(modules: settings.menuBarModules, order: settings.menuBarOrder, keepAwake: settings.keepAwakeEnabled,
                                          display: settings.displayEnabled && settings.displayMenuBar,
                                          servers: settings.serversEnabled && settings.serversMenuBar)
             var widgets: [ModuleID: WidgetConfig] = [:]

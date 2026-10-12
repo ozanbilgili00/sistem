@@ -55,7 +55,7 @@ struct CPUCoreGroups: View {
                 let cores = values(for: cluster)
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
-                        Text(verbatim: cluster.name).font(.system(size: 12, weight: .semibold)).foregroundStyle(Palette.ink)
+                        Text(cluster.displayName).font(.system(size: 12, weight: .semibold)).foregroundStyle(Palette.ink)
                         Text("\(cluster.count) çekirdek").font(.sistemCaption).foregroundStyle(Palette.inkTertiary)
                         Spacer()
                         Text(verbatim: Format.percent(cores.isEmpty ? nil : cores.reduce(0, +) / Float(cores.count)))
@@ -118,7 +118,7 @@ struct CPUFrequencyRows: View {
         }()
         return VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text(verbatim: cluster.name).font(.system(size: 12, weight: .semibold)).foregroundStyle(Palette.ink)
+                Text(cluster.displayName).font(.system(size: 12, weight: .semibold)).foregroundStyle(Palette.ink)
                 Text("\(cluster.count) çekirdek").font(.sistemCaption).foregroundStyle(Palette.inkTertiary)
                 Spacer()
                 Text(verbatim: hasTable ? Format.gigahertz(sample?.averageMHz) : Format.percent(sample?.performanceLevel))

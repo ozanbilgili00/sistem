@@ -8451,6 +8451,254 @@
           }
         }
       }
+    },
+    "Çekirdek çubukları" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Core bars"
+          }
+        }
+      }
+    },
+    "Çubuklar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bars"
+          }
+        }
+      }
+    },
+    "Çizgi grafik" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Line graph"
+          }
+        }
+      }
+    },
+    "Pil simgesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Battery icon"
+          }
+        }
+      }
+    },
+    "Okuma ve yazma okları" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read and write arrows"
+          }
+        }
+      }
+    },
+    "Ağ okları" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Network arrows"
+          }
+        }
+      }
+    },
+    "Her çekirdek için bir çubuk." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One bar for each core."
+          }
+        }
+      }
+    },
+    "Uygulama, bağlı ve sıkıştırılmış bellek için üç çubuk." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three bars: app, wired and compressed memory."
+          }
+        }
+      }
+    },
+    "Son bir dakikanın dolu grafiği." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A filled graph of the last minute."
+          }
+        }
+      }
+    },
+    "Son bir dakikanın ince çizgisi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A thin line of the last minute."
+          }
+        }
+      }
+    },
+    "Dolum düzeyi ve şarj göstergesi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Charge level and a charging indicator."
+          }
+        }
+      }
+    },
+    "Okuma ve yazma hızı, iki satır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read and write speed, two lines."
+          }
+        }
+      }
+    },
+    "İndirme ve yükleme hızı, iki satır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download and upload speed, two lines."
+          }
+        }
+      }
+    },
+    "şarj oluyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "charging"
+          }
+        }
+      }
+    },
+    "prize takılı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "plugged in"
+          }
+        }
+      }
+    },
+    "Şerit sırası" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strip order"
+          }
+        }
+      }
+    },
+    "Sola taşı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move left"
+          }
+        }
+      }
+    },
+    "Sağa taşı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move right"
+          }
+        }
+      }
+    },
+    "Yukarıdaki sıra menü çubuğunda soldan sağa dizilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The order above runs left to right in the menu bar."
+          }
+        }
+      }
+    },
+    "%@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: %@"
+          }
+        }
+      }
+    },
+    "cekirdek.super" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Super"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Süper"
+          }
+        }
+      }
+    },
+    "cekirdek.performance" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Performance"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Performans"
+          }
+        }
+      }
+    },
+    "cekirdek.efficiency" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Efficiency"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verimlilik"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
