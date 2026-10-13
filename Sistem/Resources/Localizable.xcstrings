@@ -40,6 +40,26 @@
         }
       }
     },
+    "%@ girişine geçilsin mi?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch to the %@ input?"
+          }
+        }
+      }
+    },
+    "%@ iki dakikadır erişilemiyor." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ has been unreachable for two minutes."
+          }
+        }
+      }
+    },
     "%@ kaldı" : {
       "localizations" : {
         "en" : {
@@ -62,6 +82,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ reads/s · %@ writes/s"
+          }
+        }
+      }
+    },
+    "%@ uygulandı. %lld saniye içinde onaylanmazsa eski moda dönülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ applied. It reverts to the old mode if not confirmed within %lld seconds."
+          }
+        }
+      }
+    },
+    "%@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@: %@"
           }
         }
       }
@@ -146,6 +186,36 @@
         }
       }
     },
+    "%lld dk kaldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min left"
+          }
+        }
+      }
+    },
+    "%lld g %lld sa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld d %lld h"
+          }
+        }
+      }
+    },
+    "%lld MB/sn" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld MB/s"
+          }
+        }
+      }
+    },
     "%lld sa" : {
       "localizations" : {
         "en" : {
@@ -174,6 +244,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld sa %lld dk"
+          }
+        }
+      }
+    },
+    "%lld sa %lld dk kaldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld h %lld min left"
           }
         }
       }
@@ -210,6 +290,46 @@
         }
       }
     },
+    "%lld takma ad" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld aliases"
+          }
+        }
+      }
+    },
+    "+%lld daha" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld more"
+          }
+        }
+      }
+    },
+    "~/.ssh/config içindeki Host takma adları burada listelenir. Dosya yalnızca okunur; yalnızca takma adlar alınır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host aliases from ~/.ssh/config are listed here. The file is only read, and only the aliases are taken."
+          }
+        }
+      }
+    },
+    "1 dakikadan az kaldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Less than 1 minute left"
+          }
+        }
+      }
+    },
     "1 dk" : {
       "localizations" : {
         "en" : {
@@ -222,6 +342,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1 dk"
+          }
+        }
+      }
+    },
+    "1 sa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 h"
+          }
+        }
+      }
+    },
+    "1 saat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 hour"
+          }
+        }
+      }
+    },
+    "3 sa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3 h"
+          }
+        }
+      }
+    },
+    "3 saat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3 hours"
           }
         }
       }
@@ -242,6 +402,26 @@
         }
       }
     },
+    "8 sa" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8 h"
+          }
+        }
+      }
+    },
+    "8 saat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "8 hours"
+          }
+        }
+      }
+    },
     "15 dk" : {
       "localizations" : {
         "en" : {
@@ -254,6 +434,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "15 dk"
+          }
+        }
+      }
+    },
+    "30 dakika" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 minutes"
+          }
+        }
+      }
+    },
+    "30 dk" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 min"
+          }
+        }
+      }
+    },
+    "Aç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open"
           }
         }
       }
@@ -384,6 +594,16 @@
         }
       }
     },
+    "Açılıyor…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opening…"
+          }
+        }
+      }
+    },
     "Ad" : {
       "localizations" : {
         "en" : {
@@ -396,6 +616,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ad"
+          }
+        }
+      }
+    },
+    "Ad boş olmamalı (en çok 40 karakter)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The name must not be empty (40 characters at most)."
+          }
+        }
+      }
+    },
+    "Ad çözülemedi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name not resolved"
           }
         }
       }
@@ -510,6 +750,16 @@
         }
       }
     },
+    "Ağ okları" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Network arrows"
+          }
+        }
+      }
+    },
     "Ağa bağlı değil" : {
       "localizations" : {
         "en" : {
@@ -542,6 +792,106 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unavailable"
+          }
+        }
+      }
+    },
+    "Ana ekran" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Main display"
+          }
+        }
+      }
+    },
+    "Ana makine adı, IP adresi ya da ~/.ssh/config takma adı olmalı; harf, rakam, nokta, tire ve alt çizgi kullanın, tire ile başlamayın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter a host name, an IP address or a ~/.ssh/config alias; use letters, digits, dots, hyphens and underscores, and do not start with a hyphen."
+          }
+        }
+      }
+    },
+    "Ana makine anahtarı bilinmiyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host key unknown"
+          }
+        }
+      }
+    },
+    "Ana makine anahtarı değişmiş" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host key changed"
+          }
+        }
+      }
+    },
+    "Ana makine ya da IP" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host or IP"
+          }
+        }
+      }
+    },
+    "Ana makine ya da takma ad" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host or alias"
+          }
+        }
+      }
+    },
+    "Anahtar reddedildi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Key rejected"
+          }
+        }
+      }
+    },
+    "Araç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tool"
+          }
+        }
+      }
+    },
+    "Araç beklenen çıktıyı vermedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The tool did not produce the expected output."
+          }
+        }
+      }
+    },
+    "Araçlar yalnızca Başlat'a bastığınızda çalışır; arka planda hiçbir sınama yapılmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The tools run only when you press Start; nothing is tested in the background."
           }
         }
       }
@@ -598,6 +948,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reading interfaces…"
+          }
+        }
+      }
+    },
+    "Arka planda erişilebilirlik kontrolü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Background reachability check"
           }
         }
       }
@@ -762,6 +1122,16 @@
         }
       }
     },
+    "Ayrıntılar bu sayfa ya da açılır pencere açıkken okunur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details are read while this page or the popover is open."
+          }
+        }
+      }
+    },
     "Azami kapasite" : {
       "localizations" : {
         "en" : {
@@ -784,6 +1154,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Connected"
+          }
+        }
+      }
+    },
+    "Bağlanıyor…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecting…"
           }
         }
       }
@@ -834,6 +1214,16 @@
         }
       }
     },
+    "Bağlantı günlüğü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection log"
+          }
+        }
+      }
+    },
     "Bağlantı her değiştiğinde api.ipify.org'a tek bir istek gönderir. Kapalıyken uygulama hiçbir dış istek yapmaz." : {
       "localizations" : {
         "en" : {
@@ -876,6 +1266,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Disconnected"
+          }
+        }
+      }
+    },
+    "Bağlantı reddedildi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection refused"
+          }
+        }
+      }
+    },
+    "Bağlantı süresi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect time"
           }
         }
       }
@@ -964,6 +1374,26 @@
         }
       }
     },
+    "Bağlı ekran bulunamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No connected display found."
+          }
+        }
+      }
+    },
+    "Bağlı ekranlar, çözünürlük ve yenileme hızı, harici monitörde parlaklık ve ses, yazılımsal karartma ve gece tonu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connected displays, resolution and refresh rate, brightness and volume on external monitors, software dimming and night tone."
+          }
+        }
+      }
+    },
     "Başlangıç diskinde boş alan eşiğin altına inerse." : {
       "localizations" : {
         "en" : {
@@ -992,6 +1422,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Başlangıç diskinde yalnızca %@ boş alan kaldı."
+          }
+        }
+      }
+    },
+    "Başlat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
           }
         }
       }
@@ -1044,6 +1484,16 @@
         }
       }
     },
+    "Bekleme süresi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grace period"
+          }
+        }
+      }
+    },
     "Bekleniyor" : {
       "localizations" : {
         "en" : {
@@ -1056,6 +1506,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bekleniyor"
+          }
+        }
+      }
+    },
+    "Bekliyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waiting"
           }
         }
       }
@@ -1200,6 +1660,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bildirimler Bildirim Merkezi'ne düşer; tıklayınca ilgili modül açılır."
+          }
+        }
+      }
+    },
+    "Bir sunucuya en çok 10 tünel eklenebilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At most 10 tunnels can be added to a server."
           }
         }
       }
@@ -1454,6 +1924,16 @@
         }
       }
     },
+    "Bozuk çıktı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Malformed output"
+          }
+        }
+      }
+    },
     "Bu biçim saniye gösteriyor: menü çubuğu öğesi her saniye yeniden çizilir ve pil tüketimi artar." : {
       "localizations" : {
         "en" : {
@@ -1502,6 +1982,26 @@
         }
       }
     },
+    "Bu ekran için donanım denetimi (DDC) bulunamadı. Sidecar, DisplayLink, bazı yuva ve HDMI bağlantıları DDC iletmez. Yazılımsal karartma yine çalışır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hardware control (DDC) was found for this display. Sidecar, DisplayLink and some docks and HDMI connections do not pass DDC. Software dimming still works."
+          }
+        }
+      }
+    },
+    "Bu girişte sinyal yoksa görüntü kaybolur; geri dönmek için monitörün kendi düğmelerini kullanın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If this input has no signal the picture goes away; use the monitor's own buttons to switch back."
+          }
+        }
+      }
+    },
     "Bu kopya kaydedilemiyor. Uygulamayı Uygulamalar klasörüne taşıyıp yeniden dene." : {
       "localizations" : {
         "en" : {
@@ -1514,6 +2014,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu kopya kaydedilemiyor. Uygulamayı Uygulamalar klasörüne taşıyıp yeniden dene."
+          }
+        }
+      }
+    },
+    "Bu Mac" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Mac"
           }
         }
       }
@@ -1608,6 +2118,16 @@
         }
       }
     },
+    "Bu modu koruyalım mı?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep this mode?"
+          }
+        }
+      }
+    },
     "Bu modül Faz %lld ile geliyor." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1637,6 +2157,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu sayfa açıkken ölçüm saniyede bir yapılır ve değerler sayfanın kendi maliyetini de içerir. Gerçek boşta tüketim için `scripts/perf-check.sh` kullanılır."
+          }
+        }
+      }
+    },
+    "Bu sunucu daha önce hiç doğrulanmamış. Önce Terminal'de bir kez bağlanıp anahtarı onaylayın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This server has never been verified. Connect once in Terminal first and confirm its key."
           }
         }
       }
@@ -1673,6 +2203,26 @@
         }
       }
     },
+    "Büyük ağ trafiği" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heavy network traffic"
+          }
+        }
+      }
+    },
+    "Çalışan konteyner yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No running containers."
+          }
+        }
+      }
+    },
     "Çalışıyor" : {
       "localizations" : {
         "en" : {
@@ -1685,6 +2235,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Çalışıyor"
+          }
+        }
+      }
+    },
+    "Çalışıyor…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running…"
           }
         }
       }
@@ -1721,6 +2281,16 @@
         }
       }
     },
+    "Çekirdek çubukları" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Core bars"
+          }
+        }
+      }
+    },
     "Çekirdek sıcaklıkları, fan hızları ve güç tüketimi." : {
       "localizations" : {
         "en" : {
@@ -1733,6 +2303,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Çekirdek sıcaklıkları, fan hızları ve güç tüketimi."
+          }
+        }
+      }
+    },
+    "cekirdek.efficiency" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Efficiency"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verimlilik"
+          }
+        }
+      }
+    },
+    "cekirdek.performance" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Performance"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Performans"
+          }
+        }
+      }
+    },
+    "cekirdek.super" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Super"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Süper"
           }
         }
       }
@@ -1769,6 +2387,16 @@
         }
       }
     },
+    "Çevrimiçi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Online"
+          }
+        }
+      }
+    },
     "Cihaz listesi ve pil seviyeleri 60 saniyede bir yenilenir ve yalnızca bu sayfa ya da açılır pencere görünürken okunur." : {
       "localizations" : {
         "en" : {
@@ -1801,6 +2429,16 @@
         }
       }
     },
+    "Çizgi grafik" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Line graph"
+          }
+        }
+      }
+    },
     "Çık" : {
       "localizations" : {
         "en" : {
@@ -1827,12 +2465,62 @@
         }
       }
     },
+    "Çıkarıldı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Removed"
+          }
+        }
+      }
+    },
+    "claude, codex, cursor-agent veya ollama çalışırken." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While claude, codex, cursor-agent or ollama is running."
+          }
+        }
+      }
+    },
     "Çok iyi" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Excellent"
+          }
+        }
+      }
+    },
+    "Çözünürlük" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resolution"
+          }
+        }
+      }
+    },
+    "Çözünürlük ve yenileme hızı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resolution and refresh rate"
+          }
+        }
+      }
+    },
+    "Çözünürlük ve yenileme hızı değişikliği deneme olarak uygulanır ve yalnızca bu uygulama için geçerlidir; 15 saniye içinde onaylanmazsa ya da Sistem kapanırsa eski mod geri gelir. Karartma ve gece tonu da uygulama kapanınca (çökse bile) sistem tarafından bırakılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A resolution or refresh rate change is applied as a trial and only for this app; if it is not confirmed within 15 seconds, or Sistem quits, the old mode returns. Dimming and night tone are also released by the system when the app ends (even if it crashes)."
           }
         }
       }
@@ -1992,6 +2680,16 @@
         }
       }
     },
+    "Çubuklar" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bars"
+          }
+        }
+      }
+    },
     "Daha uzun aralık, daha az pil tüketimi." : {
       "localizations" : {
         "en" : {
@@ -2014,6 +2712,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Internal"
+          }
+        }
+      }
+    },
+    "Dahili ekran" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Built-in display"
+          }
+        }
+      }
+    },
+    "Dahili ekranın parlaklığı sistem tarafından yönetilir; buradan yalnızca okunur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The built-in display's brightness is managed by the system; it is read-only here."
           }
         }
       }
@@ -2092,6 +2810,36 @@
         }
       }
     },
+    "Derleme ve Docker" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Builds and Docker"
+          }
+        }
+      }
+    },
+    "Desteklemiyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not supported"
+          }
+        }
+      }
+    },
+    "Destekliyor, şu an kapalı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supported, currently off"
+          }
+        }
+      }
+    },
     "Diğer" : {
       "localizations" : {
         "en" : {
@@ -2156,6 +2904,7 @@
       }
     },
     "disk.okuma.kisa" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2172,6 +2921,7 @@
       }
     },
     "disk.yazma.kisa" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2219,6 +2969,16 @@
         }
       }
     },
+    "DNS sorgusu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DNS lookup"
+          }
+        }
+      }
+    },
     "Dock'ta göster" : {
       "localizations" : {
         "en" : {
@@ -2235,6 +2995,46 @@
         }
       }
     },
+    "Docker (bu Mac)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Docker (this Mac)"
+          }
+        }
+      }
+    },
+    "Docker (uzak)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Docker (remote)"
+          }
+        }
+      }
+    },
+    "Docker bu makinede bulunamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Docker was not found on this machine."
+          }
+        }
+      }
+    },
+    "Docker bulunamadı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Docker not found"
+          }
+        }
+      }
+    },
     "Doluluk halkası." : {
       "localizations" : {
         "en" : {
@@ -2247,6 +3047,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Doluluk halkası."
+          }
+        }
+      }
+    },
+    "Dolum düzeyi ve şarj göstergesi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Charge level and a charging indicator."
+          }
+        }
+      }
+    },
+    "Donanım" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hardware"
           }
         }
       }
@@ -2331,6 +3151,16 @@
         }
       }
     },
+    "Durdur" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
+          }
+        }
+      }
+    },
     "Durum" : {
       "localizations" : {
         "en" : {
@@ -2343,6 +3173,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Durum"
+          }
+        }
+      }
+    },
+    "Durumu göster" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show status"
           }
         }
       }
@@ -2373,6 +3213,16 @@
         }
       }
     },
+    "Düzen değişti" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Layout changed"
+          }
+        }
+      }
+    },
     "Düzey" : {
       "localizations" : {
         "en" : {
@@ -2385,6 +3235,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Düzey"
+          }
+        }
+      }
+    },
+    "Ekle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add"
           }
         }
       }
@@ -2405,6 +3265,66 @@
         }
       }
     },
+    "Ekran" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display"
+          }
+        }
+      }
+    },
+    "Ekran bilgisi sistem değişiklik bildirdiğinde güncellenir; zamanlayıcı yoktur. Donanım değerleri (DDC) yalnızca bu sayfa ya da açılır pencere görünürken bir kez okunur. Günlük yalnızca bellekte tutulur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Display information updates when the system reports a change; there is no timer. Hardware values (DDC) are read once, only while this page or the popover is visible. The log is kept in memory only."
+          }
+        }
+      }
+    },
+    "Ekran modülü kapalı. Modül sekmesinden açabilirsiniz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Display module is off. You can turn it on in the Module tab."
+          }
+        }
+      }
+    },
+    "Ekran modülünü etkinleştir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable the Display module"
+          }
+        }
+      }
+    },
+    "Ekran simgesi ekler; tıklayınca ekran başına kaydırıcılar açılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds a display icon; clicking it opens the sliders for each display."
+          }
+        }
+      }
+    },
+    "Ekranı da açık tut" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep the display on too"
+          }
+        }
+      }
+    },
     "Elektrik" : {
       "localizations" : {
         "en" : {
@@ -2417,6 +3337,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elektrik"
+          }
+        }
+      }
+    },
+    "Elle başlatıldı, durdurulana kadar sürer." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Started by hand; lasts until you stop it."
+          }
+        }
+      }
+    },
+    "En az / ortalama / en çok" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Min / average / max"
+          }
+        }
+      }
+    },
+    "En çok 20 sunucu eklenebilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At most 20 servers can be added."
           }
         }
       }
@@ -2501,6 +3451,16 @@
         }
       }
     },
+    "En sıcak sensör 60 saniyedir 90 °C ve üstünde. Mac'in uyumasına izin verildi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The hottest sensor has been at 90 °C or above for 60 seconds. The Mac is allowed to sleep again."
+          }
+        }
+      }
+    },
     "Enerji" : {
       "localizations" : {
         "en" : {
@@ -2517,6 +3477,26 @@
         }
       }
     },
+    "Erişilebilir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reachable"
+          }
+        }
+      }
+    },
+    "Erişilemiyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unreachable"
+          }
+        }
+      }
+    },
     "Eşik" : {
       "localizations" : {
         "en" : {
@@ -2529,6 +3509,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eşik"
+          }
+        }
+      }
+    },
+    "Eski moda dönüldü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverted to the old mode"
           }
         }
       }
@@ -2575,6 +3565,16 @@
         }
       }
     },
+    "Etkin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active"
+          }
+        }
+      }
+    },
     "Etkin aralık" : {
       "localizations" : {
         "en" : {
@@ -2587,6 +3587,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Etkin aralık"
+          }
+        }
+      }
+    },
+    "Etkin, %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Active, %@"
           }
         }
       }
@@ -2667,6 +3677,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Frekans ve güç"
+          }
+        }
+      }
+    },
+    "Geç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Switch"
+          }
+        }
+      }
+    },
+    "Gece tonu" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Night tone"
           }
         }
       }
@@ -2771,6 +3801,66 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Show public IP address"
+          }
+        }
+      }
+    },
+    "Geri al" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undo"
+          }
+        }
+      }
+    },
+    "Geri alma" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverting"
+          }
+        }
+      }
+    },
+    "Girdi geçersiz. Ana makine adı ya da IP adresi (ve port için 1-65535) yazın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The input is not valid. Enter a host name or IP address (and 1-65535 for the port)."
+          }
+        }
+      }
+    },
+    "Giriş" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Input"
+          }
+        }
+      }
+    },
+    "Giriş yalnızca anahtar ya da ssh-agent iledir; parola istenmez, saklanmaz. Özel anahtar dosyalarına dokunulmaz. Ana makine anahtarı doğrulaması her zaman açıktır: bilinmeyen bir sunucuya önce Terminal'den bir kez bağlanmalısınız. Yerel ağdaki sunucular için macOS ilk bağlantıda Yerel Ağ izni sorabilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign-in uses keys or ssh-agent only; no password is asked or stored. Private key files are never touched. Host key verification is always on: for an unknown server you must connect once from Terminal first. For servers on the local network macOS may ask for Local Network access on the first connection."
+          }
+        }
+      }
+    },
+    "Gönderilen / alınan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sent / received"
           }
         }
       }
@@ -2992,6 +4082,16 @@
         }
       }
     },
+    "Güvenlik" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security"
+          }
+        }
+      }
+    },
     "Halka" : {
       "localizations" : {
         "en" : {
@@ -3028,6 +4128,16 @@
         }
       }
     },
+    "Harici ekran" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "External display"
+          }
+        }
+      }
+    },
     "Hassas" : {
       "localizations" : {
         "en" : {
@@ -3056,6 +4166,66 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hazır biçimler"
+          }
+        }
+      }
+    },
+    "HDR" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HDR"
+          }
+        }
+      }
+    },
+    "Hedef ana makine" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Target host"
+          }
+        }
+      }
+    },
+    "Hedef ana makine geçersiz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The target host is not valid."
+          }
+        }
+      }
+    },
+    "Hedef port" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Target port"
+          }
+        }
+      }
+    },
+    "Hedef port 1-65535 arasında olmalı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The target port must be between 1 and 65535."
+          }
+        }
+      }
+    },
+    "Henüz bir değişiklik olmadı. Ekran takıldığında ya da çıkarıldığında burada görünür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing has changed yet. Plugging in or removing a display shows up here."
           }
         }
       }
@@ -3124,6 +4294,46 @@
         }
       }
     },
+    "Henüz sunucu eklenmedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No servers added yet."
+          }
+        }
+      }
+    },
+    "Henüz sunucu yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No servers yet."
+          }
+        }
+      }
+    },
+    "Her 60 saniyede bir sunucunun yanıt verip vermediğine bakar ve iki dakika kapalı kalırsa bildirim gönderir. Kapalıyken sayfa kapanınca hiçbir şey çalışmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every 60 seconds it checks whether the server answers and sends a notification if it stays down for two minutes. While off, nothing runs once the page is closed."
+          }
+        }
+      }
+    },
+    "Her çekirdek için bir çubuk." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "One bar for each core."
+          }
+        }
+      }
+    },
     "Her çizim her ekranın menü çubuğu için ayrı yapılır; boştaki maliyetin çoğu buradan gelir." : {
       "localizations" : {
         "en" : {
@@ -3136,6 +4346,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Her çizim her ekranın menü çubuğu için ayrı yapılır; boştaki maliyetin çoğu buradan gelir."
+          }
+        }
+      }
+    },
+    "Her zaman açık: pil yüzde 15 ve altına inerse (pildeyken), sistem ısınmayı ciddi olarak bildirirse ya da en sıcak sensör 60 saniye boyunca 90 °C ve üstünde kalırsa uyanık tutma bırakılır ve bildirim gelir. Sıcaklık 75 °C altına inene kadar yeniden başlatılamaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Always on: if the battery drops to 15 % or lower (on battery), the system reports serious thermal pressure, or the hottest sensor stays at 90 °C or above for 60 seconds, keeping awake is released and you get a notification. It cannot be restarted until the temperature is back under 75 °C."
           }
         }
       }
@@ -3156,6 +4376,16 @@
         }
       }
     },
+    "Hiçbir tetikleyici açık değil. Modül sekmesinden açabilirsiniz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No trigger is on. You can turn them on in the Module tab."
+          }
+        }
+      }
+    },
     "hız" : {
       "localizations" : {
         "en" : {
@@ -3172,6 +4402,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Speed"
+          }
+        }
+      }
+    },
+    "Hızlı bağlan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quick connect"
           }
         }
       }
@@ -3276,6 +4516,46 @@
         }
       }
     },
+    "İndirme ve yükleme hızı, iki satır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Download and upload speed, two lines."
+          }
+        }
+      }
+    },
+    "İndirme ve yükleme toplamı eşiği aştığında." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When download plus upload exceeds the threshold."
+          }
+        }
+      }
+    },
+    "İptal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        }
+      }
+    },
+    "İptal edildi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelled."
+          }
+        }
+      }
+    },
     "Isıl baskı" : {
       "localizations" : {
         "en" : {
@@ -3288,6 +4568,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Isıl baskı"
+          }
+        }
+      }
+    },
+    "İşlem zaman aşımına uğradı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The operation timed out."
           }
         }
       }
@@ -3445,6 +4735,16 @@
         }
       }
     },
+    "Kapağı kapatınca Mac yine uyur; kapak kapalı modu bu sürümde yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Closing the lid still puts the Mac to sleep; lid-closed mode is not in this version."
+          }
+        }
+      }
+    },
     "Kapalı" : {
       "localizations" : {
         "en" : {
@@ -3457,6 +4757,56 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kapalı"
+          }
+        }
+      }
+    },
+    "Kapalı bildirildi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reported down"
+          }
+        }
+      }
+    },
+    "Kapalı ya da reddedildi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Closed or refused"
+          }
+        }
+      }
+    },
+    "Kapalıyken ekran sönebilir, sistem çalışmaya devam eder." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When off, the display may turn off while the system keeps running."
+          }
+        }
+      }
+    },
+    "Kapalıyken hiçbir bağlantı kurulmaz ve tüneller kapanır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While off, no connection is made and tunnels are closed."
+          }
+        }
+      }
+    },
+    "Kapalıyken sistemden hiçbir bildirim alınmaz; karartma ve gece tonu da bırakılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While off, no notification is taken from the system; dimming and night tone are released too."
           }
         }
       }
@@ -3493,6 +4843,36 @@
         }
       }
     },
+    "Kapat" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        }
+      }
+    },
+    "Karartma" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dimming"
+          }
+        }
+      }
+    },
+    "Kayıp" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loss"
+          }
+        }
+      }
+    },
     "Kılıf" : {
       "localizations" : {
         "en" : {
@@ -3525,12 +4905,52 @@
         }
       }
     },
+    "Kontrast" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrast"
+          }
+        }
+      }
+    },
     "Konum izni verilmedi" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Location permission not granted"
+          }
+        }
+      }
+    },
+    "Koru" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep"
+          }
+        }
+      }
+    },
+    "Koruma" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protection"
+          }
+        }
+      }
+    },
+    "Koruma devrede" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protection active"
           }
         }
       }
@@ -3579,6 +4999,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kullanıcı"
+          }
+        }
+      }
+    },
+    "Kullanıcı (isteğe bağlı)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "User (optional)"
+          }
+        }
+      }
+    },
+    "Kullanıcı adı geçersiz (harf, rakam, nokta, tire, alt çizgi; en çok 32)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The user name is not valid (letters, digits, dots, hyphens, underscores; 32 at most)."
           }
         }
       }
@@ -3647,6 +5087,36 @@
         }
       }
     },
+    "Linux" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Linux"
+          }
+        }
+      }
+    },
+    "Liste, sistemin uyku engellerini (pmset -g assertions ile aynı kaynak) gösterir; yalnızca bu sayfa ya da açılır pencere görünürken birkaç saniyede bir okunur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The list shows the system's sleep blockers (the same source as pmset -g assertions); it is read every few seconds, only while this page or the popover is visible."
+          }
+        }
+      }
+    },
+    "Listeyi yenile" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh list"
+          }
+        }
+      }
+    },
     "Mac açıldığında Sistem menü çubuğunda kendiliğinden başlar." : {
       "localizations" : {
         "en" : {
@@ -3659,6 +5129,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mac açıldığında Sistem menü çubuğunda kendiliğinden başlar."
+          }
+        }
+      }
+    },
+    "Mac çok ısındı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac got too hot"
+          }
+        }
+      }
+    },
+    "Mac çok ısındı: uyanık tutma durduruldu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac got too hot: keeping awake was stopped."
+          }
+        }
+      }
+    },
+    "Mac prize takılıyken." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While the Mac is plugged in."
           }
         }
       }
@@ -3679,6 +5179,36 @@
         }
       }
     },
+    "Mac uyanık tutuluyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac is being kept awake"
+          }
+        }
+      }
+    },
+    "Mac uyuyabilir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mac may sleep"
+          }
+        }
+      }
+    },
+    "Mac'in uykuya geçmesini engelle, neden uyanık olduğunu gör; pil ve sıcaklık korumalı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep the Mac from sleeping and see why it is awake; with battery and temperature protection."
+          }
+        }
+      }
+    },
     "Mac'inizin saati ağ saat sunucusuyla karşılaştırılmadı." : {
       "localizations" : {
         "en" : {
@@ -3691,6 +5221,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mac'inizin saati ağ saat sunucusuyla karşılaştırılmadı."
+          }
+        }
+      }
+    },
+    "macOS" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "macOS"
           }
         }
       }
@@ -3838,6 +5378,16 @@
         }
       }
     },
+    "Menü çubuğuna bir fincan simgesi ekler. Kapalıyken hiçbir şey okunmaz ve tutulmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds a cup icon to the menu bar. While off, nothing is read or held."
+          }
+        }
+      }
+    },
     "Menü çubuğunda · %@" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3919,6 +5469,16 @@
         }
       }
     },
+    "Mod değişti" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mode changed"
+          }
+        }
+      }
+    },
     "Model tanımlayıcı" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3952,6 +5512,16 @@
         }
       }
     },
+    "Modül sekmesinden bir sunucu ekleyin. Giriş yalnızca anahtar ya da ssh-agent ile yapılır; parola sorulmaz ve saklanmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a server in the Module tab. Sign-in uses keys or ssh-agent only; no password is asked or stored."
+          }
+        }
+      }
+    },
     "Modüller" : {
       "localizations" : {
         "en" : {
@@ -3968,6 +5538,36 @@
         }
       }
     },
+    "Modülü Modül sekmesinden açın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Turn the module on in the Module tab."
+          }
+        }
+      }
+    },
+    "Monitör DDC isteklerine yanıt vermiyor. DDC/CI monitörün menüsünde kapalı olabilir. Yazılımsal karartma yine çalışır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The monitor does not answer DDC requests. DDC/CI may be turned off in the monitor's menu. Software dimming still works."
+          }
+        }
+      }
+    },
+    "Monitör son değişikliği kabul etmedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The monitor did not accept the last change."
+          }
+        }
+      }
+    },
     "mW" : {
       "localizations" : {
         "en" : {
@@ -3978,6 +5578,16 @@
         }
       },
       "shouldTranslate" : false
+    },
+    "Neden uyanık?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Why awake?"
+          }
+        }
+      }
     },
     "Neural Engine" : {
       "localizations" : {
@@ -4053,6 +5663,26 @@
         }
       }
     },
+    "Okuma ve yazma hızı, iki satır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read and write speed, two lines."
+          }
+        }
+      }
+    },
+    "Okuma ve yazma okları" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read and write arrows"
+          }
+        }
+      }
+    },
     "Okunan metrikler" : {
       "localizations" : {
         "en" : {
@@ -4075,6 +5705,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reading…"
+          }
+        }
+      }
+    },
+    "Ölçek" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scale"
           }
         }
       }
@@ -4301,6 +5941,26 @@
         }
       }
     },
+    "Parlaklık" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brightness"
+          }
+        }
+      }
+    },
+    "Parlaklık tuşlarıyla harici monitörü yönetmek bu sürümde yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controlling the external monitor with the brightness keys is not in this version."
+          }
+        }
+      }
+    },
     "Pencereyi Aç" : {
       "localizations" : {
         "en" : {
@@ -4329,6 +5989,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Performance sensörü %lld"
+          }
+        }
+      }
+    },
+    "Piksel" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pixels"
           }
         }
       }
@@ -4413,6 +6083,16 @@
         }
       }
     },
+    "Pil simgesi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Battery icon"
+          }
+        }
+      }
+    },
     "Pil tasarrufu" : {
       "localizations" : {
         "en" : {
@@ -4425,6 +6105,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pil tasarrufu"
+          }
+        }
+      }
+    },
+    "Pil yüzde 15 ve altında: uyanık tutma durduruldu." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Battery at 15 % or lower: keeping awake was stopped."
           }
         }
       }
@@ -4525,6 +6215,56 @@
         }
       }
     },
+    "Ping" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ping"
+          }
+        }
+      }
+    },
+    "Port" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        }
+      }
+    },
+    "Port 1 ile 65535 arasında olmalı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The port must be between 1 and 65535."
+          }
+        }
+      }
+    },
+    "Port kontrolü" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port check"
+          }
+        }
+      }
+    },
+    "Port yönlendirilemedi" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port could not be forwarded"
+          }
+        }
+      }
+    },
     "Prizde, şarj olmuyor" : {
       "localizations" : {
         "en" : {
@@ -4537,6 +6277,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prizde, şarj olmuyor"
+          }
+        }
+      }
+    },
+    "prize takılı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "plugged in"
           }
         }
       }
@@ -4780,6 +6530,26 @@
         }
       }
     },
+    "Sağ tık diğer süreleri gösterir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Right-click shows the other durations."
+          }
+        }
+      }
+    },
+    "Sağa taşı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move right"
+          }
+        }
+      }
+    },
     "Sağlık" : {
       "localizations" : {
         "en" : {
@@ -4822,6 +6592,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Şarj"
+          }
+        }
+      }
+    },
+    "şarj oluyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "charging"
           }
         }
       }
@@ -4874,6 +6654,16 @@
         }
       }
     },
+    "Şarj yüzde 15 ve altına indi. Mac'in uyumasına izin verildi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The charge dropped to 15 % or lower. The Mac is allowed to sleep again."
+          }
+        }
+      }
+    },
     "Şarj, kalan süre, pil sağlığı, döngü sayısı ve adaptör." : {
       "localizations" : {
         "en" : {
@@ -4886,6 +6676,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Şarj, kalan süre, pil sağlığı, döngü sayısı ve adaptör."
+          }
+        }
+      }
+    },
+    "Şarjdayken" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While charging"
           }
         }
       }
@@ -4970,6 +6770,46 @@
         }
       }
     },
+    "Şerit sırası" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strip order"
+          }
+        }
+      }
+    },
+    "Ses" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume"
+          }
+        }
+      }
+    },
+    "Sil" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "Simgeye tıklayınca" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clicking the icon"
+          }
+        }
+      }
+    },
     "Sinyal" : {
       "localizations" : {
         "en" : {
@@ -5012,6 +6852,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sistem"
+          }
+        }
+      }
+    },
+    "Sistem aracı başlatılamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The system tool could not be started."
           }
         }
       }
@@ -5064,6 +6914,16 @@
         }
       }
     },
+    "Sistem bu modu kabul etmedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The system did not accept this mode."
+          }
+        }
+      }
+    },
     "Sistem gücü" : {
       "localizations" : {
         "en" : {
@@ -5076,6 +6936,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sistem gücü"
+          }
+        }
+      }
+    },
+    "Sistem ısınma durumunu ciddi olarak bildiriyor. Mac'in uyumasına izin verildi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The system reports serious thermal pressure. The Mac is allowed to sleep again."
           }
         }
       }
@@ -5144,6 +7014,16 @@
         }
       }
     },
+    "Sıcaklık 90 °C üstü: uyanık tutma durduruldu. 75 °C altına inince yeniden izin verilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperature above 90 °C: keeping awake was stopped. It is allowed again below 75 °C."
+          }
+        }
+      }
+    },
     "Sıcaklık birimi" : {
       "localizations" : {
         "en" : {
@@ -5156,6 +7036,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sıcaklık birimi"
+          }
+        }
+      }
+    },
+    "Sıcaklık yüksek" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temperature is high"
           }
         }
       }
@@ -5314,6 +7204,16 @@
         }
       }
     },
+    "SOCKS (-D)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SOCKS (-D)"
+          }
+        }
+      }
+    },
     "Sol" : {
       "localizations" : {
         "en" : {
@@ -5326,6 +7226,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sol"
+          }
+        }
+      }
+    },
+    "Sola taşı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move left"
           }
         }
       }
@@ -5347,6 +7257,7 @@
       }
     },
     "Son bir dakikanın çizgisi." : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -5358,6 +7269,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Son bir dakikanın çizgisi."
+          }
+        }
+      }
+    },
+    "Son bir dakikanın dolu grafiği." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A filled graph of the last minute."
+          }
+        }
+      }
+    },
+    "Son bir dakikanın ince çizgisi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A thin line of the last minute."
           }
         }
       }
@@ -5442,6 +7373,136 @@
         }
       }
     },
+    "ssh başlatılamadı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not start ssh"
+          }
+        }
+      }
+    },
+    "ssh programı başlatılamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The ssh program could not be started."
+          }
+        }
+      }
+    },
+    "Şu an uykuyu engelleyen bir süreç yok." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing is preventing sleep right now."
+          }
+        }
+      }
+    },
+    "Sunucu 10 saniye içinde yanıt vermedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server did not answer within 10 seconds."
+          }
+        }
+      }
+    },
+    "Sunucu adı çözülemedi. Adı ya da ~/.ssh/config takma adını kontrol edin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server name could not be resolved. Check the name or the ~/.ssh/config alias."
+          }
+        }
+      }
+    },
+    "Sunucu anahtarınızı kabul etmedi. Yalnızca anahtar ve ssh-agent ile giriş yapılır; parola sorulmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server did not accept your key. Sign-in uses keys and ssh-agent only; no password is ever asked."
+          }
+        }
+      }
+    },
+    "Sunucu bağlantıyı reddetti. SSH hizmeti çalışmıyor ya da port yanlış olabilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server refused the connection. The SSH service may not be running or the port may be wrong."
+          }
+        }
+      }
+    },
+    "Sunucu ekle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add server"
+          }
+        }
+      }
+    },
+    "Sunucu simgesi ekler; tıklayınca sunucuların özeti açılır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds a server icon; clicking it opens a summary of the servers."
+          }
+        }
+      }
+    },
+    "Sunucu yanıt veriyor. Ayrıntılar bu sayfa açıkken okunur." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server is answering. Details are read while this page is open."
+          }
+        }
+      }
+    },
+    "Sunucu yanıt vermiyor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server is not responding"
+          }
+        }
+      }
+    },
+    "Sunucudaki port" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port on the server"
+          }
+        }
+      }
+    },
+    "Sunucudan beklenen biçimde yanıt gelmedi; veri gösterilmiyor." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server did not answer in the expected format; no data is shown."
+          }
+        }
+      }
+    },
     "Sunucudan yanıt alınamadı." : {
       "localizations" : {
         "en" : {
@@ -5458,6 +7519,56 @@
         }
       }
     },
+    "Sunucular" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servers"
+          }
+        }
+      }
+    },
+    "Sunucular modülü kapalı. Modül sekmesinden açabilirsiniz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Servers module is off. You can turn it on in the Module tab."
+          }
+        }
+      }
+    },
+    "Sunucular modülünü etkinleştir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable the Servers module"
+          }
+        }
+      }
+    },
+    "Sunucular yalnızca bu sayfa ya da açılır pencere görünürken, her 4 saniyede bir tek ssh bağlantısı üzerinden okunur. Arka plan kontrolü kapalıysa sayfa kapanınca hiçbir bağlantı kurulmaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Servers are read only while this page or the popover is visible, every 4 seconds over a single ssh connection. With the background check off, no connection is made once the page is closed."
+          }
+        }
+      }
+    },
+    "Sunucunun anahtarı kayıtlı olandan farklı. Sunucuyu değiştirmediyseniz bağlanmayın; ~/.ssh/known_hosts kaydını kendiniz inceleyin." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server's key differs from the recorded one. Do not connect unless you changed the server; inspect ~/.ssh/known_hosts yourself."
+          }
+        }
+      }
+    },
     "Sunucuya soruluyor…" : {
       "localizations" : {
         "en" : {
@@ -5470,6 +7581,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sunucuya soruluyor…"
+          }
+        }
+      }
+    },
+    "Sunucuya ulaşılamadı. Ağ bağlantısını kontrol edin; yerel ağdaki bir sunucu için Sistem Ayarları'nda Yerel Ağ izni verilmiş olmalı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The server could not be reached. Check the network connection; for a server on the local network, Local Network access must be allowed in System Settings."
           }
         }
       }
@@ -5534,6 +7655,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Süre hesaplanıyor…"
+          }
+        }
+      }
+    },
+    "Süre seçerek başlatın ya da bir tetikleyici açın." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start with a duration or turn on a trigger."
           }
         }
       }
@@ -5614,6 +7745,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Süreçleri göster"
+          }
+        }
+      }
+    },
+    "Süresiz" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indefinitely"
           }
         }
       }
@@ -5734,6 +7875,46 @@
         }
       }
     },
+    "Terminal açılamadı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terminal could not be opened."
+          }
+        }
+      }
+    },
+    "Terminal'de bağlan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connect in Terminal"
+          }
+        }
+      }
+    },
+    "Tetikleyiciler" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triggers"
+          }
+        }
+      }
+    },
+    "Tetikleyiciler varsayılan olarak kapalıdır. Koşul bittikten 2 dakika sonra Mac'in uyumasına izin verilir; çalışan işlemler 30 saniyede bir ve uygulama açılınca taranır." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triggers are off by default. The Mac may sleep 2 minutes after the condition ends; running processes are checked every 30 seconds and when an app launches."
+          }
+        }
+      }
+    },
     "Tiler" : {
       "localizations" : {
         "en" : {
@@ -5786,6 +7967,16 @@
         }
       }
     },
+    "Traceroute" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traceroute"
+          }
+        }
+      }
+    },
     "Tüketicisi olmayan metrik okunmaz." : {
       "localizations" : {
         "en" : {
@@ -5834,6 +8025,86 @@
         }
       }
     },
+    "Tünel ekle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add tunnel"
+          }
+        }
+      }
+    },
+    "Tüneli kaydet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save tunnel"
+          }
+        }
+      }
+    },
+    "Tüneller" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tunnels"
+          }
+        }
+      }
+    },
+    "Tür" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type"
+          }
+        }
+      }
+    },
+    "Uyanık Tut" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep Awake"
+          }
+        }
+      }
+    },
+    "Uyanık Tut kapalı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep Awake is off"
+          }
+        }
+      }
+    },
+    "Uyanık Tut sayfasını aç" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open the Keep Awake page"
+          }
+        }
+      }
+    },
+    "Uyanık Tut'u etkinleştir" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Keep Awake"
+          }
+        }
+      }
+    },
     "Uyanma" : {
       "localizations" : {
         "en" : {
@@ -5866,6 +8137,16 @@
         }
       }
     },
+    "Uygula" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apply"
+          }
+        }
+      }
+    },
     "Uygulama" : {
       "localizations" : {
         "en" : {
@@ -5878,6 +8159,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uygulama"
+          }
+        }
+      }
+    },
+    "Uygulama, bağlı ve sıkıştırılmış bellek için üç çubuk." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Three bars: app, wired and compressed memory."
           }
         }
       }
@@ -5910,6 +8201,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uyuyor"
+          }
+        }
+      }
+    },
+    "Uzak (-R)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remote (-R)"
+          }
+        }
+      }
+    },
+    "Uzak komut başarısız" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remote command failed"
+          }
+        }
+      }
+    },
+    "Uzak komut hata ile bitti." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The remote command ended with an error."
+          }
+        }
+      }
+    },
+    "Uzak sunucuların CPU, RAM, disk ve ağ durumu, SSH tünelleri ve ~/.ssh/config bağlantıları." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU, RAM, disk and network of remote servers, SSH tunnels and ~/.ssh/config connections."
           }
         }
       }
@@ -6024,6 +8355,16 @@
         }
       }
     },
+    "xcodebuild, swift-build veya docker çalışırken." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "While xcodebuild, swift-build or docker is running."
+          }
+        }
+      }
+    },
     "Yalnızca bu düğmeye basınca time.apple.com sunucusuna tek bir UDP paketi gönderilir; en çok 5 saniye beklenir. Saatiniz değiştirilmez." : {
       "localizations" : {
         "en" : {
@@ -6056,6 +8397,46 @@
         }
       }
     },
+    "Yanıt alınamadı ya da ad çözülemedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No answer, or the name could not be resolved."
+          }
+        }
+      }
+    },
+    "Yanıt gelmedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No reply."
+          }
+        }
+      }
+    },
+    "Yansıtılmış" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mirrored"
+          }
+        }
+      }
+    },
+    "Yapay zekâ araçları" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI tools"
+          }
+        }
+      }
+    },
     "Yarın" : {
       "localizations" : {
         "en" : {
@@ -6068,6 +8449,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yarın"
+          }
+        }
+      }
+    },
+    "Yazılımsal" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Software"
           }
         }
       }
@@ -6092,6 +8483,86 @@
         }
       }
     },
+    "Yeni mod önce deneme olarak uygulanır; 15 saniye içinde onaylamazsanız eski moda dönülür." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The new mode is applied as a trial first; if you do not confirm within 15 seconds the old mode comes back."
+          }
+        }
+      }
+    },
+    "Yeniden bağlanılıyor…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reconnecting…"
+          }
+        }
+      }
+    },
+    "Yenileme hızı" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refresh rate"
+          }
+        }
+      }
+    },
+    "Yerel (-L)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local (-L)"
+          }
+        }
+      }
+    },
+    "Yerel dinleme yalnızca 127.0.0.1 üzerindedir. Tüneller elle açılır; uygulama açılışında kendiliğinden başlamaz." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local listening is on 127.0.0.1 only. Tunnels are opened by hand and never start on their own when the app launches."
+          }
+        }
+      }
+    },
+    "Yerel port" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Local port"
+          }
+        }
+      }
+    },
+    "Yerel port 1024-65535 arasında olmalı." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The local port must be between 1024 and 65535."
+          }
+        }
+      }
+    },
+    "Yerel port kullanımda ya da sunucu yönlendirmeyi kabul etmedi." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The local port is in use or the server did not accept the forwarding."
+          }
+        }
+      }
+    },
     "Yerel saat" : {
       "localizations" : {
         "en" : {
@@ -6104,6 +8575,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yerel saat"
+          }
+        }
+      }
+    },
+    "Yön" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rotation"
+          }
+        }
+      }
+    },
+    "Yük" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Load"
+          }
+        }
+      }
+    },
+    "Yukarıdaki sıra menü çubuğunda soldan sağa dizilir." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The order above runs left to right in the menu bar."
           }
         }
       }
@@ -6182,1246 +8683,6 @@
         }
       }
     },
-    "Zayıf" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poor"
-          }
-        }
-      }
-    },
-    "%lld MB/sn" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld MB/s"
-          }
-        }
-      }
-    },
-    "%lld dk kaldı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld min left"
-          }
-        }
-      }
-    },
-    "%lld sa %lld dk kaldı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld h %lld min left"
-          }
-        }
-      }
-    },
-    "+%lld daha" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+%lld more"
-          }
-        }
-      }
-    },
-    "1 dakikadan az kaldı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Less than 1 minute left"
-          }
-        }
-      }
-    },
-    "1 sa" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1 h"
-          }
-        }
-      }
-    },
-    "1 saat" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1 hour"
-          }
-        }
-      }
-    },
-    "3 sa" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "3 h"
-          }
-        }
-      }
-    },
-    "3 saat" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "3 hours"
-          }
-        }
-      }
-    },
-    "30 dakika" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "30 minutes"
-          }
-        }
-      }
-    },
-    "30 dk" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "30 min"
-          }
-        }
-      }
-    },
-    "8 sa" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "8 h"
-          }
-        }
-      }
-    },
-    "8 saat" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "8 hours"
-          }
-        }
-      }
-    },
-    "Bekleme süresi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Grace period"
-          }
-        }
-      }
-    },
-    "Bekliyor" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Waiting"
-          }
-        }
-      }
-    },
-    "Büyük ağ trafiği" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Heavy network traffic"
-          }
-        }
-      }
-    },
-    "Derleme ve Docker" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Builds and Docker"
-          }
-        }
-      }
-    },
-    "Durdur" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stop"
-          }
-        }
-      }
-    },
-    "Durumu göster" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Show status"
-          }
-        }
-      }
-    },
-    "Ekran" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Display"
-          }
-        }
-      }
-    },
-    "Ekranı da açık tut" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keep the display on too"
-          }
-        }
-      }
-    },
-    "Elle başlatıldı, durdurulana kadar sürer." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Started by hand; lasts until you stop it."
-          }
-        }
-      }
-    },
-    "En sıcak sensör 60 saniyedir 90 °C ve üstünde. Mac'in uyumasına izin verildi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The hottest sensor has been at 90 °C or above for 60 seconds. The Mac is allowed to sleep again."
-          }
-        }
-      }
-    },
-    "Etkin" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Active"
-          }
-        }
-      }
-    },
-    "Her zaman açık: pil yüzde 15 ve altına inerse (pildeyken), sistem ısınmayı ciddi olarak bildirirse ya da en sıcak sensör 60 saniye boyunca 90 °C ve üstünde kalırsa uyanık tutma bırakılır ve bildirim gelir. Sıcaklık 75 °C altına inene kadar yeniden başlatılamaz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Always on: if the battery drops to 15 % or lower (on battery), the system reports serious thermal pressure, or the hottest sensor stays at 90 °C or above for 60 seconds, keeping awake is released and you get a notification. It cannot be restarted until the temperature is back under 75 °C."
-          }
-        }
-      }
-    },
-    "Hiçbir tetikleyici açık değil. Modül sekmesinden açabilirsiniz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No trigger is on. You can turn them on in the Module tab."
-          }
-        }
-      }
-    },
-    "Kapalıyken ekran sönebilir, sistem çalışmaya devam eder." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "When off, the display may turn off while the system keeps running."
-          }
-        }
-      }
-    },
-    "Kapağı kapatınca Mac yine uyur; kapak kapalı modu bu sürümde yok." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Closing the lid still puts the Mac to sleep; lid-closed mode is not in this version."
-          }
-        }
-      }
-    },
-    "Koruma" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protection"
-          }
-        }
-      }
-    },
-    "Koruma devrede" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Protection active"
-          }
-        }
-      }
-    },
-    "Liste, sistemin uyku engellerini (pmset -g assertions ile aynı kaynak) gösterir; yalnızca bu sayfa ya da açılır pencere görünürken birkaç saniyede bir okunur." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The list shows the system's sleep blockers (the same source as pmset -g assertions); it is read every few seconds, only while this page or the popover is visible."
-          }
-        }
-      }
-    },
-    "Mac prize takılıyken." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "While the Mac is plugged in."
-          }
-        }
-      }
-    },
-    "Mac uyanık tutuluyor" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mac is being kept awake"
-          }
-        }
-      }
-    },
-    "Mac uyuyabilir" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mac may sleep"
-          }
-        }
-      }
-    },
-    "Mac çok ısındı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mac got too hot"
-          }
-        }
-      }
-    },
-    "Mac çok ısındı: uyanık tutma durduruldu." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mac got too hot: keeping awake was stopped."
-          }
-        }
-      }
-    },
-    "Mac'in uykuya geçmesini engelle, neden uyanık olduğunu gör; pil ve sıcaklık korumalı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keep the Mac from sleeping and see why it is awake; with battery and temperature protection."
-          }
-        }
-      }
-    },
-    "Menü çubuğuna bir fincan simgesi ekler. Kapalıyken hiçbir şey okunmaz ve tutulmaz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adds a cup icon to the menu bar. While off, nothing is read or held."
-          }
-        }
-      }
-    },
-    "Modülü Modül sekmesinden açın." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Turn the module on in the Module tab."
-          }
-        }
-      }
-    },
-    "Neden uyanık?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Why awake?"
-          }
-        }
-      }
-    },
-    "Pil yüzde 15 ve altında: uyanık tutma durduruldu." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Battery at 15 % or lower: keeping awake was stopped."
-          }
-        }
-      }
-    },
-    "Sağ tık diğer süreleri gösterir." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Right-click shows the other durations."
-          }
-        }
-      }
-    },
-    "Simgeye tıklayınca" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clicking the icon"
-          }
-        }
-      }
-    },
-    "Sistem ısınma durumunu ciddi olarak bildiriyor. Mac'in uyumasına izin verildi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The system reports serious thermal pressure. The Mac is allowed to sleep again."
-          }
-        }
-      }
-    },
-    "Süre seçerek başlatın ya da bir tetikleyici açın." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start with a duration or turn on a trigger."
-          }
-        }
-      }
-    },
-    "Süresiz" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Indefinitely"
-          }
-        }
-      }
-    },
-    "Sıcaklık 90 °C üstü: uyanık tutma durduruldu. 75 °C altına inince yeniden izin verilir." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Temperature above 90 °C: keeping awake was stopped. It is allowed again below 75 °C."
-          }
-        }
-      }
-    },
-    "Sıcaklık yüksek" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Temperature is high"
-          }
-        }
-      }
-    },
-    "Tetikleyiciler" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Triggers"
-          }
-        }
-      }
-    },
-    "Tetikleyiciler varsayılan olarak kapalıdır. Koşul bittikten 2 dakika sonra Mac'in uyumasına izin verilir; çalışan işlemler 30 saniyede bir ve uygulama açılınca taranır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Triggers are off by default. The Mac may sleep 2 minutes after the condition ends; running processes are checked every 30 seconds and when an app launches."
-          }
-        }
-      }
-    },
-    "Uyanık Tut" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keep Awake"
-          }
-        }
-      }
-    },
-    "Uyanık Tut kapalı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keep Awake is off"
-          }
-        }
-      }
-    },
-    "Uyanık Tut sayfasını aç" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open the Keep Awake page"
-          }
-        }
-      }
-    },
-    "Uyanık Tut'u etkinleştir" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enable Keep Awake"
-          }
-        }
-      }
-    },
-    "Yapay zekâ araçları" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AI tools"
-          }
-        }
-      }
-    },
-    "claude, codex, cursor-agent veya ollama çalışırken." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "While claude, codex, cursor-agent or ollama is running."
-          }
-        }
-      }
-    },
-    "xcodebuild, swift-build veya docker çalışırken." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "While xcodebuild, swift-build or docker is running."
-          }
-        }
-      }
-    },
-    "İndirme ve yükleme toplamı eşiği aştığında." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "When download plus upload exceeds the threshold."
-          }
-        }
-      }
-    },
-    "Şarj yüzde 15 ve altına indi. Mac'in uyumasına izin verildi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The charge dropped to 15 % or lower. The Mac is allowed to sleep again."
-          }
-        }
-      }
-    },
-    "Şarjdayken" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "While charging"
-          }
-        }
-      }
-    },
-    "Şu an uykuyu engelleyen bir süreç yok." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nothing is preventing sleep right now."
-          }
-        }
-      }
-    },
-    "Ana ekran" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Main display"
-          }
-        }
-      }
-    },
-    "Bağlantı günlüğü" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connection log"
-          }
-        }
-      }
-    },
-    "Bağlı ekran bulunamadı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No connected display found."
-          }
-        }
-      }
-    },
-    "Bağlı ekranlar, çözünürlük ve yenileme hızı, harici monitörde parlaklık ve ses, yazılımsal karartma ve gece tonu." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connected displays, resolution and refresh rate, brightness and volume on external monitors, software dimming and night tone."
-          }
-        }
-      }
-    },
-    "Bu ekran için donanım denetimi (DDC) bulunamadı. Sidecar, DisplayLink, bazı yuva ve HDMI bağlantıları DDC iletmez. Yazılımsal karartma yine çalışır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No hardware control (DDC) was found for this display. Sidecar, DisplayLink and some docks and HDMI connections do not pass DDC. Software dimming still works."
-          }
-        }
-      }
-    },
-    "Bu modu koruyalım mı?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keep this mode?"
-          }
-        }
-      }
-    },
-    "Dahili ekran" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Built-in display"
-          }
-        }
-      }
-    },
-    "Harici ekran" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "External display"
-          }
-        }
-      }
-    },
-    "Dahili ekranın parlaklığı sistem tarafından yönetilir; buradan yalnızca okunur." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The built-in display's brightness is managed by the system; it is read-only here."
-          }
-        }
-      }
-    },
-    "Desteklemiyor" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Not supported"
-          }
-        }
-      }
-    },
-    "Destekliyor, şu an kapalı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Supported, currently off"
-          }
-        }
-      }
-    },
-    "Donanım" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hardware"
-          }
-        }
-      }
-    },
-    "Düzen değişti" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Layout changed"
-          }
-        }
-      }
-    },
-    "Ekran bilgisi sistem değişiklik bildirdiğinde güncellenir; zamanlayıcı yoktur. Donanım değerleri (DDC) yalnızca bu sayfa ya da açılır pencere görünürken bir kez okunur. Günlük yalnızca bellekte tutulur." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Display information updates when the system reports a change; there is no timer. Hardware values (DDC) are read once, only while this page or the popover is visible. The log is kept in memory only."
-          }
-        }
-      }
-    },
-    "Ekran modülü kapalı. Modül sekmesinden açabilirsiniz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The Display module is off. You can turn it on in the Module tab."
-          }
-        }
-      }
-    },
-    "Ekran modülünü etkinleştir" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enable the Display module"
-          }
-        }
-      }
-    },
-    "Eski moda dönüldü" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reverted to the old mode"
-          }
-        }
-      }
-    },
-    "Etkin, %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Active, %@"
-          }
-        }
-      }
-    },
-    "Gece tonu" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Night tone"
-          }
-        }
-      }
-    },
-    "Geri al" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Undo"
-          }
-        }
-      }
-    },
-    "Geri alma" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reverting"
-          }
-        }
-      }
-    },
-    "Giriş" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Input"
-          }
-        }
-      }
-    },
-    "Henüz bir değişiklik olmadı. Ekran takıldığında ya da çıkarıldığında burada görünür." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nothing has changed yet. Plugging in or removing a display shows up here."
-          }
-        }
-      }
-    },
-    "Karartma" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dimming"
-          }
-        }
-      }
-    },
-    "Kontrast" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Contrast"
-          }
-        }
-      }
-    },
-    "Koru" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Keep"
-          }
-        }
-      }
-    },
-    "Mod değişti" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mode changed"
-          }
-        }
-      }
-    },
-    "Monitör DDC isteklerine yanıt vermiyor. DDC/CI monitörün menüsünde kapalı olabilir. Yazılımsal karartma yine çalışır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The monitor does not answer DDC requests. DDC/CI may be turned off in the monitor's menu. Software dimming still works."
-          }
-        }
-      }
-    },
-    "Monitör son değişikliği kabul etmedi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The monitor did not accept the last change."
-          }
-        }
-      }
-    },
-    "Parlaklık" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brightness"
-          }
-        }
-      }
-    },
-    "Parlaklık tuşlarıyla harici monitörü yönetmek bu sürümde yok." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Controlling the external monitor with the brightness keys is not in this version."
-          }
-        }
-      }
-    },
-    "Ses" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Volume"
-          }
-        }
-      }
-    },
-    "Sistem bu modu kabul etmedi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The system did not accept this mode."
-          }
-        }
-      }
-    },
-    "Uygula" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apply"
-          }
-        }
-      }
-    },
-    "Yansıtılmış" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mirrored"
-          }
-        }
-      }
-    },
-    "Yazılımsal" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Software"
-          }
-        }
-      }
-    },
-    "Yeni mod önce deneme olarak uygulanır; 15 saniye içinde onaylamazsanız eski moda dönülür." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The new mode is applied as a trial first; if you do not confirm within 15 seconds the old mode comes back."
-          }
-        }
-      }
-    },
-    "Yenileme hızı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Refresh rate"
-          }
-        }
-      }
-    },
-    "%@ uygulandı. %lld saniye içinde onaylanmazsa eski moda dönülür." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ applied. It reverts to the old mode if not confirmed within %lld seconds."
-          }
-        }
-      }
-    },
-    "Çözünürlük" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Resolution"
-          }
-        }
-      }
-    },
-    "Çözünürlük ve yenileme hızı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Resolution and refresh rate"
-          }
-        }
-      }
-    },
-    "Çözünürlük ve yenileme hızı değişikliği deneme olarak uygulanır ve yalnızca bu uygulama için geçerlidir; 15 saniye içinde onaylanmazsa ya da Sistem kapanırsa eski mod geri gelir. Karartma ve gece tonu da uygulama kapanınca (çökse bile) sistem tarafından bırakılır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A resolution or refresh rate change is applied as a trial and only for this app; if it is not confirmed within 15 seconds, or Sistem quits, the old mode returns. Dimming and night tone are also released by the system when the app ends (even if it crashes)."
-          }
-        }
-      }
-    },
-    "Çıkarıldı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Removed"
-          }
-        }
-      }
-    },
-    "Piksel" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pixels"
-          }
-        }
-      }
-    },
-    "Ölçek" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scale"
-          }
-        }
-      }
-    },
-    "Yön" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rotation"
-          }
-        }
-      }
-    },
-    "HDR" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "HDR"
-          }
-        }
-      }
-    },
-    "Kapalıyken sistemden hiçbir bildirim alınmaz; karartma ve gece tonu da bırakılır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "While off, no notification is taken from the system; dimming and night tone are released too."
-          }
-        }
-      }
-    },
-    "Ekran simgesi ekler; tıklayınca ekran başına kaydırıcılar açılır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adds a display icon; clicking it opens the sliders for each display."
-          }
-        }
-      }
-    },
-    "%@ girişine geçilsin mi?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Switch to the %@ input?"
-          }
-        }
-      }
-    },
-    "Bu girişte sinyal yoksa görüntü kaybolur; geri dönmek için monitörün kendi düğmelerini kullanın." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "If this input has no signal the picture goes away; use the monitor's own buttons to switch back."
-          }
-        }
-      }
-    },
-    "Geç" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Switch"
-          }
-        }
-      }
-    },
-    "Linux" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Linux"
-          }
-        }
-      }
-    },
-    "macOS" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "macOS"
-          }
-        }
-      }
-    },
-    "Docker (uzak)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Docker (remote)"
-          }
-        }
-      }
-    },
-    "Docker (bu Mac)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Docker (this Mac)"
-          }
-        }
-      }
-    },
-    "Bağlanıyor…" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connecting…"
-          }
-        }
-      }
-    },
-    "Erişilebilir" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reachable"
-          }
-        }
-      }
-    },
-    "Çevrimiçi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Online"
-          }
-        }
-      }
-    },
-    "Erişilemiyor" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unreachable"
-          }
-        }
-      }
-    },
-    "Bağlantı reddedildi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connection refused"
-          }
-        }
-      }
-    },
-    "Ad çözülemedi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name not resolved"
-          }
-        }
-      }
-    },
     "Zaman aşımı" : {
       "localizations" : {
         "en" : {
@@ -7432,1270 +8693,12 @@
         }
       }
     },
-    "Anahtar reddedildi" : {
+    "Zayıf" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Key rejected"
-          }
-        }
-      }
-    },
-    "Ana makine anahtarı bilinmiyor" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Host key unknown"
-          }
-        }
-      }
-    },
-    "Ana makine anahtarı değişmiş" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Host key changed"
-          }
-        }
-      }
-    },
-    "Bozuk çıktı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Malformed output"
-          }
-        }
-      }
-    },
-    "Uzak komut başarısız" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remote command failed"
-          }
-        }
-      }
-    },
-    "Docker bulunamadı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Docker not found"
-          }
-        }
-      }
-    },
-    "ssh başlatılamadı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Could not start ssh"
-          }
-        }
-      }
-    },
-    "Port yönlendirilemedi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Port could not be forwarded"
-          }
-        }
-      }
-    },
-    "Sunucuya ulaşılamadı. Ağ bağlantısını kontrol edin; yerel ağdaki bir sunucu için Sistem Ayarları'nda Yerel Ağ izni verilmiş olmalı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The server could not be reached. Check the network connection; for a server on the local network, Local Network access must be allowed in System Settings."
-          }
-        }
-      }
-    },
-    "Sunucu bağlantıyı reddetti. SSH hizmeti çalışmıyor ya da port yanlış olabilir." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The server refused the connection. The SSH service may not be running or the port may be wrong."
-          }
-        }
-      }
-    },
-    "Sunucu adı çözülemedi. Adı ya da ~/.ssh/config takma adını kontrol edin." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The server name could not be resolved. Check the name or the ~/.ssh/config alias."
-          }
-        }
-      }
-    },
-    "Sunucu 10 saniye içinde yanıt vermedi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The server did not answer within 10 seconds."
-          }
-        }
-      }
-    },
-    "Sunucu anahtarınızı kabul etmedi. Yalnızca anahtar ve ssh-agent ile giriş yapılır; parola sorulmaz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The server did not accept your key. Sign-in uses keys and ssh-agent only; no password is ever asked."
-          }
-        }
-      }
-    },
-    "Bu sunucu daha önce hiç doğrulanmamış. Önce Terminal'de bir kez bağlanıp anahtarı onaylayın." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This server has never been verified. Connect once in Terminal first and confirm its key."
-          }
-        }
-      }
-    },
-    "Sunucunun anahtarı kayıtlı olandan farklı. Sunucuyu değiştirmediyseniz bağlanmayın; ~/.ssh/known_hosts kaydını kendiniz inceleyin." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The server's key differs from the recorded one. Do not connect unless you changed the server; inspect ~/.ssh/known_hosts yourself."
-          }
-        }
-      }
-    },
-    "Sunucudan beklenen biçimde yanıt gelmedi; veri gösterilmiyor." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The server did not answer in the expected format; no data is shown."
-          }
-        }
-      }
-    },
-    "Uzak komut hata ile bitti." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The remote command ended with an error."
-          }
-        }
-      }
-    },
-    "Docker bu makinede bulunamadı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Docker was not found on this machine."
-          }
-        }
-      }
-    },
-    "ssh programı başlatılamadı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The ssh program could not be started."
-          }
-        }
-      }
-    },
-    "Yerel port kullanımda ya da sunucu yönlendirmeyi kabul etmedi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The local port is in use or the server did not accept the forwarding."
-          }
-        }
-      }
-    },
-    "Yerel (-L)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Local (-L)"
-          }
-        }
-      }
-    },
-    "Uzak (-R)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remote (-R)"
-          }
-        }
-      }
-    },
-    "SOCKS (-D)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SOCKS (-D)"
-          }
-        }
-      }
-    },
-    "Açılıyor…" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opening…"
-          }
-        }
-      }
-    },
-    "Yeniden bağlanılıyor…" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reconnecting…"
-          }
-        }
-      }
-    },
-    "%lld g %lld sa" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld d %lld h"
-          }
-        }
-      }
-    },
-    "Ad boş olmamalı (en çok 40 karakter)." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The name must not be empty (40 characters at most)."
-          }
-        }
-      }
-    },
-    "Ana makine adı, IP adresi ya da ~/.ssh/config takma adı olmalı; harf, rakam, nokta, tire ve alt çizgi kullanın, tire ile başlamayın." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enter a host name, an IP address or a ~/.ssh/config alias; use letters, digits, dots, hyphens and underscores, and do not start with a hyphen."
-          }
-        }
-      }
-    },
-    "Kullanıcı adı geçersiz (harf, rakam, nokta, tire, alt çizgi; en çok 32)." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The user name is not valid (letters, digits, dots, hyphens, underscores; 32 at most)."
-          }
-        }
-      }
-    },
-    "Port 1 ile 65535 arasında olmalı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The port must be between 1 and 65535."
-          }
-        }
-      }
-    },
-    "En çok 20 sunucu eklenebilir." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "At most 20 servers can be added."
-          }
-        }
-      }
-    },
-    "Yerel port 1024-65535 arasında olmalı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The local port must be between 1024 and 65535."
-          }
-        }
-      }
-    },
-    "Hedef ana makine geçersiz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The target host is not valid."
-          }
-        }
-      }
-    },
-    "Hedef port 1-65535 arasında olmalı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The target port must be between 1 and 65535."
-          }
-        }
-      }
-    },
-    "Bir sunucuya en çok 10 tünel eklenebilir." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "At most 10 tunnels can be added to a server."
-          }
-        }
-      }
-    },
-    "Sunucu yanıt veriyor. Ayrıntılar bu sayfa açıkken okunur." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The server is answering. Details are read while this page is open."
-          }
-        }
-      }
-    },
-    "Ayrıntılar bu sayfa ya da açılır pencere açıkken okunur." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Details are read while this page or the popover is open."
-          }
-        }
-      }
-    },
-    "Kapalı bildirildi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reported down"
-          }
-        }
-      }
-    },
-    "Terminal'de bağlan" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connect in Terminal"
-          }
-        }
-      }
-    },
-    "Yük" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Load"
-          }
-        }
-      }
-    },
-    "Çalışan konteyner yok." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No running containers."
-          }
-        }
-      }
-    },
-    "Tüneller" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tunnels"
-          }
-        }
-      }
-    },
-    "Kapat" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Close"
-          }
-        }
-      }
-    },
-    "Aç" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open"
-          }
-        }
-      }
-    },
-    "Sunucular modülü kapalı. Modül sekmesinden açabilirsiniz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The Servers module is off. You can turn it on in the Module tab."
-          }
-        }
-      }
-    },
-    "Henüz sunucu eklenmedi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No servers added yet."
-          }
-        }
-      }
-    },
-    "Modül sekmesinden bir sunucu ekleyin. Giriş yalnızca anahtar ya da ssh-agent ile yapılır; parola sorulmaz ve saklanmaz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a server in the Module tab. Sign-in uses keys or ssh-agent only; no password is asked or stored."
-          }
-        }
-      }
-    },
-    "Sunucular yalnızca bu sayfa ya da açılır pencere görünürken, her 4 saniyede bir tek ssh bağlantısı üzerinden okunur. Arka plan kontrolü kapalıysa sayfa kapanınca hiçbir bağlantı kurulmaz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Servers are read only while this page or the popover is visible, every 4 seconds over a single ssh connection. With the background check off, no connection is made once the page is closed."
-          }
-        }
-      }
-    },
-    "Hızlı bağlan" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quick connect"
-          }
-        }
-      }
-    },
-    "Listeyi yenile" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Refresh list"
-          }
-        }
-      }
-    },
-    "~/.ssh/config içindeki Host takma adları burada listelenir. Dosya yalnızca okunur; yalnızca takma adlar alınır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Host aliases from ~/.ssh/config are listed here. The file is only read, and only the aliases are taken."
-          }
-        }
-      }
-    },
-    "%lld takma ad" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld aliases"
-          }
-        }
-      }
-    },
-    "Terminal açılamadı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Terminal could not be opened."
-          }
-        }
-      }
-    },
-    "Sunucular modülünü etkinleştir" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enable the Servers module"
-          }
-        }
-      }
-    },
-    "Kapalıyken hiçbir bağlantı kurulmaz ve tüneller kapanır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "While off, no connection is made and tunnels are closed."
-          }
-        }
-      }
-    },
-    "Arka planda erişilebilirlik kontrolü" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Background reachability check"
-          }
-        }
-      }
-    },
-    "Her 60 saniyede bir sunucunun yanıt verip vermediğine bakar ve iki dakika kapalı kalırsa bildirim gönderir. Kapalıyken sayfa kapanınca hiçbir şey çalışmaz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Every 60 seconds it checks whether the server answers and sends a notification if it stays down for two minutes. While off, nothing runs once the page is closed."
-          }
-        }
-      }
-    },
-    "Sunucu simgesi ekler; tıklayınca sunucuların özeti açılır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adds a server icon; clicking it opens a summary of the servers."
-          }
-        }
-      }
-    },
-    "Güvenlik" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Security"
-          }
-        }
-      }
-    },
-    "Giriş yalnızca anahtar ya da ssh-agent iledir; parola istenmez, saklanmaz. Özel anahtar dosyalarına dokunulmaz. Ana makine anahtarı doğrulaması her zaman açıktır: bilinmeyen bir sunucuya önce Terminal'den bir kez bağlanmalısınız. Yerel ağdaki sunucular için macOS ilk bağlantıda Yerel Ağ izni sorabilir." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sign-in uses keys or ssh-agent only; no password is asked or stored. Private key files are never touched. Host key verification is always on: for an unknown server you must connect once from Terminal first. For servers on the local network macOS may ask for Local Network access on the first connection."
-          }
-        }
-      }
-    },
-    "Sunucular" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Servers"
-          }
-        }
-      }
-    },
-    "Henüz sunucu yok." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No servers yet."
-          }
-        }
-      }
-    },
-    "Sunucu ekle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add server"
-          }
-        }
-      }
-    },
-    "Tür" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Type"
-          }
-        }
-      }
-    },
-    "Ana makine ya da takma ad" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Host or alias"
-          }
-        }
-      }
-    },
-    "Kullanıcı (isteğe bağlı)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "User (optional)"
-          }
-        }
-      }
-    },
-    "Port" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Port"
-          }
-        }
-      }
-    },
-    "Ekle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add"
-          }
-        }
-      }
-    },
-    "Tünel ekle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add tunnel"
-          }
-        }
-      }
-    },
-    "Sil" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Delete"
-          }
-        }
-      }
-    },
-    "Sunucudaki port" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Port on the server"
-          }
-        }
-      }
-    },
-    "Yerel port" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Local port"
-          }
-        }
-      }
-    },
-    "Hedef ana makine" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Target host"
-          }
-        }
-      }
-    },
-    "Hedef port" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Target port"
-          }
-        }
-      }
-    },
-    "Tüneli kaydet" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save tunnel"
-          }
-        }
-      }
-    },
-    "Yerel dinleme yalnızca 127.0.0.1 üzerindedir. Tüneller elle açılır; uygulama açılışında kendiliğinden başlamaz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Local listening is on 127.0.0.1 only. Tunnels are opened by hand and never start on their own when the app launches."
-          }
-        }
-      }
-    },
-    "Bu Mac" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This Mac"
-          }
-        }
-      }
-    },
-    "Araç" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tool"
-          }
-        }
-      }
-    },
-    "Ping" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ping"
-          }
-        }
-      }
-    },
-    "DNS sorgusu" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DNS lookup"
-          }
-        }
-      }
-    },
-    "Port kontrolü" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Port check"
-          }
-        }
-      }
-    },
-    "Traceroute" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Traceroute"
-          }
-        }
-      }
-    },
-    "Ana makine ya da IP" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Host or IP"
-          }
-        }
-      }
-    },
-    "İptal" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancel"
-          }
-        }
-      }
-    },
-    "Başlat" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start"
-          }
-        }
-      }
-    },
-    "Araçlar yalnızca Başlat'a bastığınızda çalışır; arka planda hiçbir sınama yapılmaz." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The tools run only when you press Start; nothing is tested in the background."
-          }
-        }
-      }
-    },
-    "Çalışıyor…" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Running…"
-          }
-        }
-      }
-    },
-    "Gönderilen / alınan" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sent / received"
-          }
-        }
-      }
-    },
-    "Kayıp" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Loss"
-          }
-        }
-      }
-    },
-    "En az / ortalama / en çok" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Min / average / max"
-          }
-        }
-      }
-    },
-    "Yanıt gelmedi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No reply."
-          }
-        }
-      }
-    },
-    "Bağlantı süresi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Connect time"
-          }
-        }
-      }
-    },
-    "Kapalı ya da reddedildi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Closed or refused"
-          }
-        }
-      }
-    },
-    "Girdi geçersiz. Ana makine adı ya da IP adresi (ve port için 1-65535) yazın." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The input is not valid. Enter a host name or IP address (and 1-65535 for the port)."
-          }
-        }
-      }
-    },
-    "İşlem zaman aşımına uğradı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The operation timed out."
-          }
-        }
-      }
-    },
-    "Sistem aracı başlatılamadı." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The system tool could not be started."
-          }
-        }
-      }
-    },
-    "Yanıt alınamadı ya da ad çözülemedi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No answer, or the name could not be resolved."
-          }
-        }
-      }
-    },
-    "İptal edildi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancelled."
-          }
-        }
-      }
-    },
-    "Araç beklenen çıktıyı vermedi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The tool did not produce the expected output."
-          }
-        }
-      }
-    },
-    "Sunucu yanıt vermiyor" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Server is not responding"
-          }
-        }
-      }
-    },
-    "%@ iki dakikadır erişilemiyor." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ has been unreachable for two minutes."
-          }
-        }
-      }
-    },
-    "Uzak sunucuların CPU, RAM, disk ve ağ durumu, SSH tünelleri ve ~/.ssh/config bağlantıları." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "CPU, RAM, disk and network of remote servers, SSH tunnels and ~/.ssh/config connections."
-          }
-        }
-      }
-    },
-    "Çekirdek çubukları" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Core bars"
-          }
-        }
-      }
-    },
-    "Çubuklar" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bars"
-          }
-        }
-      }
-    },
-    "Çizgi grafik" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Line graph"
-          }
-        }
-      }
-    },
-    "Pil simgesi" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Battery icon"
-          }
-        }
-      }
-    },
-    "Okuma ve yazma okları" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Read and write arrows"
-          }
-        }
-      }
-    },
-    "Ağ okları" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Network arrows"
-          }
-        }
-      }
-    },
-    "Her çekirdek için bir çubuk." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "One bar for each core."
-          }
-        }
-      }
-    },
-    "Uygulama, bağlı ve sıkıştırılmış bellek için üç çubuk." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Three bars: app, wired and compressed memory."
-          }
-        }
-      }
-    },
-    "Son bir dakikanın dolu grafiği." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A filled graph of the last minute."
-          }
-        }
-      }
-    },
-    "Son bir dakikanın ince çizgisi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A thin line of the last minute."
-          }
-        }
-      }
-    },
-    "Dolum düzeyi ve şarj göstergesi." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Charge level and a charging indicator."
-          }
-        }
-      }
-    },
-    "Okuma ve yazma hızı, iki satır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Read and write speed, two lines."
-          }
-        }
-      }
-    },
-    "İndirme ve yükleme hızı, iki satır." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Download and upload speed, two lines."
-          }
-        }
-      }
-    },
-    "şarj oluyor" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "charging"
-          }
-        }
-      }
-    },
-    "prize takılı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "plugged in"
-          }
-        }
-      }
-    },
-    "Şerit sırası" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Strip order"
-          }
-        }
-      }
-    },
-    "Sola taşı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Move left"
-          }
-        }
-      }
-    },
-    "Sağa taşı" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Move right"
-          }
-        }
-      }
-    },
-    "Yukarıdaki sıra menü çubuğunda soldan sağa dizilir." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "The order above runs left to right in the menu bar."
-          }
-        }
-      }
-    },
-    "%@: %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@: %@"
-          }
-        }
-      }
-    },
-    "cekirdek.super" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Super"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Süper"
-          }
-        }
-      }
-    },
-    "cekirdek.performance" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Performance"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Performans"
-          }
-        }
-      }
-    },
-    "cekirdek.efficiency" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Efficiency"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verimlilik"
+            "value" : "Poor"
           }
         }
       }
