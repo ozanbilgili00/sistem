@@ -210,6 +210,7 @@
 				INFOPLIST_KEY_NSLocationUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
 				MARKETING_VERSION = 0.1;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ozan.sistem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -242,6 +243,7 @@
 				INFOPLIST_KEY_NSLocationUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Wi-Fi ağının adını göstermek için Konum Servisleri izni gerekir. Konum bilgisi başka hiçbir amaçla kullanılmaz ve hiçbir yere gönderilmez.";
 				MARKETING_VERSION = 0.1;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ozan.sistem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
