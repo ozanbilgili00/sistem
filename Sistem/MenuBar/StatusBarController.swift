@@ -180,23 +180,28 @@ final class StatusBarController: NSObject, NSPopoverDelegate {
             togglePopover(nil, rect: sender.bounds, in: sender)
             return
         }
-        let location = NSApp.currentEvent.map { sender.convert($0.locationInWindow, from: nil).x } ?? 0
-        guard let index = strip.layoutModel.index(at: location) else { return }
+        guard let index = strip.layoutModel.index(at: clickX(in: sender)) else { return }
         activate(index: index, fromClick: true)
+    }
+
+    /// Where the click landed, in the button's coordinates. The pointer's screen position comes first: on macOS 26+ the
+    /// event a status item's action receives can carry the button's centre instead of the real click point, which sent
+    /// every click to the middle section. The event's own position is the fallback when the pointer is outside the button.
+    private func clickX(in button: NSStatusBarButton) -> CGFloat {
+        if let window = button.window {
+            let point = button.convert(window.convertPoint(fromScreen: NSEvent.mouseLocation), from: nil)
+            if button.bounds.insetBy(dx: -1, dy: -4).contains(point) { return point.x }
+        }
+        return NSApp.currentEvent.map { button.convert($0.locationInWindow, from: nil).x } ?? 0
     }
 
     private func activate(index: Int, fromClick: Bool) {
         guard strip.sections.indices.contains(index), let button = item?.button else { return }
         let kind = strip.sections[index].kind
         let rect = strip.rect(of: index)
-        if kind == .keepAwake {
-            if fromClick, NSApp.currentEvent?.type == .rightMouseUp {
-                showCupMenu(rect: rect, in: button)
-            } else if popover.isShown {
-                popover.performClose(button)
-            } else {
-                keepAwake.toggle(defaultDuration: settings.keepAwakeDuration)
-            }
+        // The cup opens its popover (durations, Stop, who keeps the Mac awake) like every other section; the right click keeps the quick menu.
+        if kind == .keepAwake, fromClick, NSApp.currentEvent?.type == .rightMouseUp {
+            showCupMenu(rect: rect, in: button)
             return
         }
         togglePopover(kind, rect: rect, in: button)

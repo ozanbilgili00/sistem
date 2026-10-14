@@ -51,15 +51,6 @@ final class KeepAwakeModel {
     func start(duration: TimeInterval?) -> Bool { controller?.startManual(duration: duration) ?? false }
     func stop() { controller?.stopManual() }
 
-    /// Click on the cup: stop when holding, otherwise start with the default length.
-    func toggle(defaultDuration: Double) {
-        if state.manualActive {
-            stop()
-        } else {
-            start(duration: defaultDuration > 0 ? defaultDuration : nil)
-        }
-    }
-
     func remaining(at date: Date = Date()) -> TimeInterval? { controller?.remaining(at: date) ?? state.manualEndsAt.map { max(0, $0.timeIntervalSince(date)) } }
 
     private func sync() {
